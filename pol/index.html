@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polski – MaturaMaster 2026</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.epoki-grid { display: grid; gap: 12px; }
+.epoka-card { background: var(--surface); border-left: 4px solid var(--ec, var(--accent)); border-radius: var(--radius); padding: 16px 20px; }
+.epoka-card h4 { font-family: var(--font-head); font-weight: 700; margin-bottom: 6px; }
+.epoka-card .dates { color: var(--muted); font-size: .75rem; margin-bottom: 8px; }
+.epoka-card p { font-size: .83rem; color: #c8ccd8; line-height: 1.6; }
+.pisarz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 14px; }
+.pisarz-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.pisarz-card h4 { font-family: var(--font-head); font-weight: 700; margin-bottom: 4px; }
+.pisarz-card .meta { color: var(--muted); font-size: .75rem; margin-bottom: 8px; }
+.pisarz-card p { font-size: .82rem; color: #c8ccd8; line-height: 1.5; }
+.filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; font-size: .78rem; transition: all .2s; }
+.filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h1>📜 Polski</h1>
+    <span>MaturaMaster 2026</span>
+    <a href="../index.html" class="back">← Strona główna</a>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Wiedza</div>
+    <button class="nav-btn active" onclick="showTab('epoki')" data-tab="epoki"><span class="icon">🏛️</span> Epoki literackie</button>
+    <button class="nav-btn" onclick="showTab('pisarze')" data-tab="pisarze"><span class="icon">✍️</span> Pisarze</button>
+    <button class="nav-btn" onclick="showTab('jawne')" data-tab="jawne"><span class="icon">📜</span> Pytania jawne CKE</button>
+    <div class="nav-section">Ćwiczenia</div>
+    <button class="nav-btn" onclick="showTab('quiz')" data-tab="quiz"><span class="icon">📝</span> Quiz</button>
+    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki</button>
+    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin"><span class="icon">🎓</span> Egzamin próbny</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- EPOKI -->
+<div class="tab active" id="tab-epoki">
+  <div class="page-header"><h2>🏛️ Epoki literackie</h2><p>Od antyku po współczesność.</p></div>
+  <div class="epoki-grid" id="epoki-list"></div>
+</div>
+
+<!-- PISARZE -->
+<div class="tab" id="tab-pisarze">
+  <div class="page-header"><h2>✍️ Pisarze i ich dzieła</h2></div>
+  <div class="filter-bar" id="pisarze-filters"></div>
+  <div class="pisarz-grid" id="pisarze-list"></div>
+</div>
+
+<!-- JAWNE -->
+<div class="tab" id="tab-jawne">
+  <div class="page-header"><h2>📜 Pytania jawne CKE</h2><p>Czerwone numery = tematy priorytetowe.</p></div>
+  <div class="info-box">🎯 Na maturze ustnej losujesz 1 pytanie. Masz 15 min na przygotowanie i 15 min na wypowiedź. Każda odpowiedź musi zawierać <strong>kontekst</strong>!</div>
+  <input type="text" class="search-box" placeholder="🔍 Szukaj pytania lub lektury..." oninput="filterJawne(this.value)">
+  <div id="jawne-list"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="tab" id="tab-quiz">
+  <div class="page-header"><h2>📝 Quiz – Język Polski</h2></div>
+  <div class="quiz-container" id="quiz-container"></div>
+</div>
+
+<!-- FISZKI -->
+<div class="tab" id="tab-fiszki">
+  <div class="page-header"><h2>🃏 Fiszki – pojęcia i motywy</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="flashcard-container">
+    <div class="flashcard-wrap" onclick="fcFlip('pl')">
+      <div class="flashcard" id="pl-card">
+        <div class="flashcard-front"><div class="label">POJĘCIE / MOTYW</div><div class="term" id="pl-fc-front">…</div></div>
+        <div class="flashcard-back"><div class="def" id="pl-fc-back">…</div></div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="fcPrev('pl')">← Poprzednia</button>
+      <span class="fc-counter" id="pl-fc-counter">1 / 1</span>
+      <button class="btn btn-secondary" onclick="fcNext('pl')">Następna →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EGZAMIN -->
+<div class="tab" id="tab-egzamin">
+  <div class="page-header"><h2>🎓 Egzamin próbny – Język Polski</h2><p>10 pytań mieszanych.</p></div>
+  <div class="quiz-container" id="egzamin-container"></div>
+</div>
+
+</main>
+
+<script src="../shared/engine.js"></script>
+<script src="data.js"></script>
+<script>
+const epokaData = [
+  { name:'Antyk', dates:'VIII w. p.n.e. – V w. n.e.', color:'#f0c040',
+    cechy:'Harmonia (kalos kagathos), mimesis, katharsis, tragizm (hybris→nemezis), epopeja homerycka.',
+    autorzy:'Homer, Sofokles, Eurypides, Platon, Horacy, Arystoteles',
+    lektury:'Iliada, Antygona, Mitologia (Parandowski)' },
+  { name:'Średniowiecze', dates:'V – XV w.', color:'#aaa',
+    cechy:'Teocentryzm, universalizm, ascetyzm, alegoria, kronika, hagiografia, danse macabre, vanitas.',
+    autorzy:'Anonim (Gall), Jan Długosz',
+    lektury:'Lament świętokrzyski, Rozmowa Mistrza Polikarpa, Pieśń o Rolandzie' },
+  { name:'Renesans', dates:'XIV – XVI w.', color:'#5ae0a0',
+    cechy:'Humanizm, antropocentryzm, carpe diem, złoty wiek, harmonia, reformacja.',
+    autorzy:'Kochanowski, Szekspir, Molier, Krasicki (Oświec.)',
+    lektury:'Treny (Kochanowski), Makbet (Szekspir)' },
+  { name:'Barok', dates:'XVI – XVIII w.', color:'#e05a5a',
+    cechy:'Vanitas, kontrast, marność, przemijanie, marinizm, antyteza, concetto.',
+    autorzy:'Morsztyn, Potocki, Pascal',
+    lektury:'Sonet IV (Morsztyn)' },
+  { name:'Oświecenie', dates:'XVII – XVIII w.', color:'#5a9cf0',
+    cechy:'Racjonalizm, empiryzm, satyra, bajka, encyklopedyzm, umowa społeczna.',
+    autorzy:'Krasicki, Naruszewicz, Voltaire, Rousseau',
+    lektury:'Satyry (Krasicki)' },
+  { name:'Romantyzm', dates:'koniec XVIII – poł. XIX w.', color:'#b45af0',
+    cechy:'Irracjonalizm, bunt, mesjanizm, bohater prometejski, ludowość, fantastyka, historia.',
+    autorzy:'Mickiewicz, Słowacki, Krasiński, Norwid, Byron, Goethe',
+    lektury:'Dziady III, Romantyczność (Mickiewicz)' },
+  { name:'Pozytywizm', dates:'poł. XIX – koniec XIX w.', color:'#ff9f40',
+    cechy:'Scjentyzm, praca organiczna, utylitaryzm, realizm, emancypacja kobiet.',
+    autorzy:'Prus, Sienkiewicz, Orzeszkowa, Reymont, Zola',
+    lektury:'Lalka (Prus), Potop (Sienkiewicz)' },
+  { name:'Młoda Polska', dates:'1890 – 1918', color:'#e05a5a',
+    cechy:'Dekadentyzm, impresjonizm, symbolizm, secesja, sztuka dla sztuki.',
+    autorzy:'Wyspiański, Żeromski, Kasprowicz, Tetmajer',
+    lektury:'Wesele (Wyspiański), Przedwiośnie (Żeromski), Chłopi (Reymont)' },
+  { name:'Dwudziestolecie', dates:'1918 – 1939', color:'#5ae0a0',
+    cechy:'Awangarda, futuryzm, ekspresjonizm, Skamander, katastrofizm, groteska.',
+    autorzy:'Gombrowicz, Staff, Tuwim, Leśmian',
+    lektury:'Ferdydurke (Gombrowicz)' },
+  { name:'Literatura współczesna', dates:'1939 – dziś', color:'#5a9cf0',
+    cechy:'Egzystencjalizm, literatura obozowa, proza dokumentalna, reportaż.',
+    autorzy:'Borowski, Herling-Grudziński, Krall, Camus, Orwell, Mrożek, Kapuściński',
+    lektury:'Dżuma, Rok 1984, Proszę państwa do gazu, Inny świat, Tango' },
+];
+
+const pisarzeData = [
+  { name:'Adam Mickiewicz', dates:'1798–1855', epoka:'Romantyzm', info:'Największy polski romantyk. Mesjanizm, patriotyzm, ludowość.', dziela:'Dziady III, Pan Tadeusz, Ballady i romanse, Romantyczność' },
+  { name:'Bolesław Prus', dates:'1847–1912', epoka:'Pozytywizm', info:'Kronikarz Warszawy, mistrz powieści realistycznej.', dziela:'Lalka, Faraon, Anielka, Katarynka' },
+  { name:'Stanisław Wyspiański', dates:'1869–1907', epoka:'Młoda Polska', info:'Dramaturg, malarz, poeta. Symbolizm narodowy.', dziela:'Wesele, Wyzwolenie, Klątwa' },
+  { name:'Stefan Żeromski', dates:'1864–1925', epoka:'Młoda Polska', info:'Sumienie polskiej literatury – krytyka społeczna.', dziela:'Przedwiośnie, Ludzie bezdomni, Syzyfowe prace' },
+  { name:'Fiodor Dostojewski', dates:'1821–1881', epoka:'Realizm', info:'Mistrz psychologii grzechu, winy i odkupienia.', dziela:'Zbrodnia i kara, Idiota, Bracia Karamazow' },
+  { name:'William Szekspir', dates:'1564–1616', epoka:'Renesans', info:'Największy dramaturg wszech czasów. Tragizm władzy.', dziela:'Makbet, Hamlet, Romeo i Julia, Otello' },
+  { name:'Albert Camus', dates:'1913–1960', epoka:'Egzystencjalizm', info:'Absurdyzm, bunt jako odpowiedź na bezsens.', dziela:'Dżuma, Obcy, Mit Syzyfa' },
+  { name:'George Orwell', dates:'1903–1950', epoka:'XX wiek', info:'Krytyk totalitaryzmu. Wizjoner nowomowy.', dziela:'Rok 1984, Folwark zwierzęcy' },
+  { name:'Tadeusz Borowski', dates:'1922–1951', epoka:'Współczesność', info:'Świadek Auschwitz. Nihilistyczny realizm.', dziela:'Proszę państwa do gazu, Pożegnanie z Marią' },
+  { name:'Sławomir Mrożek', dates:'1930–2013', epoka:'Współczesność', info:'Mistrz groteski i absurdu. Krytyk totalitaryzmu.', dziela:'Tango, Policja, Słoń' },
+  { name:'Sofokles', dates:'496–406 p.n.e.', epoka:'Antyk', info:'Mistrz tragedii greckiej. Fatum, hybris.', dziela:'Antygona, Król Edyp, Elektra' },
+  { name:'Jan Parandowski', dates:'1895–1978', epoka:'Dwudziestolecie', info:'Popularyzator antyku, eseista.', dziela:'Mitologia, Dysk olimpijski' },
+];
+
+function renderEpoki() {
+  document.getElementById('epoki-list').innerHTML = epokaData.map(e => `
+    <div class="epoka-card" style="--ec:${e.color}">
+      <h4>${e.name} <span style="color:var(--muted);font-weight:400;font-size:.75rem">${e.dates}</span></h4>
+      <p><strong style="color:#5ae0a0">Cechy:</strong> ${e.cechy}<br>
+         <strong style="color:#5ae0a0">Autorzy:</strong> ${e.autorzy}<br>
+         <strong style="color:#5ae0a0">Lektury CKE:</strong> ${e.lektury}</p>
+    </div>`).join('');
+}
+
+function renderPisarze(filter) {
+  const data = filter === 'all' ? pisarzeData : pisarzeData.filter(p => p.epoka === filter);
+  document.getElementById('pisarze-list').innerHTML = data.map(p => `
+    <div class="pisarz-card">
+      <h4>${p.name}</h4>
+      <div class="meta">${p.dates} · ${p.epoka}</div>
+      <p style="margin-bottom:6px">${p.info}</p>
+      <p style="color:var(--muted);font-size:.78rem"><strong style="color:#f0c040">Dzieła:</strong> ${p.dziela}</p>
+    </div>`).join('');
+}
+
+function buildFilters() {
+  const epoki = ['all', ...new Set(pisarzeData.map(p => p.epoka))];
+  document.getElementById('pisarze-filters').innerHTML = epoki.map(e => `
+    <button class="filter-btn ${e==='all'?'active':''}" onclick="filterPisarze('${e}',this)">${e==='all'?'Wszyscy':e}</button>`).join('');
+}
+
+function filterPisarze(epoka, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPisarze(epoka);
+}
+
+function renderJawne(data) {
+  const grouped = {};
+  data.forEach(i => { if (!grouped[i.book]) grouped[i.book] = []; grouped[i.book].push(i); });
+  document.getElementById('jawne-list').innerHTML = Object.entries(grouped).map(([book, items]) => `
+    <div class="section-divider"><span>${book}</span></div>
+    ${items.map(item => `
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="accordion-num ${item.priority==='high'?'imp':''}">${item.num}</div>
+          <div class="accordion-q">
+            ${item.priority==='high'?'<span class="priority-badge priority-high">⭐ Priorytet</span>':''}
+            ${item.q}
+          </div>
+          <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="color:#5ae0a0;font-size:.78rem;font-weight:700;margin-bottom:8px">📖 WZORCOWA ODPOWIEDŹ:</p>
+          ${item.ans}
+          <div style="margin-top:12px;padding:10px;background:var(--surface);border-radius:8px;font-size:.78rem;color:var(--muted)">
+            💡 Pamiętaj o <strong>kontekście</strong> – inna lektura lub zjawisko historyczne. Mów min. 2 minuty.
+          </div>
+        </div>
+      </div>`).join('')}`).join('');
+}
+
+function filterJawne(val) {
+  const v = val.toLowerCase();
+  renderJawne(jawneData.filter(i => i.q.toLowerCase().includes(v) || i.book.toLowerCase().includes(v) || i.ans.toLowerCase().includes(v)));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderEpoki();
+  buildFilters();
+  renderPisarze('all');
+  renderJawne(jawneData);
+  QE.init('plq', plQuizData, 'quiz-container');
+  QE.init('plex', plEgzaminData, 'egzamin-container');
+  QE.fcInit('pl', plFiszki);
+});
+</script>
+</body>
+</html>

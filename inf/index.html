@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatyka – MaturaMaster 2026</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.code { font-family: monospace; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: .88rem; line-height: 1.9; color: #c8ccd8; margin-bottom: 8px; }
+.kw { color: #5a9cf0; font-weight: 700; }
+.cm { color: var(--muted); }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="logo"><h1>💻 Informatyka</h1><span>MaturaMaster 2026</span><a href="../index.html" class="back">← Strona główna</a></div>
+  <div class="nav">
+    <div class="nav-section">Teoria</div>
+    <button class="nav-btn active" onclick="showTab('teoria')" data-tab="teoria"><span class="icon">📚</span> Teoria i złożoność</button>
+    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki</button>
+    <div class="nav-section">Zadania</div>
+    <button class="nav-btn" onclick="showTab('algorytmy')" data-tab="algorytmy"><span class="icon">⚙️</span> Algorytmy</button>
+    <button class="nav-btn" onclick="showTab('struktury')" data-tab="struktury"><span class="icon">🗂️</span> Struktury danych</button>
+    <button class="nav-btn" onclick="showTab('sql')" data-tab="sql"><span class="icon">🗄️</span> SQL i bazy danych</button>
+    <button class="nav-btn" onclick="showTab('liczby')" data-tab="liczby"><span class="icon">🔢</span> Systemy liczbowe</button>
+    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin"><span class="icon">🎓</span> Egzamin próbny</button>
+  </div>
+</nav>
+<main class="main">
+
+<div class="tab active" id="tab-teoria">
+  <div class="page-header"><h2>📚 Teoria i złożoność obliczeniowa</h2></div>
+  <div class="card"><h3>⏱️ Notacja O – złożoność</h3>
+    <div class="code">
+      <span class="kw">O(1)</span>       – stała (dostęp przez indeks)<br>
+      <span class="kw">O(log n)</span>   – logarytmiczna (wyszuk. binarne)<br>
+      <span class="kw">O(n)</span>       – liniowa (przeszukiwanie liniowe)<br>
+      <span class="kw">O(n log n)</span> – merge sort, quicksort śr.<br>
+      <span class="kw">O(n²)</span>      – bubble/insertion/selection sort<br>
+      <span class="kw">O(2ⁿ)</span>      – wykładnicza (generowanie podzbiorów)
+    </div>
+  </div>
+  <div class="card"><h3>🔀 Algorytmy sortowania</h3>
+    <div class="code">
+      <span class="kw">Bubble sort:</span>    O(n²) – porównuj sąsiednie, zamieniaj<br>
+      <span class="kw">Merge sort:</span>     O(n log n) – dziel i scalaj (stabilny)<br>
+      <span class="kw">Quick sort:</span>     O(n log n) śr., O(n²) najg. – pivot<br>
+      <span class="kw">Insertion sort:</span> O(n²), O(n) dla prawie posortowanych<br>
+      <span class="kw">Heap sort:</span>      O(n log n) zawsze, in-place
+    </div>
+  </div>
+  <div class="card"><h3>🗄️ Podstawy SQL</h3>
+    <div class="code">
+      <span class="kw">SELECT</span> kolumna <span class="kw">FROM</span> tabela <span class="kw">WHERE</span> warunek;<br>
+      <span class="kw">SELECT</span> * <span class="kw">FROM</span> t <span class="kw">ORDER BY</span> kol <span class="kw">DESC</span>;<br>
+      <span class="kw">SELECT</span> k, <span class="kw">COUNT</span>(*) <span class="kw">FROM</span> t <span class="kw">GROUP BY</span> k;<br>
+      <span class="kw">SELECT</span> a.* <span class="kw">FROM</span> a <span class="kw">JOIN</span> b <span class="kw">ON</span> a.id=b.aid;<br>
+      <span class="cm">-- HAVING filtruje grupy (po GROUP BY)</span>
+    </div>
+  </div>
+  <div class="card"><h3>🔢 Systemy liczbowe</h3>
+    <div class="code">
+      Binarny (2): 1010₂ = 1·8+0·4+1·2+0·1 = 10₁₀<br>
+      Szesnastkowy (16): FF₁₆ = 15·16+15 = 255₁₀<br>
+      Konwersja: dziel przez podstawę, czytaj reszty od dołu<br>
+      1 bajt = 8 bitów · 1 KB = 1024 B · 1 MB = 1024 KB
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-fiszki">
+  <div class="page-header"><h2>🃏 Fiszki – Informatyka</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="flashcard-container">
+    <div class="flashcard-wrap" onclick="fcFlip('inf')">
+      <div class="flashcard" id="inf-card">
+        <div class="flashcard-front"><div class="label">POJĘCIE</div><div class="term" id="inf-fc-front">…</div></div>
+        <div class="flashcard-back"><div class="def" id="inf-fc-back">…</div></div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="fcPrev('inf')">← Poprzednia</button>
+      <span class="fc-counter" id="inf-fc-counter">1 / 1</span>
+      <button class="btn btn-secondary" onclick="fcNext('inf')">Następna →</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-algorytmy"><div class="page-header"><h2>⚙️ Algorytmy</h2></div><div class="quiz-container" id="alg-c"></div></div>
+<div class="tab" id="tab-struktury"><div class="page-header"><h2>🗂️ Struktury danych</h2></div><div class="quiz-container" id="str-c"></div></div>
+<div class="tab" id="tab-sql"><div class="page-header"><h2>🗄️ SQL i bazy danych</h2></div><div class="quiz-container" id="sql-c"></div></div>
+<div class="tab" id="tab-liczby"><div class="page-header"><h2>🔢 Systemy liczbowe</h2><p>Obliczenia rób na kartce, wpisz wynik.</p></div><div class="quiz-container" id="lic-c"></div></div>
+<div class="tab" id="tab-egzamin"><div class="page-header"><h2>🎓 Egzamin próbny – Informatyka</h2></div><div class="quiz-container" id="egz-c"></div></div>
+
+</main>
+<script src="../shared/engine.js"></script>
+<script src="data.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  QE.fcInit('inf', infFiszki);
+  QE.init('ialg', infAlgorytmy, 'alg-c');
+  QE.init('istr', infStrukturyDanych, 'str-c');
+  QE.init('isql', infSQL, 'sql-c');
+  QE.init('ilic', infLiczby, 'lic-c');
+  QE.init('iegz', infEgzamin, 'egz-c');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fizyka – MaturaMaster 2026</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fbox { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; font-family: monospace; font-size: .9rem; line-height: 1.9; color: #c8ccd8; }
+.fbox .v { color: #5ae0a0; font-weight: 700; }
+@media(max-width:600px){ .formula-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="logo"><h1>⚛️ Fizyka</h1><span>MaturaMaster 2026</span><a href="../index.html" class="back">← Strona główna</a></div>
+  <div class="nav">
+    <div class="nav-section">Teoria</div>
+    <button class="nav-btn active" onclick="showTab('wzory')" data-tab="wzory"><span class="icon">📚</span> Wzory i prawa</button>
+    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki</button>
+    <div class="nav-section">Zadania (wpisuj wynik!)</div>
+    <button class="nav-btn" onclick="showTab('mechanika')" data-tab="mechanika"><span class="icon">⚙️</span> Mechanika</button>
+    <button class="nav-btn" onclick="showTab('termodynamika')" data-tab="termodynamika"><span class="icon">🌡️</span> Termodynamika</button>
+    <button class="nav-btn" onclick="showTab('elektrycznosc')" data-tab="elektrycznosc"><span class="icon">⚡</span> Elektryczność</button>
+    <button class="nav-btn" onclick="showTab('jadrowa')" data-tab="jadrowa"><span class="icon">☢️</span> Fizyka jądrowa</button>
+    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin"><span class="icon">🎓</span> Egzamin próbny</button>
+  </div>
+</nav>
+<main class="main">
+
+<div class="tab active" id="tab-wzory">
+  <div class="page-header"><h2>📚 Wzory i prawa fizyki</h2></div>
+  <div class="formula-grid">
+    <div class="card"><h3>⚙️ Mechanika</h3>
+      <div class="fbox">F=ma · p=mv · Eₖ=½mv²<br>Ep=mgh · s=v₀t+½at²<br>v=v₀+at · P=Fv</div></div>
+    <div class="card"><h3>🌡️ Termodynamika</h3>
+      <div class="fbox">ΔU=Q−W · pV=nRT<br>η=1−T₂/T₁<br>Izot.(T=c) · Izoch.(V=c) · Izob.(p=c)</div></div>
+    <div class="card"><h3>⚡ Elektryczność</h3>
+      <div class="fbox">U=IR · P=UI=I²R<br>Szereg: R=R₁+R₂+...<br>Równ.: 1/R=1/R₁+1/R₂+...<br>F=k·q₁q₂/r²</div></div>
+    <div class="card"><h3>☢️ Fizyka jądrowa</h3>
+      <div class="fbox">N(t)=N₀·(½)^(t/T½)<br>E=Δm·c² · c=3·10⁸ m/s<br>α: emituje ⁴₂He<br>β⁻: n→p+e⁻+ν̄</div></div>
+  </div>
+</div>
+
+<div class="tab" id="tab-fiszki">
+  <div class="page-header"><h2>🃏 Fiszki – Fizyka</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="flashcard-container">
+    <div class="flashcard-wrap" onclick="fcFlip('fiz')">
+      <div class="flashcard" id="fiz-card">
+        <div class="flashcard-front"><div class="label">PRAWO / WZÓR</div><div class="term" id="fiz-fc-front">…</div></div>
+        <div class="flashcard-back"><div class="def" id="fiz-fc-back">…</div></div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="fcPrev('fiz')">← Poprzednia</button>
+      <span class="fc-counter" id="fiz-fc-counter">1 / 1</span>
+      <button class="btn btn-secondary" onclick="fcNext('fiz')">Następna →</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab" id="tab-mechanika"><div class="page-header"><h2>⚙️ Mechanika</h2><p>Obliczenia rób na kartce, wpisz wynik liczbą.</p></div><div class="quiz-container" id="mech-c"></div></div>
+<div class="tab" id="tab-termodynamika"><div class="page-header"><h2>🌡️ Termodynamika</h2></div><div class="quiz-container" id="term-c"></div></div>
+<div class="tab" id="tab-elektrycznosc"><div class="page-header"><h2>⚡ Elektryczność</h2></div><div class="quiz-container" id="elec-c"></div></div>
+<div class="tab" id="tab-jadrowa"><div class="page-header"><h2>☢️ Fizyka jądrowa</h2></div><div class="quiz-container" id="jadr-c"></div></div>
+<div class="tab" id="tab-egzamin"><div class="page-header"><h2>🎓 Egzamin próbny – Fizyka</h2><p>10 zadań. Obliczenia rób na kartce!</p></div><div class="quiz-container" id="egz-c"></div></div>
+
+</main>
+<script src="../shared/engine.js"></script>
+<script src="data.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  QE.fcInit('fiz', fizFiszki);
+  QE.init('mec', fizMechanika, 'mech-c');
+  QE.init('ter', fizTermodynamika, 'term-c');
+  QE.init('ele', fizElektrycznosc, 'elec-c');
+  QE.init('jad', fizJadrowa, 'jadr-c');
+  QE.init('feg', fizEgzamin, 'egz-c');
+});
+</script>
+</body>
+</html>

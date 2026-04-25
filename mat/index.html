@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matematyka – MaturaMaster 2026</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formula-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; font-family: monospace; font-size: .9rem; line-height: 1.9; color: #c8ccd8; }
+.formula-box .v { color: #5ae0a0; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+th,td { padding: 9px 12px; border: 1px solid var(--border); text-align: center; }
+th { background: var(--surface2); color: var(--accent); }
+@media(max-width:600px){ .formula-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h1>📐 Matematyka</h1>
+    <span>MaturaMaster 2026</span>
+    <a href="../index.html" class="back">← Strona główna</a>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Teoria</div>
+    <button class="nav-btn active" onclick="showTab('wzory')" data-tab="wzory"><span class="icon">📚</span> Wzory i teoria</button>
+    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki</button>
+    <div class="nav-section">Zadania (wpisuj wynik!)</div>
+    <button class="nav-btn" onclick="showTab('algebra')" data-tab="algebra"><span class="icon">∑</span> Algebra i ciągi</button>
+    <button class="nav-btn" onclick="showTab('geometria')" data-tab="geometria"><span class="icon">📐</span> Geometria</button>
+    <button class="nav-btn" onclick="showTab('analiza')" data-tab="analiza"><span class="icon">∫</span> Analiza</button>
+    <button class="nav-btn" onclick="showTab('trygonometria')" data-tab="trygonometria"><span class="icon">∠</span> Trygonometria</button>
+    <button class="nav-btn" onclick="showTab('statystyka')" data-tab="statystyka"><span class="icon">📊</span> Statystyka/Prawdop.</button>
+    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin"><span class="icon">🎓</span> Egzamin próbny</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- WZORY -->
+<div class="tab active" id="tab-wzory">
+  <div class="page-header"><h2>📚 Wzory i teoria</h2></div>
+  <div class="formula-grid">
+    <div class="card"><h3>∑ Ciągi</h3>
+      <div class="formula-box">
+        <span class="v">Arytm.:</span> aₙ=a₁+(n−1)d · Sₙ=n(a₁+aₙ)/2<br>
+        <span class="v">Geom.:</span> aₙ=a₁·qⁿ⁻¹ · Sₙ=a₁(qⁿ−1)/(q−1)
+      </div>
+    </div>
+    <div class="card"><h3>∂ Pochodne</h3>
+      <div class="formula-box">
+        (xⁿ)'=n·xⁿ⁻¹ · (sin x)'=cos x<br>
+        (cos x)'=−sin x · (eˣ)'=eˣ · (ln x)'=1/x
+      </div>
+    </div>
+    <div class="card"><h3>📐 Geometria analityczna</h3>
+      <div class="formula-box">
+        Okrąg: (x−p)²+(y−q)²=r²<br>
+        d=√[(x₂−x₁)²+(y₂−y₁)²]<br>
+        Równoległe: a₁=a₂ · Prostopadłe: a₁·a₂=−1
+      </div>
+    </div>
+    <div class="card"><h3>📦 Bryły</h3>
+      <div class="formula-box">
+        Walec: V=πr²h · Pb=2πrh<br>
+        Kula: V=(4/3)πr³ · P=4πr²<br>
+        Ostrosłup: V=(1/3)·Pp·h
+      </div>
+    </div>
+    <div class="card"><h3>∠ Trygonometria</h3>
+      <div class="formula-box">
+        sin²α+cos²α=1 · tg α=sin/cos<br>
+        Tw. sinusów: a/sinA=b/sinB=c/sinC<br>
+        Tw. cosinusów: c²=a²+b²−2ab·cosC
+      </div>
+    </div>
+    <div class="card"><h3>log Logarytmy</h3>
+      <div class="formula-box">
+        logₐ(xy)=logₐx+logₐy<br>
+        logₐ(x/y)=logₐx−logₐy<br>
+        logₐ(xⁿ)=n·logₐx · logₐa=1
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:4px">
+    <h3>📋 Wartości trygonometryczne</h3>
+    <table>
+      <thead><tr><th>Kąt</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#5ae0a0">sin</td><td>0</td><td>½</td><td>√2/2</td><td>√3/2</td><td>1</td></tr>
+        <tr><td style="color:#5ae0a0">cos</td><td>1</td><td>√3/2</td><td>√2/2</td><td>½</td><td>0</td></tr>
+        <tr><td style="color:#5ae0a0">tg</td><td>0</td><td>1/√3</td><td>1</td><td>√3</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FISZKI -->
+<div class="tab" id="tab-fiszki">
+  <div class="page-header"><h2>🃏 Fiszki matematyczne</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="flashcard-container">
+    <div class="flashcard-wrap" onclick="fcFlip('mat')">
+      <div class="flashcard" id="mat-card">
+        <div class="flashcard-front"><div class="label">WZÓR / POJĘCIE</div><div class="term" id="mat-fc-front">…</div></div>
+        <div class="flashcard-back"><div class="def" id="mat-fc-back">…</div></div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="fcPrev('mat')">← Poprzednia</button>
+      <span class="fc-counter" id="mat-fc-counter">1 / 1</span>
+      <button class="btn btn-secondary" onclick="fcNext('mat')">Następna →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ZADANIA -->
+<div class="tab" id="tab-algebra">
+  <div class="page-header"><h2>∑ Algebra i ciągi</h2><p>Obliczenia rób na kartce, wpisz wynik liczbą. Ułamki dziesiętne z kropką.</p></div>
+  <div class="info-box">💡 Dla zadań z π wpisz tylko mnożnik (np. dla 36π wpisz <strong>36</strong>).</div>
+  <div class="quiz-container" id="algebra-container"></div>
+</div>
+<div class="tab" id="tab-geometria">
+  <div class="page-header"><h2>📐 Geometria</h2><p>Obliczenia rób na kartce, wpisz wynik.</p></div>
+  <div class="quiz-container" id="geometria-container"></div>
+</div>
+<div class="tab" id="tab-analiza">
+  <div class="page-header"><h2>∫ Analiza matematyczna</h2><p>Pochodne, całki, granice, ekstrema.</p></div>
+  <div class="quiz-container" id="analiza-container"></div>
+</div>
+<div class="tab" id="tab-trygonometria">
+  <div class="page-header"><h2>∠ Trygonometria</h2></div>
+  <div class="quiz-container" id="trygonometria-container"></div>
+</div>
+<div class="tab" id="tab-statystyka">
+  <div class="page-header"><h2>📊 Statystyka i Prawdopodobieństwo</h2></div>
+  <div class="quiz-container" id="statystyka-container"></div>
+</div>
+<div class="tab" id="tab-egzamin">
+  <div class="page-header"><h2>🎓 Egzamin próbny – Matematyka</h2><p>10 zadań. Obliczenia rób na kartce!</p></div>
+  <div class="quiz-container" id="egzamin-container"></div>
+</div>
+
+</main>
+<script src="../shared/engine.js"></script>
+<script src="data.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  QE.fcInit('mat', matFiszki);
+  QE.init('alg', matAlgebraData, 'algebra-container');
+  QE.init('geo', matGeometriaData, 'geometria-container');
+  QE.init('ana', matAnalizaData, 'analiza-container');
+  QE.init('try', matTrygoData, 'trygonometria-container');
+  QE.init('sta', matStatystykaData, 'statystyka-container');
+  QE.init('mex', matEgzaminData, 'egzamin-container');
+});
+</script>
+</body>
+</html>

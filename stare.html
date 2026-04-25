@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaturaMaster 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0f;
+  --surface: #111318;
+  --surface2: #1a1d26;
+  --border: #252836;
+  --accent: #f0c040;
+  --accent2: #e05a5a;
+  --accent3: #5a9cf0;
+  --accent4: #5ae0a0;
+  --text: #e8eaf2;
+  --muted: #7a7f9a;
+  --radius: 12px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
+  transition: transform .3s ease;
+}
+
+.logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.logo h1 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--muted); font-size: .75rem; display: block; margin-top: 2px; }
+
+.nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.nav-section { padding: 8px 20px 4px; font-size: .65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 20px;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-family: var(--font-body);
+  font-size: .85rem; text-align: left;
+  transition: all .2s; border-left: 3px solid transparent;
+}
+.nav-btn:hover { color: var(--text); background: var(--surface2); }
+.nav-btn.active { color: var(--accent); border-left-color: var(--accent); background: rgba(240,192,64,.07); }
+.nav-btn .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 32px;
+  max-width: calc(100vw - 240px);
+}
+
+.tab { display: none; }
+.tab.active { display: block; }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 32px;
+}
+.page-header h2 {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.page-header p { color: var(--muted); margin-top: 6px; font-size: .9rem; }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.card h3 {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+
+/* CHIPS */
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+.chip-pl { background: rgba(240,192,64,.15); color: var(--accent); }
+.chip-en { background: rgba(90,156,240,.15); color: var(--accent3); }
+.chip-mat { background: rgba(90,224,160,.15); color: var(--accent4); }
+.chip-it { background: rgba(224,90,90,.15); color: var(--accent2); }
+
+/* ACCORDION (pytania jawne) */
+.accordion-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.accordion-header {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  cursor: pointer;
+  transition: background .2s;
+}
+.accordion-header:hover { background: #1e2130; }
+.accordion-num {
+  background: var(--accent);
+  color: #000;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: .75rem;
+  min-width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.accordion-num.imp { background: var(--accent2); color: #fff; }
+.accordion-q { font-size: .875rem; line-height: 1.5; flex: 1; }
+.accordion-q .book { color: var(--muted); font-size: .75rem; display: block; margin-bottom: 3px; }
+.accordion-arrow { color: var(--muted); transition: transform .2s; flex-shrink: 0; font-size: .8rem; }
+.accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  padding: 16px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-size: .87rem;
+  line-height: 1.7;
+  color: #c8ccd8;
+}
+.accordion-item.open .accordion-body { display: block; }
+
+.priority-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .68rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  margin-left: 8px;
+}
+.priority-high { background: rgba(224,90,90,.2); color: var(--accent2); }
+.priority-med { background: rgba(240,192,64,.2); color: var(--accent); }
+
+/* QUIZ */
+.quiz-container { max-width: 680px; }
+.quiz-question-num { color: var(--muted); font-size: .8rem; margin-bottom: 8px; }
+.quiz-question-text { font-family: var(--font-head); font-size: 1.05rem; margin-bottom: 18px; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.quiz-option {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--surface2);
+  transition: all .2s;
+  font-size: .9rem;
+  text-align: left;
+  color: var(--text);
+  font-family: var(--font-body);
+}
+.quiz-option:hover { border-color: var(--accent); }
+.quiz-option.correct { border-color: var(--accent4); background: rgba(90,224,160,.1); color: var(--accent4); }
+.quiz-option.wrong { border-color: var(--accent2); background: rgba(224,90,90,.1); color: var(--accent2); }
+.quiz-option.disabled { pointer-events: none; }
+
+.quiz-open-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .9rem;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 12px;
+}
+.quiz-open-input:focus { outline: none; border-color: var(--accent); }
+
+.btn {
+  padding: 10px 22px;
+  border: none; cursor: pointer;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .85rem;
+  transition: all .2s;
+}
+.btn-primary { background: var(--accent); color: #000; }
+.btn-primary:hover { background: #ffd060; }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); }
+.btn-danger { background: var(--accent2); color: #fff; }
+
+.quiz-result {
+  text-align: center; padding: 32px;
+  background: var(--surface2);
+  border-radius: var(--radius);
+}
+.quiz-result .score {
+  font-family: var(--font-head);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.quiz-result p { color: var(--muted); margin-top: 8px; margin-bottom: 20px; }
+
+/* FLASHCARDS */
+.flashcard-container { max-width: 500px; }
+.flashcard-wrap { perspective: 1200px; height: 220px; margin-bottom: 24px; cursor: pointer; }
+.flashcard {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .5s ease;
+  border-radius: var(--radius);
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.flashcard-front {
+  background: var(--surface);
+}
+.flashcard-front .label {
+  font-size: .7rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--accent); margin-bottom: 12px; font-weight: 700;
+}
+.flashcard-front .term { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; }
+.flashcard-back {
+  background: #0f1420;
+  transform: rotateY(180deg);
+  border-color: var(--accent);
+}
+.flashcard-back .def { font-size: .9rem; line-height: 1.6; color: #c8ccd8; }
+
+.flashcard-nav { display: flex; align-items: center; gap: 16px; }
+.fc-counter { color: var(--muted); font-size: .85rem; }
+
+/* PROGRESS BAR */
+.progress-bar-wrap {
+  background: var(--surface2);
+  border-radius: 20px;
+  height: 8px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #ff9f40);
+  border-radius: 20px;
+  transition: width .5s ease;
+}
+
+/* JOURNAL */
+.journal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.task-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all .2s;
+}
+.task-item.done { opacity: .5; }
+.task-item.done .task-title { text-decoration: line-through; }
+.task-title { font-size: .875rem; flex: 1; }
+.task-meta { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+.task-priority { font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.p-high { background: rgba(224,90,90,.2); color: var(--accent2); }
+.p-med { background: rgba(240,192,64,.2); color: var(--accent); }
+.p-low { background: rgba(90,224,160,.2); color: var(--accent4); }
+.task-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 1px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .875rem;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.form-label { font-size: .78rem; color: var(--muted); margin-bottom: 5px; display: block; }
+.form-select { appearance: none; }
+
+/* NOTES */
+.notes-area {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .9rem;
+  resize: vertical;
+  min-height: 160px;
+  line-height: 1.7;
+}
+.notes-area:focus { outline: none; border-color: var(--accent); }
+
+/* MOBILE TOGGLE */
+.menu-toggle {
+  display: none;
+  position: fixed; top: 16px; left: 16px; z-index: 200;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px;
+  cursor: pointer; color: var(--text); font-size: 1.2rem;
+}
+
+.search-box {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .875rem;
+  margin-bottom: 16px;
+}
+.search-box:focus { outline: none; border-color: var(--accent); }
+
+.section-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0 16px;
+}
+.section-divider span {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.info-box {
+  background: rgba(240,192,64,.07);
+  border: 1px solid rgba(240,192,64,.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: .85rem;
+  color: #d4b840;
+  line-height: 1.6;
+}
+
+.stars { color: var(--accent2); font-size: .8rem; }
+
+/* Tabs within a tab */
+.sub-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.sub-tab-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: .83rem;
+  transition: all .2s;
+}
+.sub-tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+.sub-tab-content { display: none; }
+.sub-tab-content.active { display: block; }
+
+/* Feedback */
+.answer-feedback {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: .875rem;
+  line-height: 1.6;
+  display: none;
+}
+.answer-feedback.show { display: block; }
+.feedback-correct { background: rgba(90,224,160,.1); border: 1px solid rgba(90,224,160,.3); color: var(--accent4); }
+.feedback-info { background: rgba(90,156,240,.1); border: 1px solid rgba(90,156,240,.3); color: var(--accent3); }
+
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 16px; padding-top: 60px; max-width: 100vw; }
+  .menu-toggle { display: block; }
+  .journal-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.6); z-index: 99;
+}
+.overlay.show { display: block; }
+
+/* Delete btn */
+.btn-icon {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 4px 6px; border-radius: 6px;
+  transition: all .2s; font-size: .85rem;
+}
+.btn-icon:hover { color: var(--accent2); background: rgba(224,90,90,.1); }
+
+/* stats row */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+.stat-card .val {
+  font-family: var(--font-head);
+  font-size: 2rem; font-weight: 800;
+}
+.stat-card .lbl { font-size: .72rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 600; margin-right: 4px; }
+.tag-pl { background: rgba(240,192,64,.2); color: var(--accent); }
+.tag-en { background: rgba(90,156,240,.2); color: var(--accent3); }
+.tag-mat { background: rgba(90,224,160,.2); color: var(--accent4); }
+.tag-fiz { background: rgba(180,90,240,.2); color: #b45af0; }
+.tag-inf { background: rgba(224,90,90,.2); color: var(--accent2); }
+.tag-all { background: rgba(150,150,150,.2); color: var(--muted); }
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h1>MaturaMaster</h1>
+    <span>Przygotowanie do matury 2026</span>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Główne</div>
+    <button class="nav-btn active" onclick="showTab('home')" data-tab="home">
+      <span class="icon">🏠</span> Strona główna
+    </button>
+
+    <div class="nav-section">Język Polski</div>
+    <button class="nav-btn" onclick="showTab('pl-jawne')" data-tab="pl-jawne">
+      <span class="icon">📜</span> Pytania jawne CKE
+    </button>
+    <button class="nav-btn" onclick="showTab('pl-quiz')" data-tab="pl-quiz">
+      <span class="icon">📝</span> Quiz – Polski
+    </button>
+    <button class="nav-btn" onclick="showTab('pl-fiszki')" data-tab="pl-fiszki">
+      <span class="icon">🃏</span> Fiszki – Lektury
+    </button>
+    <button class="nav-btn" onclick="showTab('pl-egzamin')" data-tab="pl-egzamin">
+      <span class="icon">🎓</span> Egzamin próbny PL
+    </button>
+
+    <div class="nav-section">Inne przedmioty</div>
+    <button class="nav-btn" onclick="showTab('en')" data-tab="en">
+      <span class="icon">🇬🇧</span> Angielski
+    </button>
+    <button class="nav-btn" onclick="showTab('mat')" data-tab="mat">
+      <span class="icon">📐</span> Matematyka
+    </button>
+    <button class="nav-btn" onclick="showTab('inf')" data-tab="inf">
+      <span class="icon">💻</span> Informatyka
+    </button>
+    <button class="nav-btn" onclick="showTab('fiz')" data-tab="fiz">
+      <span class="icon">⚛️</span> Fizyka
+    </button>
+
+    <div class="nav-section">Planowanie</div>
+    <button class="nav-btn" onclick="showTab('journal')" data-tab="journal">
+      <span class="icon">📅</span> Dziennik projektu
+    </button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- HOME -->
+<div class="tab active" id="tab-home">
+  <div class="page-header">
+    <h2>Witaj w MaturaMaster 🎓</h2>
+    <p>Kompleksowe przygotowanie do matury 2026 – pytania jawne CKE, quizy, fiszki i dziennik nauki.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="val" style="color:var(--accent)">76</div>
+      <div class="lbl">Pytań jawnych CKE</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" style="color:var(--accent3)">5</div>
+      <div class="lbl">Przedmiotów</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" style="color:var(--accent4)" id="home-tasks-done">0</div>
+      <div class="lbl">Zadań ukończonych</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" style="color:var(--accent2)" id="home-tasks-all">0</div>
+      <div class="lbl">Zadań łącznie</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔥 Najważniejsze tematy – analiza CKE</h3>
+    <p style="font-size:.87rem;color:var(--muted);margin-bottom:14px">Na podstawie analizy 76 pytań jawnych – tematy które pojawiają się najczęściej i są kluczowe:</p>
+
+    <div class="info-box">
+      <strong>Priorytet WYSOKI</strong> – tematy powtarzające się w wielu lekturach:<br>
+      • <strong>Wolność i zniewolenie</strong> – Dziady III, Rok 1984, Inny świat, Antygona<br>
+      • <strong>Wina i kara / odpowiedzialność moralna</strong> – Makbet, Zbrodnia i kara, Mitologia<br>
+      • <strong>Poświęcenie i wartości wyższe</strong> – Mitologia, Zbrodnia i kara, Dżuma<br>
+      • <strong>Człowiek wobec systemu totalitarnego</strong> – Rok 1984, Inny świat, Proszę państwa do gazu<br>
+      • <strong>Przemiana bohatera</strong> – Zbrodnia i kara, Przedwiośnie, Wesele<br>
+      • <strong>Mesjanizm i postawy patriotyczne</strong> – Dziady III, Wesele, Potop
+    </div>
+
+    <p style="font-size:.87rem;color:var(--muted)">💡 Ucząc się tych tematów, będziesz przygotowany na pytania dotyczące różnych lektur – bo kontekst może być z dowolnego dzieła!</p>
+  </div>
+
+  <div class="card">
+    <h3>📚 Lektury wg liczby pytań (od największej)</h3>
+    <div style="display:grid;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Dziady cz. III (Mickiewicz)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:100%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">9</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Zbrodnia i kara (Dostojewski)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:56%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">5</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Lalka (Prus)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:67%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">6</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Przedwiośnie (Żeromski)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:67%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">6</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Makbet (Szekspir)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:33%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">3</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Wesele (Wyspiański)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:56%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">5</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Dżuma (Camus)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:44%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">4</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:.8rem;min-width:200px;color:var(--text)">Rok 1984 (Orwell)</span>
+        <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar-fill" style="width:44%"></div></div>
+        <span style="color:var(--accent);font-weight:700;font-size:.8rem;min-width:20px">4</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Szybki start – plan nauki</h3>
+    <div style="display:grid;gap:8px;font-size:.87rem">
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--accent);font-weight:700;min-width:80px">Tydzień 1-2</span>
+        <span>Dziady cz. III, Makbet, Antygona – lektury z największą liczbą kontekstów i pytań o wolność/władzę</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--accent);font-weight:700;min-width:80px">Tydzień 3-4</span>
+        <span>Zbrodnia i kara, Lalka – rozbudowane psychologicznie, wiele możliwych tematów</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--accent);font-weight:700;min-width:80px">Tydzień 5-6</span>
+        <span>Rok 1984, Wesele, Przedwiośnie, Dżuma</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0">
+        <span style="color:var(--accent);font-weight:700;min-width:80px">Powtórka</span>
+        <span>Pozostałe lektury + ćwiczenie formułowania odpowiedzi (2 min mówienia!)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PL JAWNE -->
+<div class="tab" id="tab-pl-jawne">
+  <div class="page-header">
+    <h2>Pytania jawne CKE 2026–2028</h2>
+    <p>Kompletna lista 76 pytań jawnych z komunikatu CKE z 30.08.2024 r. Czerwone numery = tematy PRIORYTETOWE.</p>
+  </div>
+
+  <div class="info-box">
+    🎯 <strong>Jak się przygotować?</strong> Na maturze ustnej losuje się jedno pytanie z tej listy. Masz 15 minut na przygotowanie, a następnie 15 minut wypowiedzi. Kliknij pytanie, żeby zobaczyć wzorcową odpowiedź i wskazówki.
+  </div>
+
+  <input type="text" class="search-box" id="jawne-search" placeholder="🔍 Szukaj pytania lub lektury..." onkeyup="filterJawne()">
+
+  <div id="jawne-list">
+  <!-- Generated by JS -->
+  </div>
+</div>
+
+<!-- PL QUIZ -->
+<div class="tab" id="tab-pl-quiz">
+  <div class="page-header">
+    <h2>Quiz – Język Polski</h2>
+    <p>Sprawdź swoją wiedzę z zakresu lektur i teorii literatury.</p>
+  </div>
+  <div class="quiz-container" id="pl-quiz-container"></div>
+</div>
+
+<!-- PL FISZKI -->
+<div class="tab" id="tab-pl-fiszki">
+  <div class="page-header">
+    <h2>Fiszki – Lektury i pojęcia</h2>
+    <p>Kliknij kartę, żeby odwrócić i zobaczyć odpowiedź.</p>
+  </div>
+  <div class="flashcard-container" id="pl-fc-container">
+    <div class="flashcard-wrap" onclick="flipCard('pl')">
+      <div class="flashcard" id="pl-card">
+        <div class="flashcard-front">
+          <div class="label">TERMIN / PYTANIE</div>
+          <div class="term" id="pl-fc-front">Ładowanie...</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="def" id="pl-fc-back">...</div>
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="prevCard('pl')">← Poprzednia</button>
+      <span class="fc-counter" id="pl-fc-counter">1 / 1</span>
+      <button class="btn btn-secondary" onclick="nextCard('pl')">Następna →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PL EGZAMIN -->
+<div class="tab" id="tab-pl-egzamin">
+  <div class="page-header">
+    <h2>Egzamin próbny – Język Polski</h2>
+    <p>10 pytań różnych typów. Maksymalnie 10 punktów.</p>
+  </div>
+  <div class="quiz-container" id="pl-exam-container"></div>
+</div>
+
+<!-- ANGIELSKI -->
+<div class="tab" id="tab-en">
+  <div class="page-header">
+    <h2>Język Angielski – Matura rozszerzona</h2>
+  </div>
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="showSubTab('en','ustna')">🗣️ Matura ustna</button>
+    <button class="sub-tab-btn" onclick="showSubTab('en','pisemna')">✍️ Matura pisemna</button>
+    <button class="sub-tab-btn" onclick="showSubTab('en','quiz')">📝 Quiz</button>
+    <button class="sub-tab-btn" onclick="showSubTab('en','fiszki')">🃏 Fiszki</button>
+  </div>
+
+  <div class="sub-tab-content active" id="en-sub-ustna">
+    <div class="card">
+      <h3>🎲 Losowanie pytania do rozmowy</h3>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px">Naciśnij przycisk, żeby wylosować pytanie. Po chwili kliknij "Pokaż odpowiedź wzorcową".</p>
+      <div id="en-random-q" style="font-size:1.05rem;font-family:var(--font-head);margin-bottom:16px;padding:16px;background:var(--surface2);border-radius:10px;line-height:1.5">
+        Naciśnij przycisk, żeby wylosować pytanie...
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="randomEngQ()">🎲 Losuj pytanie</button>
+        <button class="btn btn-secondary" onclick="showEngAnswer()">👁️ Pokaż odpowiedź</button>
+      </div>
+      <div class="answer-feedback feedback-info" id="en-answer-box"></div>
+    </div>
+
+    <div class="card">
+      <h3>🖼️ Opis ilustracji – schemat odpowiedzi</h3>
+      <div style="font-size:.87rem;line-height:1.8;color:#c8ccd8">
+        <p><strong style="color:var(--accent)">Krok 1 – Opis ogólny (1-2 zdania):</strong><br>
+        "The photo/picture shows... In the foreground/background I can see..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Krok 2 – Szczegóły (3-4 zdania):</strong><br>
+        "There are... who appear to be... The atmosphere seems..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Krok 3 – Interpretacja (1-2 zdania):</strong><br>
+        "This picture might illustrate... It could be related to..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Krok 4 – Pytania (odpowiedź po 1-2 zdania każde):</strong><br>
+        Uważnie słuchaj i odpowiadaj bezpośrednio na pytanie egzaminatora.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💬 Przydatne zwroty – matura ustna</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:.83rem">
+        <div>
+          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Wyrażanie opinii</div>
+          <div style="color:#c8ccd8;line-height:1.9">In my opinion...<br>I strongly believe that...<br>From my perspective...<br>As far as I'm concerned...<br>It seems to me that...</div>
+        </div>
+        <div>
+          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Wyrażanie zgody/niezgody</div>
+          <div style="color:#c8ccd8;line-height:1.9">I completely agree with...<br>That's a good point, however...<br>I see your point, but...<br>I beg to differ...<br>On the other hand...</div>
+        </div>
+        <div>
+          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Czas do myślenia</div>
+          <div style="color:#c8ccd8;line-height:1.9">That's an interesting question...<br>Let me think about this...<br>Well, I'd say...<br>If I'm not mistaken...</div>
+        </div>
+        <div>
+          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Podsumowanie</div>
+          <div style="color:#c8ccd8;line-height:1.9">To sum up...<br>In conclusion...<br>All things considered...<br>Taking everything into account...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-tab-content" id="en-sub-pisemna">
+    <div class="card">
+      <h3>📄 Rozprawka „For and Against" – schemat</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        <p><strong style="color:var(--accent)">Wstęp:</strong> Introduce the topic without giving your opinion. Use: "Nowadays...", "There is no doubt that...", "The issue of... has become increasingly important..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Akapit 1 – ZA:</strong> "One advantage of... is that... Furthermore,... In addition to this,..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Akapit 2 – PRZECIW:</strong> "However, there are also drawbacks... On the other hand,... A major disadvantage is..."</p>
+        <p style="margin-top:10px"><strong style="color:var(--accent)">Zakończenie:</strong> "To conclude, while... has its advantages, it also... Ultimately, it depends on..."</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>✉️ List formalny – schemat</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        <p><strong style="color:var(--accent)">Nagłówek:</strong> Dear Sir/Madam, / Dear Mr/Ms [Name],</p>
+        <p><strong style="color:var(--accent)">Wstęp:</strong> "I am writing to... / I am writing with regard to... / I would like to..."</p>
+        <p><strong style="color:var(--accent)">Rozwinięcie:</strong> Jasne akapity, każdy z jednym punktem. Używaj "Furthermore", "Moreover", "In addition".</p>
+        <p><strong style="color:var(--accent)">Zakończenie:</strong> "I look forward to hearing from you. / I would appreciate a prompt response."</p>
+        <p><strong style="color:var(--accent)">Podpis:</strong> Yours faithfully, (Sir/Madam) / Yours sincerely, (imię)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-tab-content" id="en-sub-quiz">
+    <div class="quiz-container" id="en-quiz-container"></div>
+  </div>
+
+  <div class="sub-tab-content" id="en-sub-fiszki">
+    <div class="flashcard-container">
+      <div class="flashcard-wrap" onclick="flipCard('en')">
+        <div class="flashcard" id="en-card">
+          <div class="flashcard-front">
+            <div class="label">VOCABULARY</div>
+            <div class="term" id="en-fc-front">...</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="def" id="en-fc-back">...</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="btn btn-secondary" onclick="prevCard('en')">← Poprzednia</button>
+        <span class="fc-counter" id="en-fc-counter">1 / 1</span>
+        <button class="btn btn-secondary" onclick="nextCard('en')">Następna →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MATEMATYKA -->
+<div class="tab" id="tab-mat">
+  <div class="page-header">
+    <h2>Matematyka – Matura rozszerzona</h2>
+  </div>
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="showSubTab('mat','teoria')">📚 Teoria i wzory</button>
+    <button class="sub-tab-btn" onclick="showSubTab('mat','quiz')">📝 Quiz</button>
+    <button class="sub-tab-btn" onclick="showSubTab('mat','fiszki')">🃏 Fiszki</button>
+    <button class="sub-tab-btn" onclick="showSubTab('mat','egzamin')">🎓 Egzamin</button>
+  </div>
+
+  <div class="sub-tab-content active" id="mat-sub-teoria">
+    <div class="card">
+      <h3>∑ Ciągi</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><strong style="color:var(--accent4)">Arytmetyczny:</strong><br>
+          aₙ = a₁ + (n-1)d<br>
+          Sₙ = n(a₁+aₙ)/2
+        </div>
+        <div><strong style="color:var(--accent4)">Geometryczny:</strong><br>
+          aₙ = a₁ · qⁿ⁻¹<br>
+          Sₙ = a₁(qⁿ-1)/(q-1)
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📉 Rachunek różniczkowy</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        <strong style="color:var(--accent4)">Kluczowe pochodne:</strong><br>
+        (xⁿ)' = n·xⁿ⁻¹ | (sin x)' = cos x | (cos x)' = -sin x | (eˣ)' = eˣ | (ln x)' = 1/x<br><br>
+        <strong style="color:var(--accent4)">Zastosowania:</strong> Wyznaczanie ekstremalnych → f'(x)=0; sprawdzenie znaku f'(x) po obu stronach. Monotoniczność: f'(x)>0 → rosnąca; f'(x)&lt;0 → malejąca.
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔺 Geometria analityczna</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        Prosta: y = ax + b | Nachylenie: a = (y₂-y₁)/(x₂-x₁)<br>
+        Okrąg: (x-p)² + (y-q)² = r²<br>
+        Odległość punktów: d = √[(x₂-x₁)²+(y₂-y₁)²]<br>
+        Równoległość: a₁=a₂ | Prostopadłość: a₁·a₂=-1
+      </div>
+    </div>
+    <div class="card">
+      <h3>📦 Stereometria – kluczowe wzory</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><strong style="color:var(--accent4)">Graniastosłup:</strong><br>V = Pp · h<br>Pp = pole podstawy</div>
+        <div><strong style="color:var(--accent4)">Ostrosłup:</strong><br>V = (1/3) · Pp · h</div>
+        <div><strong style="color:var(--accent4)">Walec:</strong><br>V = πr²h<br>Pc = 2πrh + 2πr²</div>
+        <div><strong style="color:var(--accent4)">Kula:</strong><br>V = (4/3)πr³<br>P = 4πr²</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-tab-content" id="mat-sub-quiz">
+    <div class="quiz-container" id="mat-quiz-container"></div>
+  </div>
+  <div class="sub-tab-content" id="mat-sub-fiszki">
+    <div class="flashcard-container">
+      <div class="flashcard-wrap" onclick="flipCard('mat')">
+        <div class="flashcard" id="mat-card">
+          <div class="flashcard-front">
+            <div class="label">WZÓR / POJĘCIE</div>
+            <div class="term" id="mat-fc-front">...</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="def" id="mat-fc-back">...</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="btn btn-secondary" onclick="prevCard('mat')">← Poprzednia</button>
+        <span class="fc-counter" id="mat-fc-counter">1 / 1</span>
+        <button class="btn btn-secondary" onclick="nextCard('mat')">Następna →</button>
+      </div>
+    </div>
+  </div>
+  <div class="sub-tab-content" id="mat-sub-egzamin">
+    <div class="quiz-container" id="mat-exam-container"></div>
+  </div>
+</div>
+
+<!-- INFORMATYKA -->
+<div class="tab" id="tab-inf">
+  <div class="page-header">
+    <h2>Informatyka – Matura rozszerzona</h2>
+  </div>
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="showSubTab('inf','teoria')">📚 Teoria</button>
+    <button class="sub-tab-btn" onclick="showSubTab('inf','quiz')">📝 Quiz</button>
+    <button class="sub-tab-btn" onclick="showSubTab('inf','fiszki')">🃏 Fiszki</button>
+  </div>
+  <div class="sub-tab-content active" id="inf-sub-teoria">
+    <div class="card">
+      <h3>⚙️ Złożoność obliczeniowa</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        <strong style="color:var(--accent2)">O(1)</strong> – stała (dostęp do elementu tablicy)<br>
+        <strong style="color:var(--accent2)">O(log n)</strong> – logarytmiczna (wyszukiwanie binarne)<br>
+        <strong style="color:var(--accent2)">O(n)</strong> – liniowa (przeszukiwanie liniowe)<br>
+        <strong style="color:var(--accent2)">O(n log n)</strong> – sortowanie przez scalanie (merge sort), quicksort śr.<br>
+        <strong style="color:var(--accent2)">O(n²)</strong> – sortowanie bąbelkowe, przez wstawianie, wybieranie<br>
+        <strong style="color:var(--accent2)">O(2ⁿ)</strong> – wykładnicza (generowanie podzbiorów)
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔢 Algorytmy sortowania</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        <strong style="color:var(--accent2)">Bubble sort:</strong> Porównuj sąsiednie elementy, zamieniaj jeśli w złej kolejności. O(n²).<br>
+        <strong style="color:var(--accent2)">Merge sort:</strong> Dziel na połowy, sortuj rekurencyjnie, scalaj. O(n log n). Stabilny.<br>
+        <strong style="color:var(--accent2)">Quick sort:</strong> Wybierz pivot, podziel, sortuj podtablice. Śr. O(n log n), najgorszy O(n²).<br>
+        <strong style="color:var(--accent2)">Insertion sort:</strong> Wstawiaj elementy na właściwą pozycję. O(n²), dobry dla małych n.
+      </div>
+    </div>
+    <div class="card">
+      <h3>🗄️ Podstawy SQL</h3>
+      <div style="font-size:.87rem;font-family:monospace;line-height:2;color:#c8ccd8">
+        <span style="color:var(--accent2)">SELECT</span> kolumna <span style="color:var(--accent2)">FROM</span> tabela <span style="color:var(--accent2)">WHERE</span> warunek;<br>
+        <span style="color:var(--accent2)">SELECT</span> * <span style="color:var(--accent2)">FROM</span> t <span style="color:var(--accent2)">ORDER BY</span> kolumna <span style="color:var(--accent2)">DESC</span>;<br>
+        <span style="color:var(--accent2)">SELECT</span> k, <span style="color:var(--accent2)">COUNT</span>(*) <span style="color:var(--accent2)">FROM</span> t <span style="color:var(--accent2)">GROUP BY</span> k;<br>
+        <span style="color:var(--accent2)">SELECT</span> a.*, b.* <span style="color:var(--accent2)">FROM</span> a <span style="color:var(--accent2)">JOIN</span> b <span style="color:var(--accent2)">ON</span> a.id=b.aid;
+      </div>
+    </div>
+  </div>
+  <div class="sub-tab-content" id="inf-sub-quiz">
+    <div class="quiz-container" id="inf-quiz-container"></div>
+  </div>
+  <div class="sub-tab-content" id="inf-sub-fiszki">
+    <div class="flashcard-container">
+      <div class="flashcard-wrap" onclick="flipCard('inf')">
+        <div class="flashcard" id="inf-card">
+          <div class="flashcard-front"><div class="label">POJĘCIE</div><div class="term" id="inf-fc-front">...</div></div>
+          <div class="flashcard-back"><div class="def" id="inf-fc-back">...</div></div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="btn btn-secondary" onclick="prevCard('inf')">← Poprzednia</button>
+        <span class="fc-counter" id="inf-fc-counter">1 / 1</span>
+        <button class="btn btn-secondary" onclick="nextCard('inf')">Następna →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIZYKA -->
+<div class="tab" id="tab-fiz">
+  <div class="page-header">
+    <h2>Fizyka – Matura rozszerzona</h2>
+  </div>
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="showSubTab('fiz','teoria')">📚 Wzory i prawa</button>
+    <button class="sub-tab-btn" onclick="showSubTab('fiz','quiz')">📝 Quiz</button>
+    <button class="sub-tab-btn" onclick="showSubTab('fiz','fiszki')">🃏 Fiszki</button>
+  </div>
+  <div class="sub-tab-content active" id="fiz-sub-teoria">
+    <div class="card">
+      <h3>⚡ Mechanika</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        F = ma | p = mv | E_k = ½mv² | E_p = mgh<br>
+        Zasada zachowania energii: E_k + E_p = const (bez oporów)<br>
+        Zasada zachowania pędu: p₁ + p₂ = p₁' + p₂'<br>
+        Ruch jednostajny: s = vt | Ruch jednostajnie przyspieszony: s = v₀t + ½at²
+      </div>
+    </div>
+    <div class="card">
+      <h3>🌡️ Termodynamika</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        I zasada: ΔU = Q - W<br>
+        Gaz doskonały: pV = nRT<br>
+        Przemiany: izotermiczna (T=const), izochoryczna (V=const), izobaryczna (p=const)<br>
+        Sprawność silnika: η = W/Q₁ = 1 - T₂/T₁
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔌 Elektryczność</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        Prawo Ohma: U = I·R<br>
+        Moc: P = UI = I²R = U²/R<br>
+        Szeregowo: R = R₁+R₂+... | Równolegle: 1/R = 1/R₁+1/R₂+...<br>
+        Siła na ładunek: F = qE | Pole kuliste: E = kq/r²
+      </div>
+    </div>
+    <div class="card">
+      <h3>☢️ Fizyka jądrowa</h3>
+      <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
+        Prawo rozpadu: N(t) = N₀ · (½)^(t/T½)<br>
+        Energia: E = mc² (defekt masy)<br>
+        Rozpad α: ²₁X → ²⁻⁴_Z₋₂Y + ⁴₂He<br>
+        Rozpad β⁻: neutron → proton + elektron + antyneutrino
+      </div>
+    </div>
+  </div>
+  <div class="sub-tab-content" id="fiz-sub-quiz">
+    <div class="quiz-container" id="fiz-quiz-container"></div>
+  </div>
+  <div class="sub-tab-content" id="fiz-sub-fiszki">
+    <div class="flashcard-container">
+      <div class="flashcard-wrap" onclick="flipCard('fiz')">
+        <div class="flashcard" id="fiz-card">
+          <div class="flashcard-front"><div class="label">PRAWO / WZÓR</div><div class="term" id="fiz-fc-front">...</div></div>
+          <div class="flashcard-back"><div class="def" id="fiz-fc-back">...</div></div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="btn btn-secondary" onclick="prevCard('fiz')">← Poprzednia</button>
+        <span class="fc-counter" id="fiz-fc-counter">1 / 1</span>
+        <button class="btn btn-secondary" onclick="nextCard('fiz')">Następna →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOURNAL -->
+<div class="tab" id="tab-journal">
+  <div class="page-header">
+    <h2>📅 Dziennik projektu maturalnego</h2>
+    <p>Planuj naukę, śledź postępy. Dane zapisywane w localStorage.</p>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0">Postęp ogólny</h3>
+      <span id="journal-pct" style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--accent)">0%</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="journal-bar" style="width:0%"></div></div>
+    <p id="journal-stats" style="font-size:.8rem;color:var(--muted);margin-top:8px">0 z 0 zadań ukończonych</p>
+  </div>
+
+  <div class="journal-grid">
+    <div>
+      <div class="card">
+        <h3>➕ Dodaj zadanie</h3>
+        <div style="margin-bottom:10px">
+          <label class="form-label">Opis zadania</label>
+          <input type="text" class="form-input" id="j-desc" placeholder="np. Przerobić Dziady III">
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Przedmiot</label>
+            <select class="form-select" id="j-sub">
+              <option value="Polski">🇵🇱 Polski</option>
+              <option value="Angielski">🇬🇧 Angielski</option>
+              <option value="Matematyka">📐 Matematyka</option>
+              <option value="Informatyka">💻 Informatyka</option>
+              <option value="Fizyka">⚛️ Fizyka</option>
+              <option value="Ogólne">📌 Ogólne</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Priorytet</label>
+            <select class="form-select" id="j-pri">
+              <option value="wysoki">🔴 Wysoki</option>
+              <option value="sredni">🟡 Średni</option>
+              <option value="niski">🟢 Niski</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label">Data</label>
+          <input type="date" class="form-input" id="j-date">
+        </div>
+        <button class="btn btn-primary" onclick="addTask()">Dodaj zadanie</button>
+      </div>
+
+      <div class="card">
+        <h3>📝 Notatki</h3>
+        <textarea class="notes-area" id="j-notes" placeholder="Tu możesz pisać notatki... Zapisują się automatycznie." oninput="saveNotes()"></textarea>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>📋 Lista zadań</h3>
+        <div id="task-list">
+          <p style="color:var(--muted);font-size:.85rem">Brak zadań. Dodaj pierwsze!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ================ DATA ================
+
+const jawneData = [
+  // Biblia
+  { num:1, book:"Biblia (Księga Hioba)", q:"Motyw cierpienia niezawinionego. Omów zagadnienie na podstawie znanych Ci fragmentów Księgi Hioba. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Hiob jest biblijnym wzorcem człowieka doświadczonego cierpieniem bez winy. Bóg pozwala szatanowi wypróbować jego wiarę – Hiob traci majątek, dzieci i zdrowie. Cierpienie niezawinione jest jednym z najtrudniejszych problemów filozofii i teologii (theodiceum). Hiob nie przyjmuje obłudnych argumentów przyjaciół (że cierpi za grzechy), lecz odwołuje się wprost do Boga. Kontekstem może być postać Chrystusa (cierpienie niewiniętego Syna Bożego), Camus w 'Dżumie' (absurd cierpienia dzieci), czy Job w literaturze nowoczesnej. W odpowiedzi maturalnej warto wskazać: 1) postawę Hioba wobec cierpienia, 2) pytanie o Bożą sprawiedliwość, 3) wybrany kontekst kulturowy lub literacki."},
+  { num:2, book:"Biblia (Księga Koheleta)", q:"Człowiek wobec niestałości świata. Omów zagadnienie na podstawie znanych Ci fragmentów Księgi Koheleta. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Kohelet (Eklezjastes) to filozoficzna księga o przemijaniu: 'Vanitas vanitatum et omnia vanitas' – wszystko jest marnością. Świat jest niestały, ludzkie osiągnięcia przemijają, a czas jest kołem. Autor radzi cieszyć się chwilą (carpe diem). Kontekstem może być horacjańskie 'carpe diem', Kochanowskie treny o przemijaniu, lub współczesna refleksja egzystencjalna. Kluczowe motywy: vanitas, czas jako koło, bezużyteczność bogactwa i mądrości wobec śmierci."},
+  { num:3, book:"Biblia (Apokalipsa św. Jana)", q:"Wizja końca świata. Omów zagadnienie na podstawie znanych Ci fragmentów Apokalipsy św. Jana. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Apokalipsa to tekst pełen symboliki: czterej jeźdźcy, bestia 666, Nowe Jeruzalem. Wizja końca świata ma wymiar eschatologiczny – Bóg zwycięża zło, następuje sąd ostateczny i nagroda dla sprawiedliwych. Kontekstem może być 'Rok 1984' Orwella (dystopijny koniec cywilizacji), malarstwo Dürera (Czterej jeźdźcy), lub 'Wesele' Wyspiańskiego (wizyjność). Warto omówić symbolikę i wpływ Apokalipsy na kulturę."},
+  // Parandowski
+  { num:4, book:"Jan Parandowski, Mitologia (cz. I Grecja)", q:"Poświęcenie się w imię wyższych wartości. Omów zagadnienie na podstawie Mitologii (cz. I Grecja) Jana Parandowskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Mitologia grecka pełna jest bohaterów poświęcających się dla wyższych wartości: Prometeusz oddaje ogień ludzkości i znosi wieczną karę; Achilles świadomie wybiera krótkie lecz chwalebne życie; Orfeusz schodzi do Hadesu dla miłości. Poświęcenie łączy się z heroizmem, lojalnością i miłością. Kontekstem mogą być Dziady III (Konrad, Ksiądz Piotr), Makbet (kontrast – bohater porzuca wartości dla władzy), lub współczesne przykłady poświęcenia."},
+  { num:5, book:"Jan Parandowski, Mitologia (cz. I Grecja)", q:"Problematyka winy i kary. Omów zagadnienie na podstawie Mitologii (cz. I Grecja) Jana Parandowskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"W mitologii greckiej wina i kara są nierozłączne – hybris (pycha) zawsze spotyka się z nemezis (karą boską). Syzyf za oszustwo bogów toczy głaz wiecznie; Tantalos za pycha i okrucieństwo cierpi wieczny głód i pragnienie; Edyp nieświadomie łamie boskie prawa i zostaje ukarany. Bogowie strzegą porządku kosmicznego (dike). Kontekstem jest Makbet (wina moralna i kara), Zbrodnia i kara Dostojewskiego, Antygona. Kluczowe pojęcia: hybris, nemezis, fatum, dike."},
+  { num:6, book:"Jan Parandowski, Mitologia (cz. I Grecja)", q:"Miłość silniejsza niż śmierć. Omów zagadnienie na podstawie Mitologii (cz. I Grecja) Jana Parandowskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Mit o Orfeuszu i Eurydyce jest najpiękniejszym przykładem miłości silniejszej niż śmierć – Orfeusz schodzi do Hadesu, by odzyskać ukochaną. Pyramos i Tyzbe, Hero i Leander – miłość pokonuje granice świata żywych. Jednak mit uczy też, że nadmierna miłość (nieufność Orfeusza) prowadzi do tragicznego końca. Kontekstem jest 'Lalka' Prusa (miłość jako siła destrukcyjna), Romeo i Julia, lub współczesna literatura romantyczna."},
+  // Homer
+  { num:7, book:"Homer, Iliada (fragmenty)", q:"Heroizm jako postawa człowieka w zmaganiu się z losem. Omów zagadnienie na podstawie znanych Ci fragmentów Iliady Homera. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Achilles jest archetypem herosa – wybiera krótkie lecz chwalebne życie zamiast długiego i anonimowego. Hektor walczy dla Troi, rodziny i honoru, wiedząc o nieuchronności śmierci. Heroizm homerowy to połączenie odwagi, dumy (arete) i lojalności. Los (fatum) jest nieodwracalny, lecz bohater może decydować o sposobie jego przyjęcia. Kontekstem jest Antygona (heroizm wobec władzy), Potop Sienkiewicza (Kmicic), lub Dziady III (Konrad jako romantyczny bohater). Warto wskazać różnicę między heroizmem antycznym a romantycznym."},
+  // Sofokles
+  { num:8, book:"Sofokles, Antygona", q:"Prawa boskie a prawa ludzkie. Omów zagadnienie na podstawie Antygony Sofoklesa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Konflikt Antygony i Kreona to spór między prawem boskim (pochowanie brata) a prawem ludzkim (edykt Kreona). Antygona reprezentuje wieczny porządek moralny (physis), Kreon – rozum polityczny (nomos). Sofokles nie rozstrzyga jednoznacznie – oboje płacą cenę za swoją rację. Ten konflikt jest ponadczasowy: sumienie kontra prawo stanowione, jednostka kontra państwo. Kontekstem jest Rok 1984 (prawo totalitarne vs. ludzka godność), Biblia (prawa Boże vs. cesarskie), lub współczesne dylematy bioetyczne."},
+  { num:9, book:"Sofokles, Antygona", q:"Człowiek wobec przeznaczenia. Omów zagadnienie na podstawie Antygony Sofoklesa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"W tragedii greckiej fatum jest nieodwracalne – los rodu Edypa jest przeklęty. Antygona świadomie wybiera śmierć, wypełniając swoje przeznaczenie. Tragizm polega na tym, że każdy wybór prowadzi do klęski. Człowiek może jednak decydować, jak stawia czoła losowi – z godnością lub bez niej. Kontekstem jest Makbet (człowiek szuka własnego losu i ponosi klęskę), Dziady III, lub filozofia stoicka (amor fati)."},
+  // Lament
+  { num:10, book:"Lament świętokrzyski (fragmenty)", q:"Motyw cierpiącej matki. Omów zagadnienie na podstawie znanych Ci fragmentów Lamentu świętokrzyskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Lament świętokrzyski to średniowieczna plankt (płacz) Marii pod krzyżem. Maryja współcierpi z Synem – to motyw compassio (współcierpienia). Utwór humanizuje postać Matki Boskiej – jest nie tylko Królową, ale przede wszystkim matką. Motyw cierpiącej matki pojawia się w kulturze powszechnej: Niobe z mitologii, Hekuba z Iliady, współczesne matki ofiarne. Kontekstem może być Skąpiec Moliera (relacje rodzinne) lub Zbrodnia i kara (matka Raskolnikowa)."},
+  // Rozmowa Mistrza
+  { num:11, book:"Rozmowa Mistrza Polikarpa ze Śmiercią (fragmenty)", q:"Motyw tańca śmierci. Omów zagadnienie na podstawie znanych Ci fragmentów Rozmowy Mistrza Polikarpa ze Śmiercią. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"low",
+    ans:"Danse macabre (taniec śmierci) to średniowieczny motyw – Śmierć zabiera wszystkich bez względu na stan, bogactwo i władzę. W Rozmowie Mistrza Polikarpa Śmierć jest opisana jako rozkładające się ciało – naturalistyczny opis podkreśla równość wobec śmierci. Motyw egalitaryzmu śmierci jest krytyką średniowiecznego hierarchicznego społeczeństwa. Kontekstem jest Wesele (chocholi taniec jako taniec śmierci narodu), współczesna kultura pop (Halloween), lub filozofia egzystencjalna."},
+  // Pieśń o Rolandzie
+  { num:12, book:"Pieśń o Rolandzie (fragmenty)", q:"Średniowieczny wzorzec rycerza. Omów zagadnienie na podstawie znanych Ci fragmentów Pieśni o Rolandzie. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Roland uosabia ideał rycerza feudalnego: lojalność wobec seniora (Karola Wielkiego), odwaga w walce, wiara chrześcijańska, honor. Odmawia wzywania pomocy z dumy – to tragiczna wada (hubris). Wzorzec rycerski łączy etykę feudalną z etyką chrześcijańską (miles christianus). Kontekstem jest Potop Sienkiewicza (Kmicic jako rycerz), Makbet (upadek ideałów rycerskich), lub współczesne kodeksy honorowe (sport, wojsko)."},
+  // Makbet
+  { num:13, book:"William Szekspir, Makbet", q:"Moralna odpowiedzialność za czyny. Omów zagadnienie na podstawie Makbeta Williama Szekspira. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Makbet ponosi pełną moralną odpowiedzialność za swoje czyny – mimo że przepowiednie wiedźm i namowy Lady Makbet go inspirują, wyboru dokonuje sam. Szekspir pokazuje mechanizm moralnej degradacji: jedno przestępstwo pociąga następne. Wyrzuty sumienia (wizja sztyletu, duch Banka) są karą wewnętrzną, zanim nadejdzie zewnętrzna. Odpowiedzialność moralna jest tematem filozofii od Arystotelesa po Kanta. Kontekstem jest Zbrodnia i kara (Raskolnikow), Hiob (cierpienie bez winy – kontrast), lub prawo karne."},
+  { num:14, book:"William Szekspir, Makbet", q:"Czy człowiek decyduje o własnym losie? Omów zagadnienie na podstawie Makbeta Williama Szekspira. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Makbet ilustruje napięcie między fatum a wolną wolą. Wiedźmy przepowiadają, ale nie nakazują. Makbet sam decyduje się na zabójstwo – przepowiednia jest jedynie wyzwalaczem jego ukrytych ambicji. Szekspir sugeruje, że los można kształtować, ale charakter jest przeznaczeniem. Kontrastem jest Antygona (fatum dominuje). Kontekstem filozoficznym jest determinizm vs. woluntaryzm. Warto wskazać moment decyzji Makbeta jako kluczowy dla odpowiedzi na pytanie."},
+  { num:15, book:"William Szekspir, Makbet", q:"Jaki wpływ na człowieka ma sprawowanie przez niego władzy? Omów zagadnienie na podstawie Makbeta Williama Szekspira. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Władza w Makbecie jest siłą korumpującą – bohater z dzielnego generała staje się tyranem. 'Władza deprawuje, władza absolutna deprawuje absolutnie' (Lord Acton). Makbet traci człowieczeństwo, przyjaźń, miłość żony i spokój sumienia. Lady Makbet popada w obłęd. Kontekstem jest Rok 1984 (mechanizmy władzy totalitarnej), Dziady III (carski aparat ucisku), lub historia (Stalin, Hitler). Warto omówić: ambicję, strach jako narzędzia władzy, izolację tyrana."},
+  // Skąpiec
+  { num:16, book:"Molier, Skąpiec", q:"Czy dobra materialne czynią człowieka szczęśliwym? Omów zagadnienie na podstawie Skąpca Moliera. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Harpagon, skąpiec Moliera, jest przykładem człowieka, dla którego pieniądze stały się obsesją niszczącą wszystkie relacje. Jego jedyne szczęście to posiadanie szkatuły ze złotem. Kiedy ją traci, jest zdolny do wszystkiego. Molier przez satyrę pokazuje, że dobra materialne bez miłości, przyjaźni i rodziny nie dają szczęścia. Kontekstem jest Lalka (Wokulski poświęca fortunę dla miłości), filozofia epikurejska (prawdziwe szczęście to ataraksja), lub współczesny konsumpcjonizm."},
+  { num:17, book:"Molier, Skąpiec", q:"Przyczyny nieporozumień między rodzicami a dziećmi. Omów zagadnienie na podstawie Skąpca Moliera. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"low",
+    ans:"Harpagon kontroluje życie dzieci (Kleant, Eliza), dyktując im wybory małżeńskie dla własnych interesów finansowych. Konflikt pokoleń wynika tu z różnych systemów wartości: ojciec ceni pieniądze, dzieci – miłość i wolność. Molier satyryzuje patriarchalną władzę ojca. Kontekstem jest Tango Mrożka (konflikt pokoleń o wartości), Wesele (różne wartości inteligencji i chłopów), lub psychologia rodzinna."},
+  // Krasicki
+  { num:18, book:"Ignacy Krasicki, wybrana satyra", q:"Wady ludzkie w krzywym zwierciadle satyry. Omów zagadnienie na podstawie znanej Ci satyry Ignacego Krasickiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Krasicki w satyrach (np. 'Żona modna', 'Pijaństwo', 'Do króla') śmieje się z wad polskiej szlachty: pijaństwo, rozrzutność, moda zamiast patriotyzmu, korupcja. Satyra jest narzędziem krytyki społecznej – 'śmiech jest lekarstwem' (Horacy: 'ridentem dicere verum'). Oświecenie posługuje się rozumem, by naprawić obyczaje. Kontekstem jest Wesele (krytyka inteligencji i szlachty), lub współczesna satyra polityczna (kabaret)."},
+  // Mickiewicz ballady
+  { num:19, book:"Adam Mickiewicz, Romantyczność oraz wybrane ballady", q:"Świat ducha a świat rozumu. Omów zagadnienie na podstawie Romantyczności Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"'Romantyczność' to manifest romantyzmu polskiego. Staruszek Starzec (Śniadecki) reprezentuje oświeceniowy rozum, Karusia – romantyczne czucie i wiarę. Mickiewicz staje po stronie Karusi: 'Czucie i wiara silniej mówi do mnie / Niż mędrca szkiełko i oko'. Romantyzm przeciwstawia intuicję, uczucie i wiarę – racjonalizmowi oświecenia. Kontekstem jest Dziady (świat duchów), Ferdydurke (sprzeciw wobec narzuconych schematów rozumu), lub filozofia Kanta (rzeczy same w sobie)."},
+  { num:20, book:"Adam Mickiewicz, Romantyczność oraz wybrane ballady", q:"Na czym polega ludowa sprawiedliwość? Omów zagadnienie na podstawie znanych Ci ballad Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"W balladach Mickiewicza (np. 'Lilie', 'Świtezianka', 'Świteź') ludowa sprawiedliwość objawia się przez ingerencję sił nadprzyrodzonych. Zbrodnia zawsze spotyka się z karą – duchy ofiar mszczą się na winowajcach. Moralna sprawiedliwość ma charakter ponadludzki, wynika z odwiecznego porządku. Lud jest depozytariuszem prawdziwej mądrości moralnej. Kontekstem jest Wesele (głos ludu), Mitologia (nemezis), lub prawo naturalne w filozofii."},
+  // Dziady III – 9 pytań (KLUCZOWE)
+  { num:21, book:"Adam Mickiewicz, Dziady część III", q:"Losy młodzieży polskiej pod zaborami. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Dziady III (1823) pokazują represje rosyjskie wobec polskiej młodzieży po powstaniu dekabrystów. Konrad, Rollison, Żegota i inni więźniowie to symboliczne pokolenie, które składa ofiarę z wolności dla ojczyzny. Scena Prologu, Widzenie ks. Piotra i wielka improwizacja ukazują dramat osobisty i narodowy. Kontekstem może być Inny Świat Herlinga (więzienie sowieckie), Rok 1984 (system totalitarny), lub historia zaborów."},
+  { num:22, book:"Adam Mickiewicz, Dziady część III", q:"Mesjanizm jako romantyczna idea poświęcenia. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Mesjanizm w Dziadach III to idea, że Polska jest 'Chrystusem narodów' – cierpi niewinnie, by przez swoje męczeństwo odkupić Europę i wyzwolić ją od tyranii. Widzenie ks. Piotra przedstawia alegorię Polski jako ukrzyżowanego Chrystusa. Konrad dąży do mesjanistycznej roli solo dla narodu (Wielka Improwizacja). Mesjanizm łączy religię z patriotyzmem romantycznym. Kontekstem jest Biblia (ofiara Chrystusa), lub krytyka mesjanizmu (Słowacki, Norwid)."},
+  { num:23, book:"Adam Mickiewicz, Dziady część III", q:"Postawy społeczeństwa polskiego wobec zaborcy. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Salon Warszawski w Dziadach III pokazuje zróżnicowane postawy wobec zaborcy: konformiści balują przy więzieniu pełnym patriotów, kolaboranci schlebiają Rosjanom, nieliczni zachowują godność. Mickiewicz ostro krytykuje klasę wyższą gotową poświęcić wartości dla wygody. Kontrast: cierpiący więźniowie vs. bawiący się arystokraci. Kontekstem jest Wesele (krytyka inteligencji), Przedwiośnie (postawy wobec niepodległości), lub historia II wojny."},
+  { num:24, book:"Adam Mickiewicz, Dziady część III", q:"Różne postawy człowieka wobec Boga. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Dziady III pokazują spektrum postaw wobec Boga: Konrad w Wielkiej Improwizacji buntuje się przeciw Bogu (bluźni, żąda 'rządu dusz'), Ks. Piotr kornie się uniża i w pokorze przyjmuje wizję, Ksiądz jest mediatorem. Bunt prometejski Konrada kontra chrześcijańska pokora Piotra. Mickiewicz sugeruje, że prawdziwą siłą jest pokora, a bunt kończy się klęską. Kontekstem jest Biblia (Hiob), lub filozofia egzystencjalna (Camus, Sartre)."},
+  { num:25, book:"Adam Mickiewicz, Dziady część III", q:"Jakie prawdy o człowieku ujawniają jego sny albo widzenia? Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Widzenie Senatora i Widzenie ks. Piotra pełnią funkcję profetyczną i psychologiczną. Senator śni o podłej naturze swojej służby władzy (wyrzuty sumienia). Ks. Piotr widzi przyszłość Polski w alegorycznym obrazie. Sny i widzenia w romantyzmie są oknem na prawdę metafizyczną, niedostępną rozumowi. Kontekstem jest Makbet (wizja sztyletu, duch Banka), psychologia głębi Junga (sny jako nieświadomość), lub Biblia."},
+  { num:26, book:"Adam Mickiewicz, Dziady część III", q:"W jakim celu twórca nawiązuje do motywów biblijnych? Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Mickiewicz używa biblizacji, by nadać losom Polaków wymiar sakralny i universal. Polska jako Chrystus, Konrad jako Adam/Prometeusz, Ks. Piotr jako prorok – to typologiczne paralelizmy. Biblia daje autorytety moralne i emocjonalne (patos). Intertekstualność wzmacnia przekaz patriotyczny. Kontekstem jest Wesele (symbolika biblijna), Lament świętokrzyski, lub funkcja mitu w literaturze (Eliade)."},
+  { num:27, book:"Adam Mickiewicz, Dziady część III", q:"Walka dobra ze złem o duszę ludzką. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Dziady III to dramat metafizyczny – walka aniołów i diabłów o duszę Konrada jest dosłowna. Bunt Konrada zbliża go do sfery zła (szatan mówi przez niego), lecz omdlenie i interwencja ks. Piotra ratują go. Dobro i zło walczą na dwóch poziomach: narodowym (Rosja vs. Polska) i duchowym. Kontekstem jest Makbet (dusza tyrana), Faust Goethego (pakt z diabłem), lub teologia chrześcijańska."},
+  { num:28, book:"Adam Mickiewicz, Dziady część III", q:"Czym dla człowieka może być wolność? Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Wolność w Dziadach III ma wiele wymiarów: polityczna (wyzwolenie spod zaboru), duchowa (bunt Konrada o 'rząd dusz'), moralna (wybór postawy wobec opresji). Więźniowie fizycznie zniewoleni zachowują wolność wewnętrzną. Konrad pragnie absolutnej wolności twórczej i politycznej. Paradoks: wolność bez miłości do Boga i bliźnich prowadzi do pychy. Kontekstem jest Rok 1984 (destrukcja wolności przez totalitaryzm), Antygona (wolność wyboru sumienia), lub filozofia Sartre'a."},
+  { num:29, book:"Adam Mickiewicz, Dziady część III", q:"Motyw samotności. Omów zagadnienie na podstawie Dziadów części III Adama Mickiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Konrad jest samotnikiem z wyboru – jego niezwykły geniusz i bunt izolują go od innych. W Wielkiej Improwizacji deklaruje: 'sam jestem'. Samotność bohatera romantycznego to zarówno przywilej geniusza jak i przekleństwo. Więźniowie są samotni fizycznie, Konrad – duchowo. Kontekstem jest Kordian Słowackiego (podobna samotność bohatera), Lalka (Wokulski jako samotnik), lub egzystencjalizm (Heidegger o trwodze)."},
+  // Lalka
+  { num:30, book:"Bolesław Prus, Lalka", q:"Miłość – siła destrukcyjna czy motywująca do działania? Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Miłość Wokulskiego do Izabeli Łęckiej jest obsesją, która motywuje go do budowania fortuny, ale ostatecznie niszczy. Idealizuje ukochaną, ignorując jej prawdziwą naturę. Gdy złudzenie pryska, Wokulski wpada w depresję i prawdopodobnie ginie. Miłość jako destrukcja kontra miłość Rzeckiego do ideałów (Napoleon) – motywująca, choć smutna. Kontekstem jest Makbet (Lady Makbet jako siła destrukcyjna), Mitologia (Orfeusz), lub psychologia miłości romantycznej."},
+  { num:31, book:"Bolesław Prus, Lalka", q:"Praca jako pasja człowieka. Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Wokulski jest samoukiem i wynalazcą – praca naukowa jest jego autentyczną pasją, której porzuca dla miłości i interesów. Geist (Niemiec) reprezentuje model czystego naukowca-pracoholika. Rzecki pracuje z poświęceniem i lojalnością. Prus (pozytywista) głosi ideał 'pracy organicznej' – pracy dla dobra społeczeństwa. Kontekstem jest Przedwiośnie (praca nad odbudową Polski), lub etyka protestancka Webera (praca jako powołanie)."},
+  { num:32, book:"Bolesław Prus, Lalka", q:"Jaką rolę w relacjach międzyludzkich odgrywają majątek i pochodzenie? Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Lalka to obraz polskiego społeczeństwa uwikłanego w podziały klasowe. Wokulski – kupiec i były zesłaniec – mimo fortuny jest odrzucany przez arystokrację ze względu na pochodzenie. Izabela symbolizuje zdegenerowaną szlachtę, która ceni pozory. Majątek otwiera drzwi, ale nie zmienia uprzedzeń. Kontekstem jest Skąpiec (pieniądze jako władza), Wesele (przepaść między inteligencją a chłopstwem), lub współczesne badania socjologiczne o nierównościach."},
+  { num:33, book:"Bolesław Prus, Lalka", q:"Konfrontacja marzeń z rzeczywistością. Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Wokulski marzy o miłości idealnej, naukowym sukcesie i lepszej Polsce – rzeczywistość jest rozczarowująca. Rzecki marzy o powrocie Napoleona i jednoczeniu Europy – historia zmierza w innym kierunku. Ochotzky marzy o czystej nauce. Zderzenie romantycznych ideałów z pozytywistyczną rzeczywistością to serce powieści. Kontekstem jest Przedwiośnie (szklane domy), Rok 1984 (marzenie Winstona o wolności), lub psychologia dysonansu poznawczego."},
+  { num:34, book:"Bolesław Prus, Lalka", q:"Miasto – przestrzeń przyjazna czy wroga człowiekowi? Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Warszawa w Lalce to przestrzeń kontrastów: luksusowe salony arystokracji i nędza Powiśla. Wokulski porusza się między tymi światami. Miasto jest areną walki społecznej, możliwości awansu, ale też upokorzenia. Prus opisuje urbanizację i jej skutki społeczne z pozytywistyczną precyzją. Kontekstem jest Baudelaire (flaneur w mieście), naturalizm Zoli, lub współczesna socjologia miejska."},
+  { num:35, book:"Bolesław Prus, Lalka", q:"Czym dla człowieka mogą być wspomnienia? Omów zagadnienie na podstawie Lalki Bolesława Prusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Pamiętnik Rzeckiego to zapis wspomnień tworzących tożsamość – Napoleon, przyjaźń z Wokulskim, ideały Wiosny Ludów. Wspomnienia dają sens życiu, choć mogą być iluzją. Wokulski wspomina lata nauki i pierwsze miłości. Pamięć jako fundament 'ja'. Kontekstem jest Rok 1984 (wymazywanie wspomnień = niszczenie tożsamości), Proust (czas utracony), lub psychologia pamięci autobiograficznej."},
+  // Potop
+  { num:36, book:"Henryk Sienkiewicz, Potop (fragmenty)", q:"Postawy odwagi i tchórzostwa. Omów zagadnienie na podstawie znanych Ci fragmentów Potopu Henryka Sienkiewicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Kmicic przechodzi drogę od zuchwałości przez zdradę do prawdziwego bohaterstwa. Radziwił reprezentuje tchórzostwo maskowane wielką polityką – kolaboruje ze Szwedami dla własnych ambicji. Sienkiewicz pokazuje, że odwaga to nie brawura, lecz służba wartościom wyższym (honor, ojczyzna, wiara). Kontekstem jest Pieśń o Rolandzie (rycerski heroizm), Dziady III (więźniowie zachowujący godność), lub psychologia strachu."},
+  // Dostojewski
+  { num:37, book:"Fiodor Dostojewski, Zbrodnia i kara", q:"Walka człowieka ze swoimi słabościami. Omów zagadnienie na podstawie Zbrodni i kary Fiodora Dostojewskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Raskolnikow walczy z własną pychą – teoria o 'niezwykłych ludziach' to racjonalizacja słabości, nie siły. Zabójstwo jest testem tej teorii, który kończy się klęską sumienia. Walka wewnętrzna Raskolnikowa – pomiędzy ideologią a człowieczeństwem – to serce powieści. Sonia reprezentuje pokorę i miłość jako alternatywę. Kontekstem jest Makbet (wyrzuty sumienia), Dziady III (Konrad vs. jego pycha), lub psychologia kryminalna."},
+  { num:38, book:"Fiodor Dostojewski, Zbrodnia i kara", q:"Motyw winy i kary. Omów zagadnienie na podstawie Zbrodni i kary Fiodora Dostojewskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"W powieści Dostojewskiego kara wyprzedza wyrok sądowy – Raskolnikow cierpi psychicznie od momentu zabójstwa. Kara jest immanentna w czynie – wyrzuty sumienia, gorączka, paranoja. Ostateczna kara (Syberia) jest wyzwoleniem i początkiem przemiany. Dostojewski polemizuje z utylitarystycznym uzasadnianiem zbrodni. Kontekstem jest Makbet, Mitologia (nemezis), lub Antygona (kara za złamanie praw boskich)."},
+  { num:39, book:"Fiodor Dostojewski, Zbrodnia i kara", q:"Ile człowiek jest gotów poświęcić dla innych? Omów zagadnienie na podstawie Zbrodni i kary Fiodora Dostojewskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Sonia Marmieładowa poświęca się dla rodziny (prostytucja) i dla Raskolnikowa (idzie na Syberię). To poświęcenie z miłości, nie z obowiązku. Kontrast: Raskolnikow, który zabija w imię teorii. Dostojewski gloryfikuje ciche bohaterstwo miłości. Kontekstem jest Mitologia (Prometeusz), Dżuma (doktor Rieux), lub teologia chrześcijańska (agape)."},
+  { num:40, book:"Fiodor Dostojewski, Zbrodnia i kara", q:"Co może determinować ludzkie postępowanie? Omów zagadnienie na podstawie Zbrodni i kary Fiodora Dostojewskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Raskolnikow jest determinowany przez ideologię (teoria o niezwykłych ludziach), warunki materialne (ubóstwo) i psychologię (pycha, alienacja). Dostojewski bada, jak myśl filozoficzna może prowadzić do zbrodni. Sonia jest determinowana miłością i wiarą. Środowisko społeczne (Petersburg lat 60. XIX w.) tworzy podatny grunt dla nihilizmu. Kontekstem jest Makbet (determinacja przez ambicję i wiedzę wiedźm), lub filozofia determinizmu (Schopenhauer)."},
+  { num:41, book:"Fiodor Dostojewski, Zbrodnia i kara", q:"Motyw przemiany bohatera. Omów zagadnienie na podstawie Zbrodni i kary Fiodora Dostojewskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Raskolnikow przechodzi drogę od pychy przez zbrodnię, cierpienie i wyrzuty sumienia do odrodzenia moralnego (epilog na Syberii). Przemiana dokonuje się przez miłość do Soni i przez pokorę. To klasyczny schemat: grzech – cierpienie – odkupienie. Dostojewski wierzy w możliwość zbawienia każdej duszy. Kontekstem jest Potop (przemiana Kmicica), Biblia (historia Zacheusza, syna marnotrawnego), lub psychologia nawrócenia."},
+  // Wesele
+  { num:42, book:"Stanisław Wyspiański, Wesele", q:"Co utrudnia porozumienie między przedstawicielami różnych grup społecznych? Omów zagadnienie na podstawie Wesela Stanisława Wyspiańskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Wesele to diagnoza społeczna 1900 r. – inteligencja (Poeta, Dziennikarz) i chłopstwo (Czepiec, Klimina) nie rozumieją się, bo dzielą ich różne kultury, historia i interesy. Chłopi pamiętają rzeź galicyjską (1846), inteligenci idealizują ich. Wyspiański pokazuje, że narodowa jedność to fikcja. Kontekstem jest Lalka (klasy społeczne w Warszawie), Tango (konflikt pokoleń), lub socjologia Pierre'a Bourdieu (kapitał kulturowy)."},
+  { num:43, book:"Stanisław Wyspiański, Wesele", q:"Rola chłopów i inteligencji w sprawie niepodległościowej. Omów zagadnienie na podstawie Wesela Stanisława Wyspiańskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Wyspiański krytycznie ocenia obie grupy: inteligencja jest słaba i bezsilna, chłopstwo – nieprzygotowane. Chochoł symbolizuje marazm narodu. Złoty Róg – symbol do walki – jest zgubiony przez Chochola. Nikt nie podejmuje wezwania do czynu. Wyspiański zadaje pytanie: kto poprowadzi Polskę do niepodległości? Kontekstem są Dziady III (Mickiewicz o roli poety), Przedwiośnie (wizje odbudowy Polski), lub historia powstań."},
+  { num:44, book:"Stanisław Wyspiański, Wesele", q:"Sen o Polsce czy sąd nad Polską? Omów zagadnienie na podstawie Wesela Stanisława Wyspiańskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Wesele jest jednocześnie snem (marzenie o wolnej Polsce) i sądem (bezlitosna diagnoza słabości narodu). Symboliczno-realistyczna dramaturgia Wyspiańskiego łączy wizje z prozą życia. Chocholi taniec na końcu to wyrok – Polska zasnęła. Wyspiański jest surowym krytykiem, ale i marzyciel. Kontekstem jest Dziady III (mesjanizm vs. krytyka), lub Przedwiośnie (szklane domy – sen vs. rzeczywistość)."},
+  { num:45, book:"Stanisław Wyspiański, Wesele", q:"Symboliczne znaczenie widm i zjaw. Omów zagadnienie na podstawie Wesela Stanisława Wyspiańskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Widma w Weselu (Rycerz Czarny/Zawisza, Stańczyk, Wernyhora, Upiór-Szela) są projekcjami podświadomości postaci i symbolami polskiej historii. Stańczyk symbolizuje błaznów-mądrców krytykujących naród, Wernyhora – proroctwo narodowe, Szela – krew rzeź galicyjską. Symbolizm Wyspiańskiego łączy dramat psychologiczny z narodowym. Kontekstem są Dziady III (duchy), lub teatr symbolistyczny Maeterlincka."},
+  { num:46, book:"Stanisław Wyspiański, Wesele", q:"Motyw tańca. Omów zagadnienie na podstawie Wesela Stanisława Wyspiańskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Taniec w Weselu ma dwoiste znaczenie: radosny (wesele, jedność) i makabresquy (chocholi taniec = marazm, zaklęty krąg). Na początku – ludowy taniec integruje klasy społeczne. Na końcu – chocholi taniec to hipnoza, bezwolność, niemoc. Motyw tańca jako życia i śmierci społecznej. Kontekstem jest taniec śmierci (danse macabre), Rok 1984 (Two Minutes Hate jako zbiorowy rytual), lub antropologia tańca."},
+  // Reymont
+  { num:47, book:"Władysław Stanisław Reymont, Chłopi (fragmenty)", q:"Obyczaj i tradycja w życiu społeczeństwa. Omów zagadnienie na podstawie znanych Ci fragmentów Chłopów Władysława Stanisława Reymonta. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Chłopi to epopeja wsi polskiej, gdzie tradycja (kościół, cykl rolniczy, obyczaje weselne i żałobne) jest kręgosłupem życia. Boryna i wieś żyją rytmem natury i obrzędów. Tradycja daje poczucie tożsamości i bezpieczeństwa, ale może być też tyranią (odrzucenie Jagny). Kontekstem jest Wesele (idealizacja i krytyka chłopstwa), Biblia (tradycja religijna), lub antropologia kultury (Lévi-Strauss)."},
+  // Żeromski
+  { num:48, book:"Stefan Żeromski, Przedwiośnie", q:"Jakie znaczenie ma tytuł dla odczytania sensu utworu? Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Przedwiośnie to metafora – Polska odzyskała niepodległość, lecz prawdziwa wiosna (sprawiedliwość społeczna, stabilność) jeszcze nie nadeszła. Cezary Baryka jest jak Polska – jeszcze niegotowy, między ideałami a rzeczywistością. Tytuł wprowadza semantykę oczekiwania, niepewności, potencjału. Kontekstem jest Lalka (konfrontacja marzeń z rzeczywistością), lub filozofia historii (Hegel – dialektyka)."},
+  { num:49, book:"Stefan Żeromski, Przedwiośnie", q:"Wojna i rewolucja jako źródła doświadczeń człowieka. Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Cezary Baryka formuje się przez doświadczenia rewolucji w Baku (chaos, śmierć matki) i wojnę polsko-bolszewicką (1920). Żeromski pokazuje, jak przemoc historyczna niszczy i hartuje jednocześnie. Rewolucja rosyjska jest ambiwalentna – obiecuje równość, przynosi terror. Kontekstem jest Inny Świat (doświadczenie łagru), Zbrodnia i kara (Petersburg – miasto rewolucji), lub historia XX w."},
+  { num:50, book:"Stefan Żeromski, Przedwiośnie", q:"Różne wizje odbudowy Polski po odzyskaniu niepodległości. Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Serafin Baryka (szklane domy – utopia technokratyczna), Szymon Gajowiec (reformy parlamentarne – ewolucja) i komuniści (rewolucja) reprezentują trzy drogi. Cezary jest między nimi – szuka własnej odpowiedzi. Żeromski nie daje jednoznacznej odpowiedzi, lecz zadaje pytanie. Finał (Cezary idzie na demonstrację) jest otwarty. Kontekstem jest historia II RP, lub Wesele (niemoc wobec pytania o Polskę)."},
+  { num:51, book:"Stefan Żeromski, Przedwiośnie", q:"Młodość jako czas kształtowania własnej tożsamości. Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Cezary Baryka to Bildungsroman – powieść dojrzewania. Przechodzi przez etapy: dzieciństwo w Rosji, próba ognia (rewolucja, wojna), poszukiwanie miejsca w Polsce, bunt. Tożsamość polsko-rosyjska Cezarego jest problematyczna. Młodość jest czasem błędów, poszukiwań i formowania wartości. Kontekstem jest Zbrodnia i kara (Raskolnikow jako młody ideolog), lub psychologia tożsamości Eriksona."},
+  { num:52, book:"Stefan Żeromski, Przedwiośnie", q:"Rola autorytetu w życiu człowieka. Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Cezary szuka autorytetów: ojciec (szklane domy), Gajowiec (reformizm), Lulek (komunizm). Żaden nie daje pełnej odpowiedzi. Autorytet może być przewodnikiem lub manipulatorem. Brak ojca w dzieciństwie (rewolucja) pozbawia Cezarego stabilnej tożsamości. Kontekstem jest Dziady III (ks. Piotr jako autorytet duchowy), Tango (bunt wobec autorytetu), lub psychologia Fromma (ucieczka od wolności)."},
+  { num:53, book:"Stefan Żeromski, Przedwiośnie", q:"Utopijny i realny obraz rzeczywistości. Omów zagadnienie na podstawie Przedwiośnia Stefana Żeromskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Szklane domy ojca Cezarego to utopia – wizja Polski nowoczesnej, sprawiedliwej. Zderzenie z nędzą Nawłoci i Warszawy jest brutalne. Żeromski zestawia marzenie z brutalną rzeczywistością. Utopia jest siłą napędową, ale może też być ucieczką od rzeczywistości. Kontekstem jest Rok 1984 (dystopia jako odwrotność utopii), lub Tomasz Morus, Platon (Republika)."},
+  // Gombrowicz
+  { num:54, book:"Witold Gombrowicz, Ferdydurke (fragmenty)", q:"Groteskowy obraz świata. Omów zagadnienie na podstawie znanych Ci fragmentów Ferdydurke Witolda Gombrowicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Ferdydurke to powieść groteska – absurdalne sytuacje (30-letni mężczyzna w szkole, bójka minami) mają sens filozoficzny: Gombrowicz atakuje fałszywość konwenansów i form. Groteska demaskuje absurd rzeczywistości społecznej. Forma (narzucona rola, maska) więzi człowieka. Kontekstem jest Wesele (groteska obrzędu), Kafka (groteska biurokratyczna), lub teoria form Gombrowicza (Dziennik)."},
+  { num:55, book:"Witold Gombrowicz, Ferdydurke (fragmenty)", q:"Człowiek wobec presji otoczenia. Omów zagadnienie na podstawie znanych Ci fragmentów Ferdydurke Witolda Gombrowicza. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Gombrowicz pokazuje, jak społeczeństwo 'upupienia' człowieka – przypisuje mu role i formy, w których musi tkwić. Józio w Ferdydurke jest ciągle upupiany przez szkołę, rodzinę nowoczesną i szlachtę wiejską. Tożsamość jest konstruowana przez spojrzenie innych (Sartre: 'Piekło to inni'). Autentyczność jest niemożliwa w świecie form. Kontekstem jest Rok 1984 (presja Partii), Tango (normy społeczne), lub psychologia konformizmu (Milgram, Asch)."},
+  // Borowski
+  { num:56, book:"Tadeusz Borowski, Proszę państwa do gazu", q:"'Człowiek zlagrowany' jako ofiara zbrodniczego systemu. Omów zagadnienie na podstawie utworu Proszę państwa do gazu Tadeusza Borowskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Borowski przez narrację Tadka pokazuje dehumanizację w obozie – człowiek zlagrowany pragnie przeżyć kosztem wszystkiego, tracąc empatię i człowieczeństwo. To nie jest wina jednostki – to system (Auschwitz) rozbija moralność. Borowski odrzuca romantyczny heroizm na rzecz naturalistycznego opisu. Kontekstem jest Inny Świat (łagier sowiecki – podobna dehumanizacja), Hannah Arendt (banalność zła), lub historia Shoah."},
+  // Herling-Grudziński
+  { num:57, book:"Gustaw Herling-Grudziński, Inny świat (fragmenty)", q:"Jakie znaczenie ma tytuł dla odczytania sensu utworu? Omów zagadnienie na podstawie znanych Ci fragmentów Innego świata Gustawa Herlinga-Grudzińskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Inny świat – tytuł nawiązuje do Dostojewskiego ('Dom umarłych') i oznacza łagier jako świat rządzący się własnymi, antyluczkimi prawami. To 'inny' nie tylko geograficznie, ale moralnie. Łagier jest laboratorium totalitaryzmu – tu widać, do czego zdolny jest człowiek i system. Tytuł sugeruje też 'tamten świat' – rzeczywistość nieludzką, graniczne doświadczenie egzystencji. Kontekstem jest Proszę państwa do gazu (obóz koncentracyjny) lub Rok 1984."},
+  { num:58, book:"Gustaw Herling-Grudziński, Inny świat (fragmenty)", q:"Konsekwencje zniewolenia człowieka. Omów zagadnienie na podstawie znanych Ci fragmentów Innego świata Gustawa Herlinga-Grudzińskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"W łagrze Grudziński obserwuje różne reakcje na zniewolenie: kolaboracja, opór, rezygnacja, szaleństwo. Zniewolenie niszczy tożsamość, więzi społeczne i poczucie godności. Jednak niektórzy zachowują człowieczeństwo – jak Rusin Kostylew, który odmawia pracy kosztem życia. Kontekstem jest Proszę państwa do gazu (obóz koncentracyjny), Rok 1984 (zniewolenie totalitarne), lub filozofia Frankla (sens w cierpieniu – logoterapia)."},
+  // Krall
+  { num:59, book:"Hanna Krall, Zdążyć przed Panem Bogiem", q:"Czy możliwe jest zachowanie godności w skrajnych sytuacjach? Omów zagadnienie na podstawie Zdążyć przed Panem Bogiem Hanny Krall. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Marek Edelman, bohater reportażu Krall, zachowuje godność jako lekarz ratujący życie po wojnie – to kontynuacja walki. Powstanie w getcie było decyzją o godnej śmierci, nie nadzieją na przeżycie. Godność w sytuacji ekstremalnej jest możliwa, ale wymaga niezwykłej siły. Kontekstem jest Inny Świat (Kostylew), Dżuma (doktor Rieux), lub filozofia Kanta (godność jako absolutna wartość)."},
+  { num:60, book:"Hanna Krall, Zdążyć przed Panem Bogiem", q:"Zagłada z perspektywy świadka i uczestnika wydarzeń w getcie. Omów zagadnienie na podstawie Zdążyć przed Panem Bogiem Hanny Krall. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Reportaż Krall łączy dwie perspektywy: Edelmana (uczestnik) i Krall (świadek, dziennikarz). Edelman mówi o Zagładzie bez patosu – prosto, medycznie. To nieoczywisty język opisu niewyobrażalnych zdarzeń. Perspektywa uczestnika jest zawsze subiektywna i traumatyczna. Kontekstem jest Borowski (perspektywa więźnia), lub dyskurs historii mówionej (oral history)."},
+  { num:61, book:"Hanna Krall, Zdążyć przed Panem Bogiem", q:"Walka o życie z perspektywy wojennej i powojennej. Omów zagadnienie na podstawie Zdążyć przed Panem Bogiem Hanny Krall. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Edelman walczy o życie w getcie (powstanie) i po wojnie (kardiologia – każdy uratowany pacjent to zwycięstwo). Walka o życie zmienia formę, ale nie ustaje. Tytuł 'Zdążyć przed Panem Bogiem' – zdążyć uratować, zanim śmierć (Bóg) zabierze pacjenta. Kontekstem jest Dżuma (walka z chorobą jako opór wobec absurdu), lub etyka medyczna."},
+  // Camus
+  { num:62, book:"Albert Camus, Dżuma", q:"Co skłania człowieka do poświęceń? Omów zagadnienie na podstawie Dżumy Alberta Camusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Bohaterowie Dżumy poświęcają się z różnych powodów: Rieux – z obowiązku lekarskiego i humanizmu, Tarrou – z poczucia winy (ojciec prokurator), Grand – z potrzeby bycia pożytecznym, Paneloux – z wiary. Camus pokazuje, że poświęcenie wynika z człowieczeństwa, nie z religii czy ideologii. To egzystencjalistyczna solidarność wobec absurdu. Kontekstem jest Zbrodnia i kara (Sonia), Mitologia (Prometeusz), lub filozofia Camusa (bunt wobec absurdu)."},
+  { num:63, book:"Albert Camus, Dżuma", q:"Człowiek wobec cierpienia i śmierci. Omów zagadnienie na podstawie Dżumy Alberta Camusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Dżuma to allegoria cierpienia i śmierci. Każdy bohater odpowiada inaczej: Rieux pracuje, Cottard korzysta na epidemii, Paneloux interpretuje teologicznie, Rambert chce uciec. Śmierć dziecka (syn sędziego Othona) jest dla Camusa argumentem przeciw teodycei. Człowiek może tylko buntować się i solidaryzować. Kontekstem jest Hiob (cierpienie niezawinione), lub egzystencjalizm (Sartre, Camus)."},
+  { num:64, book:"Albert Camus, Dżuma", q:"Czy możliwa jest przyjaźń w sytuacjach skrajnych? Omów zagadnienie na podstawie Dżumy Alberta Camusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Przyjaźń Rieux i Tarrou jest przykładem głębokiej więzi zrodzonej w obliczu śmierci. Epidemia, paradoksalnie, zbliża ludzi – wspólne zagrożenie i walka tworzą solidarność. Tarrou umiera, Rieux zostaje – przyjaźń nie chroni przed stratą, ale nadaje jej sens. Kontekstem jest Zbrodnia i kara (Raskolnikow i Sonia – przyjaźń zbawcza), lub Dziady III (więź między więźniami)."},
+  { num:65, book:"Albert Camus, Dżuma", q:"Jakie postawy przyjmuje człowiek wobec zła? Omów zagadnienie na podstawie Dżumy Alberta Camusa. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Dżuma jako alegoria zła (nazizm, epidemia, absurd) spotyka się z różnymi postawami: walka (Rieux, Tarrou, Grand), ucieczka (Rambert na początku), kolaboracja/korzystanie (Cottard), interpretacja teologiczna (Paneloux), bierność. Camus valoryzuje bunt i solidarność. Kontekstem jest Rok 1984 (postawy wobec totalitaryzmu), Makbet (wybór zła), lub historia II wojny (kolaboracja, opór, obojętność)."},
+  // Orwell
+  { num:66, book:"George Orwell, Rok 1984", q:"Czy możliwe jest zbudowanie doskonałego państwa? Omów zagadnienie na podstawie utworu Rok 1984 George'a Orwella. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Rok 1984 to odpowiedź na pytanie o utopię – każda próba budowania 'doskonałego' państwa przez totalne panowanie nad ludźmi kończy się dystopią. Oceania jest perfekcyjnie funkcjonalnym państwem terroru, ale nie szczęścia. Orwell pokazuje, że władza jest celem samym w sobie, nie środkiem. Kontekstem jest Platońska Republika (państwo doskonałe filozofów), Przedwiośnie (szklane domy), lub historia komunizmu/nazizmu."},
+  { num:67, book:"George Orwell, Rok 1984", q:"Jak zachować wolność w państwie totalitarnym? Omów zagadnienie na podstawie utworu Rok 1984 George'a Orwella. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Winston Smith próbuje zachować wolność przez pamiętnik (prywatna myśl), miłość do Julii (intymność) i wiarę w Braterstwo. Wszystko kończy się klęską – Wielki Brat niszczy nawet wewnętrzną wolność (pokój 101). Orwell sugeruje, że w totalitaryzmie indywidualna wolność jest niemal niemożliwa bez zewnętrznej siły oporu. Kontekstem jest Inny Świat (strategie przetrwania w łagrze), Dziady III (wolność jako wartość), lub filozofia Fromma."},
+  { num:68, book:"George Orwell, Rok 1984", q:"Znaczenie propagandy w państwie totalitarnym. Omów zagadnienie na podstawie utworu Rok 1984 George'a Orwella. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Propaganda w Roku 1984 jest totalna: teleekrany, Ministerstwo Prawdy (fałszowanie historii), Dwie Minuty Nienawiści, Newspeek. Manipulacja językiem = manipulacja myślą (Zasada Sapira-Whorfa w polityce). Historia jest pisana na nowo każdego dnia. Prawda staje się tym, czego chce Partia. Kontekstem jest Dziady III (cenzura rosyjska), Wesele (mitologizacja historii), lub teorię mediów Chomsky'ego."},
+  { num:69, book:"George Orwell, Rok 1984", q:"Nowomowa jako sposób na ograniczenie wolności człowieka. Omów zagadnienie na podstawie utworu Rok 1984 George'a Orwella. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Newspeak (Nowomowa) to język zaprojektowany tak, by pewne myśli stały się niemożliwe do wyrażenia – Doublethink, Crimethink. Orwell (i Wittgenstein: 'granice mojego języka są granicami mojego świata') pokazuje, że język kształtuje myślenie. Redukcja słownictwa = redukcja wolności umysłowej. Kontekstem jest Ferdydurke (forma jako więzienie), lingwistyka (Sapir-Whorf), lub współczesna mowa nienawiści/political correctness."},
+  // Mrożek
+  { num:70, book:"Sławomir Mrożek, Tango", q:"Bunt przeciwko porządkowi społecznemu. Omów zagadnienie na podstawie Tanga Sławomira Mrożka. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Artur buntuje się paradoksalnie – chce przywrócić tradycję i porządek w chaotycznej, liberalnej rodzinie. Bunt przez konserwatyzm jest ironicznym komentarzem Mrożka do buntu lat 60. Prawdziwy bunt okazuje się pułapką – Artur ginie, a władzę przejmuje Edek (brutalna siła bez wartości). Kontekstem jest Ferdydurke (bunt wobec formy), Wesele (niemoc do buntu), lub filozofia rewolucji."},
+  { num:71, book:"Sławomir Mrożek, Tango", q:"Konflikt pokoleń. Omów zagadnienie na podstawie Tanga Sławomira Mrożka. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"high",
+    ans:"Tango to dramatyczne zderzenie pokoleń: dziadkowie i rodzice (liberalizm, wolność, chaos) vs. Artur (konserwatyzm, porządek). Mrożek odwraca stereotyp – to młody chce tradycji, starzy – wolności. Konflikt pokazuje, że każde pokolenie buntuje się przeciw poprzedniemu. Żadne nie ma pełnej racji. Kontekstem jest Skąpiec (ojciec vs. dzieci), Dziady III (młodzi vs. system), lub socjologia pokoleń (Mannheim)."},
+  { num:72, book:"Sławomir Mrożek, Tango", q:"Normy społeczne – ograniczają człowieka czy porządkują życie? Omów zagadnienie na podstawie Tanga Sławomira Mrożka. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Tango zadaje pytanie: co się dzieje, gdy normy znikają? Odpowiedź jest pesymistyczna – chaos, a w końcu brutalna siła (Edek) narzuca nowy 'porządek'. Normy społeczne, choć ograniczają wolność, chronią przed anarchią. Ale nadmiar norm = tyrania. Mrożek szuka złotego środka, którego nie ma. Kontekstem jest Antygona (normy boskie vs. ludzkie), Rok 1984 (normy jako terror), lub filozofia Hobbesa (umowa społeczna)."},
+  // Nowakowski
+  { num:73, book:"Marek Nowakowski, Górą 'Edek'", q:"W jakim celu autor nawiązuje w swoim tekście do innego tekstu? Omów zagadnienie na podstawie utworu Górą 'Edek' Marka Nowakowskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"low",
+    ans:"Nowakowski nawiązuje do Tanga Mrożka (postać Edka) – intertekstualność służy komentarzowi politycznemu. Edek z Tanga to symbol triumfu brutalności nad kulturą; Nowakowski aktualizuje to do PRL-owskiej rzeczywistości. Nawiązanie literackie wzbogaca znaczenie i tworzy dialog z tradycją. Kontekstem jest teoria intertekstualności (Kristeva, Barthes), lub cytaty i aluzje w literaturze postmodernistycznej."},
+  // Stasiuk
+  { num:74, book:"Andrzej Stasiuk, Miejsce", q:"Miejsca ważne w życiu człowieka. Omów zagadnienie na podstawie Miejsca Andrzeja Stasiuka. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"low",
+    ans:"Stasiuk w Miejscu pisze o przywiązaniu do konkretnego miejsca – wsi, krajobrazu, przestrzeni fizycznej – jako źródle tożsamości. Miejsce nie jest tylko tłem, lecz współtworzy osobowość. 'Topofilia' (Yi-Fu Tuan) – miłość do miejsca. Kontekstem jest Lalka (Warszawa jako miejsce tożsamości), Chłopi (wieś jako microkosmos), lub filozofia Heideggera (bycie-w-świecie)."},
+  // Tokarczuk
+  { num:75, book:"Olga Tokarczuk, Profesor Andrews w Warszawie", q:"Stan wojenny z perspektywy obcokrajowca. Omów zagadnienie na podstawie utworu Profesor Andrews w Warszawie Olgi Tokarczuk. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"low",
+    ans:"Obcokrajowiec (Profesor Andrews) widzi PRL i stan wojenny inaczej – bez przyzwyczajenia, bez strachu, z zadziwienia. Perspektywa externa demaskuje to, co Polacy uznali za normalne. Tokarczuk używa ironii i humoru. Kontekstem jest tradycja podróżnika-obserwatora (Monteskiusz – Listy perskie, Kapuściński), lub antropologia kulturowa (Claude Lévi-Strauss o obcości)."},
+  // Kapuściński
+  { num:76, book:"Ryszard Kapuściński, Podróże z Herodotem (fragmenty)", q:"Czym dla człowieka może być podróżowanie? Omów zagadnienie na podstawie znanych Ci fragmentów Podróży z Herodotem Ryszarda Kapuścińskiego. W swojej odpowiedzi uwzględnij również wybrany kontekst.", priority:"med",
+    ans:"Kapuściński łączy własne podróże dziennikarskie z historią Herodota – pierwszego reportażysty. Podróżowanie to dla niego poznanie Innego, przekraczanie granic, rozumienie świata. Herodot podróżował, by zapamiętać i zapisać. Podróż jest metaforą życia (peregrynatio), edukacji (Grand Tour) i duchowego poszukiwania. Kontekstem jest Mitologia (podróże herosów), Biblia (Abraham – wędrowiec), lub literatura podróżnicza (Conrad, Twain)."},
+];
+
+// ================ RENDER JAWNE ================
+function renderJawne(data) {
+  const list = document.getElementById('jawne-list');
+  // Group by book
+  const books = {};
+  data.forEach(item => {
+    if (!books[item.book]) books[item.book] = [];
+    books[item.book].push(item);
+  });
+  let html = '';
+  for (const book in books) {
+    html += `<div class="section-divider"><span>${book}</span></div>`;
+    books[book].forEach(item => {
+      const isHigh = item.priority === 'high';
+      html += `<div class="accordion-item" id="acc-${item.num}">
+        <div class="accordion-header" onclick="toggleAccordion(${item.num})">
+          <div class="accordion-num ${isHigh ? 'imp' : ''}">${item.num}</div>
+          <div class="accordion-q">
+            ${isHigh ? '<span class="priority-badge priority-high">⭐ Priorytet</span>' : ''}
+            ${item.q}
+          </div>
+          <span class="accordion-arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="color:var(--accent4);font-size:.78rem;margin-bottom:8px;font-weight:700">📖 WZORCOWA ODPOWIEDŹ (ok. 2 min mówienia):</p>
+          ${item.ans}
+          <div style="margin-top:12px;padding:10px;background:var(--surface);border-radius:8px;font-size:.78rem;color:var(--muted)">
+            💡 <strong>Wskazówka:</strong> Pamiętaj o <strong>kontekście</strong> – przywołaj inną lekturę, dzieło sztuki lub zjawisko historyczne. Mów min. 2 minuty bez przerwy.
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  list.innerHTML = html;
+}
+
+function filterJawne() {
+  const val = document.getElementById('jawne-search').value.toLowerCase();
+  const filtered = jawneData.filter(item =>
+    item.q.toLowerCase().includes(val) ||
+    item.book.toLowerCase().includes(val) ||
+    item.ans.toLowerCase().includes(val)
+  );
+  renderJawne(filtered);
+}
+
+function toggleAccordion(num) {
+  const el = document.getElementById('acc-' + num);
+  el.classList.toggle('open');
+}
+
+// ================ QUIZ DATA ================
+
+const plQuizData = [
+  { type:'abcd', q:"Kim jest narrator w 'Lalce' Bolesława Prusa?", options:["A) Stanisław Wokulski","B) Narrator trzecioosobowy (auktorialny) + Rzecki (pamiętnik)","C) Ignacy Rzecki","D) Izabela Łęcka"], correct:1, exp:"Lalka ma dualną narrację: obiektywny narrator auktorialny i subiektywny pamiętnik Rzeckiego."},
+  { type:'abcd', q:"Czym jest 'chocholi taniec' w 'Weselu' Wyspiańskiego?", options:["A) Radosną sceną weselną","B) Symbolem marazmu i niemocy narodu polskiego","C) Tańcem śmierci z mittelalterycznej tradycji","D) Metaforą buntu chłopskiego"], correct:1, exp:"Chocholi taniec zamykający dramat symbolizuje zaśpienie, marazm i niemożność czynu narodowego."},
+  { type:'abcd', q:"Co symbolizuje w 'Dziadach III' Wielka Improwizacja Konrada?", options:["A) Pokorne przyjęcie cierpienia","B) Romantyczny bunt prometejski przeciw Bogu o 'rząd dusz'","C) Zawarcie paktu z diabłem","D) Modlitwę o wyzwolenie Polski"], correct:1, exp:"Konrad buntuje się przeciw Bogu jak Prometeusz – żąda władzy nad duszami dla dobra narodu."},
+  { type:'abcd', q:"Kto jest autorem koncepcji 'człowieka zlagrowanego'?", options:["A) Herling-Grudziński","B) Kapuściński","C) Tadeusz Borowski","D) Hanna Krall"], correct:2, exp:"Borowski w opowiadaniach obozowych ukazał 'człowieka zlagrowanego' – zdehumanizowanego przez system."},
+  { type:'abcd', q:"Jaką funkcję pełni Newspeak (Nowomowa) w 'Roku 1984'?", options:["A) Ułatwia komunikację","B) Promuje kulturę robotniczą","C) Ogranicza myślenie i uniemożliwia wyrażenie myśli buntowniczych","D) Jest językiem literackim klasy wyższej"], correct:2, exp:"Nowomowa projektuje niemożliwość Crimethink – myśli sprzecznych z ideologią Partii."},
+  { type:'abcd', q:"Kim jest Sonia Marmieładowa w 'Zbrodni i karze'?", options:["A) Córką Raskolnikowa","B) Policyjną agentką","C) Prostytutką, która przez miłość i wiarę pomaga Raskolnikowi w przemianie","D) Siostrą Raskolnikowa"], correct:2, exp:"Sonia jest symbolem chrześcijańskiej miłości i miłosierdzia, jej wiara i miłość prowadzą Raskolnikowa do odrodzenia."},
+  { type:'open', q:"Wyjaśnij krótko, na czym polega mesjanizm polski w 'Dziadach III' Mickiewicza. (2-3 zdania)", exp:"Mesjanizm to idea, że Polska – jak Chrystus – cierpi niewinnie, aby przez swoje męczeństwo odkupić Europę i przynieść jej wolność. Widzenie ks. Piotra przedstawia alegorię Polski ukrzyżowanej. To romantyczna idea łącząca patriotyzm z religią."},
+  { type:'abcd', q:"Jaką postawę reprezentuje Starzec w 'Romantyczności' Mickiewicza?", options:["A) Romantyczną wiarę w duchy","B) Racjonalizm i empiryzm oświeceniowy","C) Chrześcijański mistycyzm","D) Nihilizm filozoficzny"], correct:1, exp:"Starzec (Śniadecki) symbolizuje oświeceniowy rozum i racjonalizm, sprzeciwiając się romantycznej wierze Karusi."},
+  { type:'abcd', q:"Co łączy Antygonę Sofoklesa i Winstona Smitha z 'Roku 1984'?", options:["A) Oboje poddają się władzy","B) Oboje stawiają opór prawom, które uważają za niesprawiedliwe, mimo świadomości kary","C) Oboje uciekają z kraju","D) Oboje zakochują się w osobach z wyższej klasy"], correct:1, exp:"Antygona łamie edykt Kreona, Smith buntuje się przeciw Partii – oboje wybierają sumienie kosztem życia."},
+  { type:'abcd', q:"Czym jest 'hybris' w kontekście tragedii greckiej i 'Makbeta'?", options:["A) Mądrość bogów","B) Pycha i zarozumiałość prowadzące do upadku","C) Miłość tragiczna","D) Kod honorowy rycerzy"], correct:1, exp:"Hybris (pycha) jest w kulturze antycznej i renesansowej przyczyną upadku bohatera – zarówno Edypa, jak i Makbeta."},
+];
+
+const enQuizData = [
+  { type:'abcd', q:"Which tense is used for actions that started in the past and continue to the present?", options:["A) Past Simple","B) Present Perfect Continuous","C) Past Perfect","D) Future Simple"], correct:1, exp:"'I have been studying for 3 hours' – Present Perfect Continuous shows an ongoing action from past to present."},
+  { type:'abcd', q:"What is the correct conditional sentence? (Second conditional)", options:["A) If I study, I will pass.","B) If I studied, I would pass.","C) If I had studied, I would have passed.","D) If I study, I would pass."], correct:1, exp:"Second conditional: If + past simple, would + infinitive. Used for unlikely/hypothetical present situations."},
+  { type:'abcd', q:"Choose the correct word: 'The new policy had a significant ___ on the economy.'", options:["A) affect","B) effect","C) effect's","D) affecting"], correct:1, exp:"'Effect' is a noun (have an effect on). 'Affect' is a verb (to affect something)."},
+  { type:'abcd', q:"Which word best completes the sentence: 'Despite the difficulties, she ___ to achieve her goals.'", options:["A) managed","B) succeeded","C) achieved","D) could"], correct:0, exp:"'Managed to' = succeeded in doing something difficult. 'Succeeded in + -ing', 'achieved + noun'."},
+  { type:'open', q:"Translate to English: 'Uważam, że praca zdalna ma zarówno zalety, jak i wady.'", exp:"I believe that remote work has both advantages and disadvantages. (Also: In my opinion, working remotely has its pros and cons.)"},
+  { type:'abcd', q:"Which phrase introduces a contrasting idea?", options:["A) Furthermore","B) In addition","C) Nevertheless","D) As a result"], correct:2, exp:"'Nevertheless' introduces a contrast/concession. 'Furthermore/In addition' add information. 'As a result' shows consequence."},
+];
+
+const matQuizData = [
+  { type:'abcd', q:"Pochodna funkcji f(x) = 3x² - 2x + 5 to:", options:["A) f'(x) = 6x - 2","B) f'(x) = 3x - 2","C) f'(x) = 6x + 5","D) f'(x) = 3x²"], correct:0, exp:"(xⁿ)' = n·xⁿ⁻¹. Więc (3x²)' = 6x, (-2x)' = -2, (5)' = 0. Razem: 6x - 2."},
+  { type:'abcd', q:"Suma n wyrazów ciągu arytmetycznego o pierwszym wyrazie a₁=3 i różnicy d=2, dla n=10 wynosi:", options:["A) 120","B) 150","C) 130","D) 110"], correct:0, exp:"aₙ = 3 + 9·2 = 21. Sₙ = n(a₁+aₙ)/2 = 10·(3+21)/2 = 10·12 = 120."},
+  { type:'abcd', q:"Równanie okręgu o środku (2, -3) i promieniu 5 to:", options:["A) (x-2)² + (y+3)² = 25","B) (x+2)² + (y-3)² = 25","C) (x-2)² + (y-3)² = 5","D) (x+2)² + (y+3)² = 25"], correct:0, exp:"(x-p)² + (y-q)² = r². Środek (2,-3): (x-2)² + (y-(-3))² = (x-2)² + (y+3)² = 25."},
+  { type:'abcd', q:"Dla jakiego x funkcja f(x) = x² - 4x + 3 osiąga minimum?", options:["A) x = 2","B) x = -2","C) x = 4","D) x = 1"], correct:0, exp:"f'(x) = 2x - 4 = 0 → x = 2. Sprawdzenie: f''(x) = 2 > 0, więc to minimum."},
+  { type:'abcd', q:"Objętość walca o promieniu r=3 i wysokości h=4 wynosi:", options:["A) 36π","B) 12π","C) 48π","D) 9π"], correct:0, exp:"V = πr²h = π·9·4 = 36π."},
+];
+
+const infQuizData = [
+  { type:'abcd', q:"Jaka jest złożoność czasowa algorytmu sortowania przez scalanie (merge sort)?", options:["A) O(n²)","B) O(n log n)","C) O(log n)","D) O(n)"], correct:1, exp:"Merge sort dzieli problem na połowy (log n poziomów) i scala (n operacji) = O(n log n)."},
+  { type:'abcd', q:"Który algorytm wyszukiwania ma złożoność O(log n)?", options:["A) Wyszukiwanie liniowe","B) Sortowanie bąbelkowe","C) Wyszukiwanie binarne","D) DFS"], correct:2, exp:"Wyszukiwanie binarne działa na posortowanych danych, za każdym razem połowę elementów odrzuca."},
+  { type:'abcd', q:"Co zwróci zapytanie SQL: SELECT COUNT(*) FROM uczniowie WHERE ocena > 4?", options:["A) Listę uczniów z oceną > 4","B) Liczbę uczniów z oceną > 4","C) Średnią ocenę","D) Błąd składniowy"], correct:1, exp:"COUNT(*) liczy wiersze spełniające warunek WHERE."},
+  { type:'abcd', q:"Jaka struktura danych działa na zasadzie LIFO?", options:["A) Kolejka (Queue)","B) Stos (Stack)","C) Lista","D) Drzewo BST"], correct:1, exp:"LIFO = Last In First Out. Stos: push/pop. Kolejka = FIFO (First In First Out)."},
+  { type:'open', q:"Napisz pseudokod funkcji rekurencyjnej obliczającej silnię n!.", exp:"funkcja silnia(n):\n  jeśli n <= 1: zwróć 1\n  zwróć n * silnia(n-1)\n\nPrzykład: silnia(5) = 5·4·3·2·1 = 120"},
+];
+
+const fizQuizData = [
+  { type:'abcd', q:"Jeśli ciało ma masę 5 kg i porusza się z przyspieszeniem 3 m/s², to siła działająca na nie wynosi:", options:["A) 15 N","B) 8 N","C) 1,67 N","D) 2 N"], correct:0, exp:"F = ma = 5·3 = 15 N. Drugie prawo Newtona."},
+  { type:'abcd', q:"Energia kinetyczna ciała o masie 2 kg poruszającego się z prędkością 10 m/s wynosi:", options:["A) 100 J","B) 200 J","C) 20 J","D) 50 J"], correct:0, exp:"Eₖ = ½mv² = ½·2·100 = 100 J."},
+  { type:'abcd', q:"Prawo Ohma mówi, że natężenie prądu I =", options:["A) U·R","B) U/R","C) R/U","D) U+R"], correct:1, exp:"U = I·R, więc I = U/R. Prawo Ohma: natężenie = napięcie/opór."},
+  { type:'abcd', q:"Jaka jest jednostka mocy w układzie SI?", options:["A) Dżul","B) Wat","C) Niuton","D) Wolt"], correct:1, exp:"Moc: P = W/t. Jednostka: Wat [W] = Dżul/sekunda."},
+  { type:'abcd', q:"Wzór na czas połowicznego rozpadu N(t) = N₀·(½)^(t/T½) mówi, że po czasie t=T½:", options:["A) cały materiał się rozpada","B) połowa materiału ulega rozpadowi","C) ¼ materiału ulega rozpadowi","D) materiał pozostaje niezmieniony"], correct:1, exp:"Gdy t=T½: N=N₀·(½)^1 = N₀/2. Połowa jąder rozpada się w czasie T½."},
+];
+
+// Egzamin PL (10 pytań)
+const plExamData = [
+  { type:'abcd', q:"1. Czym jest 'Wielka Improwizacja' w 'Dziadach III'?", options:["A) Modlitwa Konrada","B) Bunt prometejski – Konrad domaga się od Boga władzy nad duszami","C) Scena sądu nad Rosjanami","D) Wizja ks. Piotra"], correct:1},
+  { type:'abcd', q:"2. Kto jest autorem Lalki?", options:["A) Stefan Żeromski","B) Henryk Sienkiewicz","C) Bolesław Prus","D) Władysław Reymont"], correct:2},
+  { type:'abcd', q:"3. 'Danse macabre' to motyw związany z:", options:["A) Miłością dworską","B) Równością wszystkich wobec śmierci","C) Heroizmem rycerskim","D) Buntem narodowym"], correct:1},
+  { type:'abcd', q:"4. W 'Roku 1984' Orwella Ministerstwo Prawdy zajmuje się:", options:["A) Produkcją żywności","B) Szkoleniem policji myśli","C) Fałszowaniem historii i propagandą","D) Nadzorowaniem teleekranów"], correct:2},
+  { type:'abcd', q:"5. Raskolnikow z 'Zbrodni i kary' zabija lichwiarkę, bo:", options:["A) Chce zdobyć jej pieniądze dla ubogich","B) Uważa, że niezwykłe jednostki mają prawo przekraczać prawa moralne","C) Lichwiarkal go zaszantażowała","D) Działa pod wpływem rewolucjonistów"], correct:1},
+  { type:'abcd', q:"6. Który utwór jest reportażem/świadectwem dotyczącym powstania w getcie?", options:["A) Proszę państwa do gazu","B) Inny świat","C) Zdążyć przed Panem Bogiem","D) Rok 1984"], correct:2},
+  { type:'abcd', q:"7. Hybris w kulturze antycznej oznacza:", options:["A) Odwagę w boju","B) Pychę prowadzącą do upadku","C) Miłość do ojczyzny","D) Mądrość filozoficzną"], correct:1},
+  { type:'open', q:"8. Wymień dwa sposoby, w jaki totalitarne państwo w 'Roku 1984' kontroluje obywateli.", exp:"Teleekrany (stały nadzór), Policja Myśli (Thought Police), fałszowanie historii (Ministerstwo Prawdy), Nowomowa (Newspeak), Dwie Minuty Nienawiści, system donosicielstwa."},
+  { type:'open', q:"9. Co to znaczy, że Polska jest 'Chrystusem narodów' według Mickiewicza? (1-2 zdania)", exp:"To idea mesjanizmu: Polska, jak Chrystus, cierpi niewinnie (rozbiory = ukrzyżowanie), ale przez swoje męczeństwo odkupi Europę i przyniesie jej wolność (zmartwychwstanie = odzyskanie niepodległości)."},
+  { type:'abcd', q:"10. Czym charakteryzuje się groteska w 'Ferdydurke' Gombrowicza?", options:["A) Realistycznym opisem epoki","B) Absurdalnymi sytuacjami demaskującymi fałsz konwenansów społecznych","C) Heroizmem romantycznym","D) Szczegółowym opisem psychologicznym"], correct:1},
+];
+
+// Mat exam
+const matExamData = [
+  { type:'abcd', q:"1. Która z poniższych funkcji jest rosnąca dla wszystkich x ∈ ℝ?", options:["A) f(x) = -x²","B) f(x) = 2x + 1","C) f(x) = x² - x","D) f(x) = cos x"], correct:1},
+  { type:'abcd', q:"2. Ile wynosi granica: lim(x→∞) (3x² + 2x)/(x² - 1)?", options:["A) 0","B) 2","C) 3","D) ∞"], correct:2, exp:"Dziel licznik i mianownik przez x²: (3 + 2/x)/(1 - 1/x²) → 3/1 = 3."},
+  { type:'num', q:"3. Oblicz: suma ciągu geometrycznego o a₁=2, q=3 dla n=4 wynosi:", correct:"80", exp:"S₄ = 2·(3⁴-1)/(3-1) = 2·80/2 = 80."},
+  { type:'abcd', q:"4. Zbiorem rozwiązań nierówności x² - 5x + 6 ≤ 0 jest:", options:["A) x ≤ 2 lub x ≥ 3","B) 2 ≤ x ≤ 3","C) x < 2 lub x > 3","D) x < 3"], correct:1, exp:"x² - 5x + 6 = (x-2)(x-3). Parabolaarms up, ≤ 0 między pierwiastkami: [2, 3]."},
+  { type:'num', q:"5. Podaj wartość pochodnej f(x)=x³-3x w punkcie x=2:", correct:"9", exp:"f'(x) = 3x² - 3. f'(2) = 12 - 3 = 9."},
+  { type:'abcd', q:"6. Kąt między prostymi y=2x+1 i y=-½x+3 wynosi:", options:["A) 45°","B) 60°","C) 90°","D) 30°"], correct:2, exp:"a₁·a₂ = 2·(-½) = -1. Jeśli iloczyn współczynników = -1, proste są prostopadłe (90°)."},
+  { type:'num', q:"7. Objętość kuli o promieniu r=3 (podaj w π):", correct:"36π", exp:"V = (4/3)π·27 = 36π."},
+  { type:'abcd', q:"8. Logarytm log₂(32) =", options:["A) 4","B) 5","C) 6","D) 3"], correct:1, exp:"2⁵ = 32, więc log₂(32) = 5."},
+  { type:'num', q:"9. Ile wynosi pole trójkąta o podstawie 8 i wysokości 5?", correct:"20", exp:"P = ½·8·5 = 20."},
+  { type:'abcd', q:"10. Punkt przecięcia prostych y = 2x - 1 i y = -x + 5 to:", options:["A) (2, 3)","B) (3, 5)","C) (2, 5)","D) (1, 3)"], correct:0, exp:"2x-1 = -x+5 → 3x=6 → x=2, y=3. Punkt (2,3)."},
+];
+
+// ================ QUIZ ENGINE ================
+const quizInstances = {};
+
+function initQuiz(id, data, containerId) {
+  quizInstances[id] = { data, current: 0, score: 0, answers: [], done: false };
+  renderQuizQuestion(id, containerId);
+}
+
+function renderQuizQuestion(id, containerId) {
+  const inst = quizInstances[id];
+  if (inst.done) return;
+  const q = inst.data[inst.current];
+  const total = inst.data.length;
+  let html = `<div class="quiz-question-num">Pytanie ${inst.current + 1} / ${total}</div>
+    <div class="quiz-question-text">${q.q}</div>`;
+  if (q.type === 'abcd') {
+    html += `<div class="quiz-options">`;
+    q.options.forEach((opt, i) => {
+      html += `<button class="quiz-option" onclick="selectOption('${id}', '${containerId}', ${i})">${opt}</button>`;
+    });
+    html += `</div>`;
+  } else if (q.type === 'open' || q.type === 'num') {
+    html += `<textarea class="quiz-open-input" id="${id}-open-input" placeholder="Wpisz swoją odpowiedź..."></textarea>
+      <button class="btn btn-secondary" onclick="submitOpen('${id}', '${containerId}')">Sprawdź</button>`;
+  }
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function selectOption(id, containerId, chosen) {
+  const inst = quizInstances[id];
+  const q = inst.data[inst.current];
+  const opts = document.querySelectorAll(`#${containerId} .quiz-option`);
+  opts.forEach(o => o.classList.add('disabled'));
+  if (chosen === q.correct) {
+    opts[chosen].classList.add('correct');
+    inst.score++;
+  } else {
+    opts[chosen].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+  }
+  const exp = q.exp ? `<div style="margin-top:12px;padding:10px;background:var(--surface);border-radius:8px;font-size:.82rem;color:var(--muted)">${q.exp}</div>` : '';
+  document.getElementById(containerId).innerHTML += exp;
+  setTimeout(() => nextQuestion(id, containerId), 1800);
+}
+
+function submitOpen(id, containerId) {
+  const inst = quizInstances[id];
+  const q = inst.data[inst.current];
+  const val = document.getElementById(`${id}-open-input`).value.trim();
+  inst.score += 0.5; // partial credit for open
+  const exp = q.exp || '';
+  document.getElementById(containerId).innerHTML +=
+    `<div class="answer-feedback feedback-info show"><strong>Wzorcowa odpowiedź:</strong><br>${exp}</div>`;
+  setTimeout(() => nextQuestion(id, containerId), 2500);
+}
+
+function nextQuestion(id, containerId) {
+  const inst = quizInstances[id];
+  inst.current++;
+  if (inst.current >= inst.data.length) {
+    showQuizResult(id, containerId);
+  } else {
+    renderQuizQuestion(id, containerId);
+  }
+}
+
+function showQuizResult(id, containerId) {
+  const inst = quizInstances[id];
+  const total = inst.data.length;
+  const pct = Math.round((inst.score / total) * 100);
+  document.getElementById(containerId).innerHTML = `
+    <div class="quiz-result">
+      <div class="score">${Math.round(inst.score)} / ${total}</div>
+      <p>${pct >= 80 ? '🎉 Świetny wynik!' : pct >= 60 ? '👍 Dobry wynik, ale można lepiej!' : '📚 Wróć do materiału i spróbuj ponownie.'}</p>
+      <p style="color:var(--muted);margin-bottom:20px">Wynik: ${pct}%</p>
+      <button class="btn btn-primary" onclick="initQuiz('${id}', ${id === 'plq' ? 'plQuizData' : id === 'enq' ? 'enQuizData' : id === 'matq' ? 'matQuizData' : id === 'infq' ? 'infQuizData' : id === 'fizq' ? 'fizQuizData' : id === 'plexam' ? 'plExamData' : 'matExamData'}, '${containerId}')">🔄 Spróbuj ponownie</button>
+    </div>`;
+}
+
+// ================ FLASHCARDS ================
+const flashcards = {
+  pl: [
+    { front:"Mesjanizm", back:"Romantyczna idea, że Polska jest 'Chrystusem narodów' – cierpi niewinnie, by odkupić Europę. Pojawia się w Dziadach III Mickiewicza." },
+    { front:"Hybris", back:"Pycha (gr.) – grzech wobec bogów, prowadzi nieuchronnie do upadku (nemezis). Centralna kategoria tragedii greckiej i Makbeta." },
+    { front:"Człowiek zlagrowany", back:"Termin Borowskiego – więzień obozu, który traci człowieczeństwo i empatię, skupiając się wyłącznie na przeżyciu. Nie wina jednostki, lecz systemu." },
+    { front:"Vanitas vanitatum", back:"'Marność nad marnościami' (Kohelet) – motyw przemijania wszelkich dóbr. Stały element literatury baroku i średniowiecza." },
+    { front:"Chocholi taniec (Wesele)", back:"Symbol marazmu i niemocy polskiego narodu. Goście weselni tańczą w zaklętym kręgu, nie mogąc podjąć żadnego czynu wyzwoleńczego." },
+    { front:"Romantyczność Mickiewicza – główna idea", back:"'Czucie i wiara silniej mówi do mnie / Niż mędrca szkiełko i oko' – manifest romantyzmu polskiego przeciw oświeceniowemu racjonalizmowi." },
+    { front:"Nowomowa (Newspeak)", back:"Język Oceanii w Roku 1984 Orwella – zaprojektowany tak, by uniemożliwić buntownicze myśli poprzez eliminację słów wyrażających wolność." },
+    { front:"Danse macabre", back:"Motyw tańca śmierci (śrdw.) – Śmierć zabiera wszystkich bez względu na stan i bogactwo. Pojawia się w Rozmowie Mistrza Polikarpa i w Weselu (chocholi taniec)." },
+    { front:"Teodyceum", back:"Problem filozoficzny: dlaczego Bóg dopuszcza cierpienie niewinnych? Centralny w Księdze Hioba i Dżumie Camusa (scena śmierci dziecka)." },
+    { front:"Pozytywizm – praca organiczna", back:"Hasło pozytywizmu polskiego: praca każdego dla dobra całego społeczeństwa (jak narządy w organizmie). Realizuje je idealnie Wokulski na początku Lalki." },
+    { front:"Fatum (los)", back:"W tragedii greckiej i literaturze – nieuchronny los, przeznaczenie. Antygona i Edyp nie mogą uciec od fatum, choć Makbet sam go przyciąga przez własne czyny." },
+    { front:"Konrad vs Ksiądz Piotr (Dziady III)", back:"Dwie postawy wobec Boga: Konrad – prometejski bunt, żądanie władzy; Ks. Piotr – pokora, uniżenie się. Mickiewicz valoryzuje pokorę jako prawdziwą siłę." },
+  ],
+  en: [
+    { front:"Sophisticated", back:"(adj.) Developed and complex; showing a refined understanding. 'She made a sophisticated argument about climate change.'" },
+    { front:"Controversial", back:"(adj.) Causing disagreement or debate. 'Capital punishment remains a controversial issue in many countries.'" },
+    { front:"Furthermore", back:"(adv.) In addition, besides. Used to add an argument. 'The policy is inefficient. Furthermore, it is unfair.'" },
+    { front:"Nevertheless", back:"(adv.) Despite what has just been said; however. 'The task was challenging; nevertheless, she completed it.'" },
+    { front:"Detrimental", back:"(adj.) Causing harm or damage. 'Smoking is detrimental to your health.'" },
+    { front:"Indispensable", back:"(adj.) Absolutely necessary. 'Clean water is indispensable for human survival.'" },
+    { front:"Second conditional", back:"If + past simple, would + infinitive. Used for hypothetical/unlikely situations now. 'If I had more time, I would travel more.'" },
+    { front:"Passive voice – present perfect", back:"Subject + have/has + been + past participle. 'The report has been submitted by the team.'" },
+  ],
+  mat: [
+    { front:"Pochodna xⁿ", back:"(xⁿ)' = n·xⁿ⁻¹\nPrzykład: (x⁵)' = 5x⁴" },
+    { front:"Wzór na sumę ciągu arytmetycznego", back:"Sₙ = n(a₁ + aₙ)/2\nlub Sₙ = n/2 · (2a₁ + (n-1)d)" },
+    { front:"Wzór na nth wyraz ciągu geometrycznego", back:"aₙ = a₁ · qⁿ⁻¹\ngdzie q – iloraz, a₁ – pierwszy wyraz" },
+    { front:"Równanie okręgu", back:"(x-p)² + (y-q)² = r²\ngdzie (p,q) – środek, r – promień" },
+    { front:"Warunek prostopadłości prostych", back:"a₁ · a₂ = -1\njeśli y=a₁x+b₁ ⊥ y=a₂x+b₂" },
+    { front:"Objętość walca", back:"V = π·r²·h\nPc (pole całkowite) = 2πrh + 2πr²" },
+    { front:"Pochodna sin x i cos x", back:"(sin x)' = cos x\n(cos x)' = -sin x" },
+    { front:"Wyznaczanie ekstremów funkcji", back:"1. Oblicz f'(x)\n2. Znajdź miejsca zerowe f'(x)=0\n3. Sprawdź znak f'(x) po obu stronach\n(lub f''(x): >0→min, <0→max)" },
+  ],
+  inf: [
+    { front:"O(n log n)", back:"Złożoność sortowania przez scalanie (merge sort) i quicksort (średni). Optymalny dla algorytmów sortowania porównawczego." },
+    { front:"Wyszukiwanie binarne", back:"Algorytm na posortowanych danych: sprawdza środkowy element, eliminuje połowę. Złożoność O(log n)." },
+    { front:"Stos (Stack)", back:"Struktura danych LIFO (Last In First Out). Operacje: push (dodaj), pop (usuń ze szczytu). Zastosowanie: wywołania funkcji, cofanie operacji." },
+    { front:"JOIN w SQL", back:"SELECT * FROM a JOIN b ON a.id = b.aid\nŁączy dwie tabele według klucza. INNER JOIN – tylko pasujące; LEFT JOIN – wszystkie z lewej." },
+    { front:"Rekurencja", back:"Funkcja wywołująca samą siebie. Musi mieć warunek bazowy. Przykład: silnia(n) = n · silnia(n-1); silnia(0)=1." },
+    { front:"Drzewo BST", back:"Binary Search Tree – drzewo binarne: lewy potomek < węzeł < prawy potomek. Wyszukiwanie: O(log n) śr., O(n) najgorszy." },
+  ],
+  fiz: [
+    { front:"II zasada Newtona", back:"F = m·a\nSiła = masa × przyspieszenie\nJednostka siły: Niuton [N] = kg·m/s²" },
+    { front:"Energia kinetyczna", back:"Eₖ = ½mv²\nJednostka: Dżul [J]\nEnergia ruchu ciała" },
+    { front:"Prawo Ohma", back:"U = I·R\nNapięcie [V] = Natężenie [A] × Opór [Ω]\nI = U/R; R = U/I" },
+    { front:"I zasada termodynamiki", back:"ΔU = Q - W\nZmiana energii wewnętrznej = ciepło pobrane - praca wykonana przez gaz" },
+    { front:"Prawo gazowe (gaz doskonały)", back:"pV = nRT\np – ciśnienie, V – objętość, n – liczba moli,\nR = 8,314 J/(mol·K), T – temperatura w Kelwinach" },
+    { front:"Czas połowicznego rozpadu", back:"N(t) = N₀ · (½)^(t/T½)\nPo czasie T½ – połowa atomów rozpada się.\nZastosowanie: datowanie radiometryczne" },
+    { front:"Moc elektryczna", back:"P = U·I = I²·R = U²/R\nJednostka: Wat [W]\nP=1W gdy U=1V i I=1A" },
+    { front:"Zasada zachowania pędu", back:"p = m·v\nW układzie izolowanym: Σp = const\n(m₁v₁ + m₂v₂ = m₁v₁' + m₂v₂')" },
+  ],
+};
+
+const cardIndex = { pl: 0, en: 0, mat: 0, inf: 0, fiz: 0 };
+const cardFlipped = { pl: false, en: false, mat: false, inf: false, fiz: false };
+
+function renderCard(type) {
+  const i = cardIndex[type];
+  const cards = flashcards[type];
+  const card = cards[i % cards.length];
+  document.getElementById(`${type}-fc-front`).textContent = card.front;
+  document.getElementById(`${type}-fc-back`).innerHTML = card.back.replace(/\n/g, '<br>');
+  document.getElementById(`${type}-fc-counter`).textContent = `${(i % cards.length) + 1} / ${cards.length}`;
+  document.getElementById(`${type}-card`).classList.remove('flipped');
+  cardFlipped[type] = false;
+}
+
+function flipCard(type) {
+  const el = document.getElementById(`${type}-card`);
+  el.classList.toggle('flipped');
+  cardFlipped[type] = !cardFlipped[type];
+}
+
+function nextCard(type) {
+  cardIndex[type]++;
+  renderCard(type);
+}
+
+function prevCard(type) {
+  if (cardIndex[type] > 0) cardIndex[type]--;
+  renderCard(type);
+}
+
+// ================ ENGLISH RANDOM Q ================
+const engQuestions = [
+  { q: "What do you think about social media? Is it more beneficial or harmful?", a: "I believe social media has both advantages and disadvantages. While it allows us to stay connected and access information instantly, it can also lead to addiction and misinformation. On balance, I think its benefits outweigh the drawbacks if used responsibly." },
+  { q: "Would you prefer to live in a big city or in the countryside? Why?", a: "Personally, I'd prefer living in a city because of the career opportunities and cultural life it offers. However, I understand why some people prefer the countryside – the peace and connection with nature are invaluable." },
+  { q: "Do you think environmental protection should be a priority for governments? Why?", a: "Absolutely. Climate change is one of the most pressing issues of our time, and governments have the responsibility and resources to implement effective policies. Without strong environmental regulations, individual efforts alone are insufficient." },
+  { q: "What role does technology play in education today?", a: "Technology has revolutionized education by making information more accessible and learning more interactive. However, it's crucial to maintain a balance – excessive screen time and distraction are real concerns that educators must address." },
+  { q: "Should the voting age be lowered to 16? Give reasons.", a: "I have mixed feelings about this. On one hand, young people are directly affected by political decisions regarding climate and education. On the other hand, at 16, many lack the life experience to make fully informed political choices." },
+  { q: "Is it important to learn foreign languages in the modern world?", a: "Undoubtedly. Knowing foreign languages opens doors professionally and culturally. English in particular is essential for global communication. Moreover, learning languages develops cognitive skills and cultural empathy." },
+  { q: "Do you think space exploration is worth the investment?", a: "Yes, I believe so. Space exploration drives technological innovation that benefits everyday life, from medical devices to weather forecasting. It also addresses existential questions about humanity's future beyond Earth." },
+  { q: "How has the COVID-19 pandemic changed the way people work?", a: "The pandemic accelerated the shift to remote work dramatically. While this improved work-life balance for many, it also blurred the boundaries between professional and personal life, and highlighted digital inequality." },
+];
+let lastEngQ = null;
+
+function randomEngQ() {
+  let q;
+  do { q = engQuestions[Math.floor(Math.random() * engQuestions.length)]; }
+  while (q === lastEngQ && engQuestions.length > 1);
+  lastEngQ = q;
+  document.getElementById('en-random-q').textContent = q.q;
+  document.getElementById('en-answer-box').classList.remove('show');
+  document.getElementById('en-answer-box').textContent = '';
+}
+
+function showEngAnswer() {
+  if (!lastEngQ) return;
+  const box = document.getElementById('en-answer-box');
+  box.innerHTML = `<strong>Wzorcowa odpowiedź:</strong><br>${lastEngQ.a}`;
+  box.classList.add('show');
+}
+
+// ================ JOURNAL ================
+function loadTasks() {
+  return JSON.parse(localStorage.getItem('mm-tasks') || '[]');
+}
+function saveTasks(tasks) {
+  localStorage.setItem('mm-tasks', JSON.stringify(tasks));
+}
+
+function renderTasks() {
+  const tasks = loadTasks();
+  const list = document.getElementById('task-list');
+  if (tasks.length === 0) {
+    list.innerHTML = '<p style="color:var(--muted);font-size:.85rem">Brak zadań. Dodaj pierwsze!</p>';
+  } else {
+    list.innerHTML = tasks.map((t, i) => `
+      <div class="task-item ${t.done ? 'done' : ''}">
+        <input type="checkbox" class="task-check" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})">
+        <div style="flex:1">
+          <div class="task-title">${t.desc}</div>
+          <div class="task-meta">
+            <span class="tag tag-${t.sub === 'Polski' ? 'pl' : t.sub === 'Angielski' ? 'en' : t.sub === 'Matematyka' ? 'mat' : t.sub === 'Fizyka' ? 'fiz' : t.sub === 'Informatyka' ? 'inf' : 'all'}">${t.sub}</span>
+            ${t.date ? `📅 ${t.date}` : ''}
+          </div>
+        </div>
+        <span class="task-priority ${t.priority === 'wysoki' ? 'p-high' : t.priority === 'sredni' ? 'p-med' : 'p-low'}">${t.priority}</span>
+        <button class="btn-icon" onclick="deleteTask(${i})">🗑️</button>
+      </div>
+    `).join('');
+  }
+  updateProgress(tasks);
+}
+
+function updateProgress(tasks) {
+  const done = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('journal-bar').style.width = pct + '%';
+  document.getElementById('journal-pct').textContent = pct + '%';
+  document.getElementById('journal-stats').textContent = `${done} z ${total} zadań ukończonych`;
+  document.getElementById('home-tasks-done').textContent = done;
+  document.getElementById('home-tasks-all').textContent = total;
+}
+
+function addTask() {
+  const desc = document.getElementById('j-desc').value.trim();
+  if (!desc) return;
+  const tasks = loadTasks();
+  tasks.push({
+    desc,
+    sub: document.getElementById('j-sub').value,
+    priority: document.getElementById('j-pri').value,
+    date: document.getElementById('j-date').value,
+    done: false
+  });
+  saveTasks(tasks);
+  document.getElementById('j-desc').value = '';
+  renderTasks();
+}
+
+function toggleTask(i) {
+  const tasks = loadTasks();
+  tasks[i].done = !tasks[i].done;
+  saveTasks(tasks);
+  renderTasks();
+}
+
+function deleteTask(i) {
+  const tasks = loadTasks();
+  tasks.splice(i, 1);
+  saveTasks(tasks);
+  renderTasks();
+}
+
+function saveNotes() {
+  localStorage.setItem('mm-notes', document.getElementById('j-notes').value);
+}
+
+function loadNotes() {
+  const notes = localStorage.getItem('mm-notes');
+  if (notes) document.getElementById('j-notes').value = notes;
+}
+
+// ================ NAV ================
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+  closeSidebar();
+}
+
+function showSubTab(parent, sub) {
+  const tabs = document.querySelectorAll(`#tab-${parent} .sub-tab-content`);
+  const btns = document.querySelectorAll(`#tab-${parent} .sub-tab-btn`);
+  tabs.forEach(t => t.classList.remove('active'));
+  btns.forEach(b => b.classList.remove('active'));
+  document.getElementById(`${parent}-sub-${sub}`).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ================ INIT ================
+window.onload = function() {
+  renderJawne(jawneData);
+  Object.keys(flashcards).forEach(t => renderCard(t));
+  initQuiz('plq', plQuizData, 'pl-quiz-container');
+  initQuiz('enq', enQuizData, 'en-quiz-container');
+  initQuiz('matq', matQuizData, 'mat-quiz-container');
+  initQuiz('infq', infQuizData, 'inf-quiz-container');
+  initQuiz('fizq', fizQuizData, 'fiz-quiz-container');
+  initQuiz('plexam', plExamData, 'pl-exam-container');
+  initQuiz('matexam', matExamData, 'mat-exam-container');
+  renderTasks();
+  loadNotes();
+  // Set today's date as default
+  document.getElementById('j-date').valueAsDate = new Date();
+};
+</script>
+</body>
+</html>
