@@ -17,10 +17,14 @@
     <a href="../index.html" class="back">← Strona główna</a>
   </div>
   <div class="nav">
-    <div class="nav-section">Czytanie</div>
+    <div class="nav-section">Rozumienie</div>
     <button class="nav-btn active" onclick="showTab('czytanie')" data-tab="czytanie"><span class="icon">📖</span> Czytanie ze zrozum.</button>
     <div class="nav-section">Gramatyka i słownictwo</div>
-    <button class="nav-btn" onclick="showTab('gramatyka')" data-tab="gramatyka"><span class="icon">⚙️</span> Use of English</button>
+    <button class="nav-btn" onclick="showTab('gramatyka')" data-tab="gramatyka"><span class="icon">⚙️</span> Czasy i struktury</button>
+    <button class="nav-btn" onclick="showTab('kolokacje')" data-tab="kolokacje"><span class="icon">🔗</span> Kolokacje</button>
+    <button class="nav-btn" onclick="showTab('slowotwor')" data-tab="slowotwor"><span class="icon">🔤</span> Słowotwórstwo</button>
+    <button class="nav-btn" onclick="showTab('bledy')" data-tab="bledy"><span class="icon">❌</span> Korekta błędów</button>
+    <button class="nav-btn" onclick="showTab('transformacje')" data-tab="transformacje"><span class="icon">🔄</span> Transformacje zdań</button>
     <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki – Słownictwo</button>
     <div class="nav-section">Matura</div>
     <button class="nav-btn" onclick="showTab('ustna')" data-tab="ustna"><span class="icon">🗣️</span> Matura ustna</button>
@@ -33,24 +37,79 @@
 
 <!-- CZYTANIE -->
 <div class="tab active" id="tab-czytanie">
-  <div class="page-header"><h2>📖 Czytanie ze zrozumieniem</h2><p>Przeczytaj tekst i odpowiedz. Odpowiedzi są zawsze parafrazą – nie szukaj dosłownych słów!</p></div>
-  <div class="info-box">💡 Na maturze odpowiedzi NIE są dosłownie w tekście. Zawsze szukaj synonimów i przeformułowań.</div>
+  <div class="page-header"><h2>📖 Czytanie ze zrozumieniem</h2>
+    <p>8 różnych tekstów. Pamiętaj: odpowiedzi to zawsze PARAFRAZA – nie szukaj dosłownych słów!</p></div>
+  <div class="info-box">💡 <strong>Strategia:</strong> Przeczytaj pytanie → zidentyfikuj słowa kluczowe → znajdź odpowiedni akapit → szukaj parafrazy, nie cytatu.</div>
   <div class="quiz-container" id="czytanie-container"></div>
 </div>
 
 <!-- GRAMATYKA -->
 <div class="tab" id="tab-gramatyka">
-  <div class="page-header"><h2>⚙️ Use of English</h2><p>Czasy, struktury, kolokacje, rejestry, słowotwórstwo.</p></div>
+  <div class="page-header"><h2>⚙️ Czasy i struktury gramatyczne</h2>
+    <p>Czasy, strona bierna, kondycjonały, mowa zależna, inwersja.</p></div>
+  <div class="info-box-blue">
+    <strong>Kluczowe struktury na maturze rozszerzonej:</strong><br>
+    Present Perfect vs Past Simple · Past Perfect Continuous · 2nd i 3rd Conditional ·
+    Passive Voice (wszystkie czasy) · Reported Speech · Inversion (Not only, Hardly, Never) ·
+    Wish/If only · It's time/I'd rather · Mixed Conditionals
+  </div>
   <div class="quiz-container" id="gramatyka-container"></div>
+</div>
+
+<!-- KOLOKACJE -->
+<div class="tab" id="tab-kolokacje">
+  <div class="page-header"><h2>🔗 Kolokacje i wyrażenia stałe</h2>
+    <p>Make/Do/Take/Have + noun – typowe pułapki maturalne.</p></div>
+  <div class="info-box">
+    💡 <strong>Najczęstsze błędy:</strong> make/do, take/have, at/in/on (prepositions).
+    Kolokacje trzeba znać na pamięć – nie da się ich wyprowadzić logicznie!
+  </div>
+  <div class="quiz-container" id="kolokacje-container"></div>
+</div>
+
+<!-- SŁOWOTWÓRSTWO -->
+<div class="tab" id="tab-slowotwor">
+  <div class="page-header"><h2>🔤 Słowotwórstwo (Word Formation)</h2>
+    <p>Prefiksy, sufiksy, kategorie gramatyczne.</p></div>
+  <div class="info-box-blue">
+    <strong>Kluczowe prefiksy:</strong> un-, in-/im-/ir-/il-, dis-, mis-, over-, under-, re-, pre-, co-<br>
+    <strong>Sufiksy rzeczownikowe:</strong> -tion/-sion, -ness, -ity/-ty, -ment, -er/-or, -ance/-ence, -ship<br>
+    <strong>Sufiksy przymiotnikowe:</strong> -ful, -less, -able/-ible, -ous/-ious, -ive, -al, -ic, -ent/-ant<br>
+    <strong>Sufiksy przysłówkowe:</strong> -ly (+ przymiotnik)<br>
+    <strong>Uwaga:</strong> Niektóre słowa są nieregularne (strong → strength, wide → width, deep → depth)
+  </div>
+  <div class="quiz-container" id="slowotwor-container"></div>
+</div>
+
+<!-- BŁĘDY -->
+<div class="tab" id="tab-bledy">
+  <div class="page-header"><h2>❌ Korekta błędów (Error Correction)</h2>
+    <p>Znajdź i popraw błąd w zdaniu.</p></div>
+  <div class="info-box">💡 <strong>Najczęstsze obszary błędów:</strong>
+    Countable/uncountable nouns · Since/for · Suggest/recommend + -ing ·
+    Despite (without 'of') · Collective nouns (singular/plural) · Gradable/non-gradable adjectives
+  </div>
+  <div class="quiz-container" id="bledy-container"></div>
+</div>
+
+<!-- TRANSFORMACJE -->
+<div class="tab" id="tab-transformacje">
+  <div class="page-header"><h2>🔄 Transformacje zdań (Key Word Transformations)</h2>
+    <p>Przepisz zdanie używając podanego słowa. Typ zadania B2/C1.</p></div>
+  <div class="info-box">💡 <strong>Zasady:</strong> Nie zmieniaj znaczenia zdania. Użyj podanego słowa.
+    Zwykle zmienia się: stronę (active/passive), czas, strukturę (too → enough, although → despite).
+  </div>
+  <div class="quiz-container" id="transformacje-container"></div>
 </div>
 
 <!-- FISZKI -->
 <div class="tab" id="tab-fiszki">
-  <div class="page-header"><h2>🃏 Fiszki – Słownictwo zaawansowane</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="page-header"><h2>🃏 Fiszki – Słownictwo zaawansowane (C1)</h2>
+    <p>Kliknij kartę, aby odwrócić.</p></div>
   <div class="flashcard-container">
     <div class="flashcard-wrap" onclick="fcFlip('en')">
       <div class="flashcard" id="en-card">
-        <div class="flashcard-front"><div class="label">VOCABULARY</div><div class="term" id="en-fc-front">…</div></div>
+        <div class="flashcard-front"><div class="label">VOCABULARY / STRUCTURE</div><div class="term" id="en-fc-front">…</div></div>
         <div class="flashcard-back"><div class="def" id="en-fc-back">…</div></div>
       </div>
     </div>
@@ -64,89 +123,124 @@
 
 <!-- MATURA USTNA -->
 <div class="tab" id="tab-ustna">
-  <div class="page-header"><h2>🗣️ Matura ustna – Angielski</h2><p>Wylosuj pytanie, przygotuj odpowiedź (30 sek), mów min. 2 minuty.</p></div>
+  <div class="page-header"><h2>🗣️ Matura ustna – Język Angielski</h2>
+    <p>Wylosuj pytanie, przygotuj odpowiedź (30 sek), mów min. 2–3 minuty.</p></div>
   <div class="card">
-    <h3>🎲 Losowanie pytania</h3>
+    <h3>🎲 Losowanie pytania do rozmowy</h3>
     <div id="en-q-box" style="font-size:1.05rem;font-family:var(--font-head);padding:16px;background:var(--surface2);border-radius:10px;min-height:56px;color:var(--muted);margin-bottom:16px">
       Naciśnij przycisk, aby wylosować pytanie…
     </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
       <button class="btn btn-primary" onclick="losuj()">🎲 Losuj pytanie</button>
       <button class="btn btn-secondary" onclick="pokazOdp()">👁️ Pokaż wzorcową odpowiedź</button>
     </div>
-    <div class="answer-feedback feedback-info" id="en-ans-box" style="margin-top:12px"></div>
+    <div class="answer-feedback feedback-info" id="en-ans-box"></div>
   </div>
+
   <div class="card">
-    <h3>🖼️ Opis fotografii – schemat</h3>
+    <h3>🖼️ Opis fotografii – schemat (3–4 minuty)</h3>
     <div style="font-size:.87rem;line-height:1.9;color:#c8ccd8">
-      <p><strong style="color:var(--accent)">Krok 1 – Opis ogólny:</strong> "The photo shows... / In this picture I can see..."</p>
-      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 2 – Szczegóły:</strong> "In the foreground... There are... who appear to be... The atmosphere seems..."</p>
-      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 3 – Spekulacja:</strong> "This picture might illustrate... / It could be related to..."</p>
-      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 4 – Pytania egzaminatora:</strong> Odpowiadaj bezpośrednio. "In my opinion... / That's a good point, however..."</p>
+      <p><strong style="color:var(--accent)">Krok 1 – Opis ogólny (1 zdanie):</strong><br>
+      "The photo shows... / This picture depicts... / In this photograph I can see..."</p>
+      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 2 – Szczegóły (4–5 zdań):</strong><br>
+      "In the foreground... In the background... On the left/right..."<br>
+      "There are [people] who appear to be... / who seem to be..."<br>
+      "The atmosphere seems... / The mood is... / It looks as if..."</p>
+      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 3 – Spekulacja (2 zdania):</strong><br>
+      "This picture might illustrate... / It could be related to..."<br>
+      "I would guess this was taken in... / at... / during..."</p>
+      <p style="margin-top:8px"><strong style="color:var(--accent)">Krok 4 – Pytania egzaminatora:</strong><br>
+      Odpowiadaj BEZPOŚREDNIO. Daj powody. "In my opinion...", "I strongly believe...", "From my perspective..."</p>
     </div>
   </div>
+
   <div class="card">
-    <h3>💬 Przydatne zwroty</h3>
+    <h3>💬 Przydatne zwroty – matura ustna</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:.83rem">
-      <div><div style="color:var(--accent);font-weight:700;margin-bottom:6px">Wyrażanie opinii</div>
-        <div style="color:#c8ccd8;line-height:2">In my opinion…<br>I strongly believe that…<br>From my perspective…<br>It seems to me that…</div></div>
-      <div><div style="color:var(--accent);font-weight:700;margin-bottom:6px">Zgoda / niezgoda</div>
-        <div style="color:#c8ccd8;line-height:2">I completely agree…<br>That's valid, however…<br>I see your point, but…<br>I beg to differ…</div></div>
-      <div><div style="color:var(--accent);font-weight:700;margin-bottom:6px">Czas do myślenia</div>
-        <div style="color:#c8ccd8;line-height:2">That's an interesting question…<br>Let me think about this…<br>Well, I would say…</div></div>
-      <div><div style="color:var(--accent);font-weight:700;margin-bottom:6px">Podsumowanie</div>
-        <div style="color:#c8ccd8;line-height:2">To sum up…<br>In conclusion…<br>All things considered…</div></div>
+      <div>
+        <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Wyrażanie opinii</div>
+        <div style="color:#c8ccd8;line-height:2">In my view/opinion...<br>I strongly believe that...<br>From my perspective...<br>As far as I'm concerned...<br>It seems to me that...<br>I would argue that...</div>
+      </div>
+      <div>
+        <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Zgoda / Niezgoda</div>
+        <div style="color:#c8ccd8;line-height:2">I completely agree with...<br>That's a valid point, however...<br>I see your point, but...<br>I beg to differ...<br>On the other hand...<br>I'm not entirely convinced...</div>
+      </div>
+      <div>
+        <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Czas do myślenia</div>
+        <div style="color:#c8ccd8;line-height:2">That's an interesting question...<br>Let me think about this...<br>Well, I would say...<br>If I'm not mistaken...<br>Off the top of my head...</div>
+      </div>
+      <div>
+        <div style="color:var(--accent);font-weight:700;margin-bottom:6px">Podsumowanie</div>
+        <div style="color:#c8ccd8;line-height:2">To sum up...<br>In conclusion...<br>All things considered...<br>Taking everything into account...<br>On balance, I would say...</div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- MATURA PISEMNA -->
 <div class="tab" id="tab-pisemna">
-  <div class="page-header"><h2>✍️ Matura pisemna – Szablony</h2><p>Kliknij szablon, aby rozwinąć.</p></div>
+  <div class="page-header"><h2>✍️ Matura pisemna – Szablony i strategie</h2>
+    <p>Kliknij szablon, aby rozwinąć.</p></div>
+  <div class="info-box">
+    📝 <strong>Na maturze pisemnej (rozszerzonej):</strong> 2 teksty dłuższe (200–250 słów każdy).
+    Najczęstsze typy: for&against essay, opinion essay, letter, article, review.
+    Oceniane: treść, spójność, słownictwo, gramatyka.
+  </div>
   <div id="pisemna-list"></div>
 </div>
 
 <!-- EGZAMIN -->
 <div class="tab" id="tab-egzamin">
-  <div class="page-header"><h2>🎓 Egzamin próbny – Angielski</h2><p>10 zadań: czytanie, gramatyka, słownictwo.</p></div>
+  <div class="page-header"><h2>🎓 Egzamin próbny – Język Angielski</h2>
+    <p>10 zadań mieszanych: czytanie, gramatyka, słowotwórstwo, transformacje.</p></div>
   <div class="quiz-container" id="egzamin-container"></div>
 </div>
 
 </main>
+
 <script src="../shared/engine.js"></script>
 <script src="data.js"></script>
 <script>
 let aktywneQ = null;
+
 function losuj() {
   let q;
   do { q = angUstnaData[Math.floor(Math.random() * angUstnaData.length)]; }
   while (q === aktywneQ && angUstnaData.length > 1);
   aktywneQ = q;
   const box = document.getElementById('en-q-box');
-  box.textContent = q.q; box.style.color = 'var(--text)';
+  box.textContent = q.q;
+  box.style.color = 'var(--text)';
   const ans = document.getElementById('en-ans-box');
   ans.classList.remove('show'); ans.innerHTML = '';
 }
+
 function pokazOdp() {
   if (!aktywneQ) { losuj(); return; }
   const ans = document.getElementById('en-ans-box');
-  ans.innerHTML = '<strong>Wzorcowa odpowiedź:</strong><br>' + aktywneQ.a;
+  ans.innerHTML = '<strong>Wzorcowa odpowiedź:</strong><br>' + aktywneQ.a.replace(/\n/g,'<br>');
   ans.classList.add('show');
 }
+
 function renderPisemna() {
   document.getElementById('pisemna-list').innerHTML = angPisemnaTemplates.map((t, i) => `
     <div class="accordion-item">
       <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
         <div class="accordion-num">${i+1}</div>
-        <div class="accordion-q">${t.title}</div>
+        <div class="accordion-q" style="font-weight:600">${t.title}</div>
         <span class="accordion-arrow">▼</span>
       </div>
-      <div class="accordion-body">${t.content}</div>
+      <div class="accordion-body" style="font-size:.88rem;line-height:1.8">${t.content}</div>
     </div>`).join('');
 }
+
 window.addEventListener('DOMContentLoaded', () => {
   QE.init('read', angReadingData, 'czytanie-container');
   QE.init('gram', angGramatykaData, 'gramatyka-container');
+  QE.init('kol', angKolokacjeData, 'kolokacje-container');
+  QE.init('wf', angWordFormData, 'slowotwor-container');
+  QE.init('err', angBledyData, 'bledy-container');
+  QE.init('trans', angTransformData, 'transformacje-container');
   QE.init('aegz', angEgzaminData, 'egzamin-container');
   QE.fcInit('en', angFiszki);
   renderPisemna();
