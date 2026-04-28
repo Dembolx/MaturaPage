@@ -5,23 +5,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Polski – MaturaMaster 2026</title>
 <link rel="stylesheet" href="../shared/style.css">
+<link rel="shortcut icon" href="../reading-book.png" type="image/x-icon">
 <style>
-.epoki-grid { display: grid; gap: 12px; }
-.epoka-card { background: var(--surface); border-left: 4px solid var(--ec, var(--accent)); border-radius: var(--radius); padding: 16px 20px; }
-.epoka-card h4 { font-family: var(--font-head); font-weight: 700; margin-bottom: 6px; }
-.epoka-card .dates { color: var(--muted); font-size: .75rem; margin-bottom: 8px; }
-.epoka-card p { font-size: .83rem; color: #c8ccd8; line-height: 1.6; }
-.pisarz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 14px; }
-.pisarz-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-.pisarz-card h4 { font-family: var(--font-head); font-weight: 700; margin-bottom: 4px; }
-.pisarz-card .meta { color: var(--muted); font-size: .75rem; margin-bottom: 8px; }
-.pisarz-card p { font-size: .82rem; color: #c8ccd8; line-height: 1.5; }
+/* ── Epoki ─────────────────────────────────────── */
+.epoki-grid { display: grid; gap: 14px; }
+.epoka-card { background: var(--surface); border-left: 4px solid var(--ec, var(--accent)); border-radius: var(--radius); overflow: hidden; }
+.epoka-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; background: var(--surface2); transition: background .2s; }
+.epoka-header:hover { background: #1e2130; }
+.epoka-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.epoka-title { font-family: var(--font-head); font-weight: 700; font-size: .95rem; flex: 1; }
+.epoka-dates { color: var(--muted); font-size: .75rem; white-space: nowrap; }
+.epoka-arrow { color: var(--muted); font-size: .8rem; transition: transform .2s; }
+.epoka-card.open .epoka-arrow { transform: rotate(180deg); }
+.epoka-body { display: none; padding: 16px 18px; border-top: 1px solid var(--border); font-size: .84rem; line-height: 1.7; color: #c8ccd8; }
+.epoka-card.open .epoka-body { display: block; }
+.epoka-body .elbl { color: var(--accent4); font-weight: 700; display: block; margin-top: 8px; margin-bottom: 2px; }
+
+/* ── Pisarze ────────────────────────────────────── */
+.pisarz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.pisarz-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color .2s; }
+.pisarz-card:hover { border-color: var(--accent); }
+.pisarz-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; }
+.pisarz-num { background: var(--accent); color: #000; font-family: var(--font-head); font-weight: 800; font-size: .7rem; min-width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.pisarz-name { font-family: var(--font-head); font-weight: 700; font-size: .95rem; }
+.pisarz-meta { color: var(--muted); font-size: .72rem; margin-top: 2px; }
+.pisarz-arrow { color: var(--muted); font-size: .75rem; margin-left: auto; margin-top: 4px; transition: transform .2s; }
+.pisarz-card.open .pisarz-arrow { transform: rotate(180deg); }
+.pisarz-body { display: none; padding: 12px 16px 14px; font-size: .82rem; color: #c8ccd8; line-height: 1.65; border-top: 1px solid var(--border); }
+.pisarz-card.open .pisarz-body { display: block; }
+.pisarz-body .plbl { color: var(--accent4); font-weight: 700; display: block; margin-top: 8px; margin-bottom: 2px; }
+
+/* ── Lektury – lista kafelek ───────────────────── */
+.lektury-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.lektura-tile {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-left: 3px solid var(--lc, var(--accent));
+}
+.lektura-tile:hover { border-color: var(--lc, var(--accent)); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.lektura-tile.active-tile { background: var(--surface); border-color: var(--lc, var(--accent)); box-shadow: 0 0 0 2px var(--lc, var(--accent)); }
+.lt-emoji { font-size: 1.6rem; }
+.lt-title { font-family: var(--font-head); font-weight: 700; font-size: .9rem; }
+.lt-autor { color: var(--muted); font-size: .75rem; }
+.lt-epoka { font-size: .68rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; width: fit-content; }
+
+/* ── Lektura – omówienie ───────────────────────── */
+.lektura-panel { display: none; }
+.lektura-panel.visible { display: block; }
+
+.lektura-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  border-left: 5px solid var(--lhc, var(--accent));
+}
+.lektura-hero-top { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.lektura-big-emoji { font-size: 3rem; flex-shrink: 0; }
+.lektura-hero h2 { font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+.lektura-hero .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.meta-badge { font-size: .75rem; padding: 3px 10px; border-radius: 20px; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.streszczenie-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: .87rem;
+  line-height: 1.75;
+  color: #c8ccd8;
+}
+
+.bohater-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 10px; }
+.bohater-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.bohater-card .bname { font-family: var(--font-head); font-weight: 700; font-size: .88rem; color: var(--accent4); margin-bottom: 4px; }
+.bohater-card .bopis { font-size: .82rem; color: #c8ccd8; line-height: 1.6; }
+
+.tematy-list { display: grid; gap: 10px; }
+.temat-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.temat-item .tname { font-family: var(--font-head); font-weight: 700; font-size: .88rem; color: var(--accent); margin-bottom: 4px; }
+.temat-item .topis { font-size: .83rem; color: #c8ccd8; line-height: 1.65; }
+
+.symbole-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; }
+.symbol-card { background: var(--surface2); border-left: 3px solid var(--accent3); border-radius: 8px; padding: 12px 14px; }
+.symbol-card .sname { font-weight: 700; font-size: .85rem; color: var(--accent3); margin-bottom: 3px; }
+.symbol-card .sopis { font-size: .81rem; color: #c8ccd8; line-height: 1.55; }
+
+.cytaty-list { display: grid; gap: 8px; }
+.cytat-item { background: var(--bg); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; font-style: italic; font-size: .87rem; color: #d4c88a; line-height: 1.6; }
+
+.konteksty-box {
+  background: rgba(240,192,64,.07);
+  border: 1px solid rgba(240,192,64,.2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: .85rem;
+  color: #d4b840;
+  line-height: 1.7;
+}
+
+.matura-tip-box {
+  background: rgba(90,224,160,.07);
+  border: 1px solid rgba(90,224,160,.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: .85rem;
+  color: var(--accent4);
+  line-height: 1.7;
+}
+
+/* ── Filtry pisarze / lektury ─────────────────── */
 .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-.filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; font-size: .78rem; transition: all .2s; }
+.filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; font-size: .78rem; transition: all .2s; font-family: var(--font-body); }
 .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+.filter-btn:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 16px;
+  color: var(--muted); font-size: .83rem; cursor: pointer;
+  transition: all .2s; margin-bottom: 20px;
+  font-family: var(--font-body);
+}
+.back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 600px) {
+  .lektury-grid { grid-template-columns: 1fr 1fr; }
+  .bohater-grid { grid-template-columns: 1fr; }
+  .symbole-list { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+
 <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
@@ -33,53 +175,113 @@
   </div>
   <div class="nav">
     <div class="nav-section">Wiedza</div>
-    <button class="nav-btn active" onclick="showTab('epoki')" data-tab="epoki"><span class="icon">🏛️</span> Epoki literackie</button>
-    <button class="nav-btn" onclick="showTab('pisarze')" data-tab="pisarze"><span class="icon">✍️</span> Pisarze</button>
-    <button class="nav-btn" onclick="showTab('jawne')" data-tab="jawne"><span class="icon">📜</span> Pytania jawne CKE</button>
+    <button class="nav-btn active" onclick="showTab('epoki')" data-tab="epoki">
+      <span class="icon">🏛️</span> Epoki literackie
+    </button>
+    <button class="nav-btn" onclick="showTab('pisarze')" data-tab="pisarze">
+      <span class="icon">✍️</span> Pisarze i dzieła
+    </button>
+    <button class="nav-btn" onclick="showTab('lektury')" data-tab="lektury">
+      <span class="icon">📚</span> Lektury
+    </button>
+    <button class="nav-btn" onclick="showTab('jawne')" data-tab="jawne">
+      <span class="icon">📜</span> Pytania jawne CKE
+    </button>
     <div class="nav-section">Ćwiczenia</div>
-    <button class="nav-btn" onclick="showTab('quiz')" data-tab="quiz"><span class="icon">📝</span> Quiz</button>
-    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki"><span class="icon">🃏</span> Fiszki</button>
-    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin"><span class="icon">🎓</span> Egzamin próbny</button>
+    <button class="nav-btn" onclick="showTab('quiz')" data-tab="quiz">
+      <span class="icon">📝</span> Quiz
+    </button>
+    <button class="nav-btn" onclick="showTab('fiszki')" data-tab="fiszki">
+      <span class="icon">🃏</span> Fiszki
+    </button>
+    <button class="nav-btn" onclick="showTab('egzamin')" data-tab="egzamin">
+      <span class="icon">🎓</span> Egzamin próbny
+    </button>
   </div>
 </nav>
 
 <main class="main">
 
-<!-- EPOKI -->
+<!-- ══════════════════════════════════════════════════ EPOKI -->
 <div class="tab active" id="tab-epoki">
-  <div class="page-header"><h2>🏛️ Epoki literackie</h2><p>Od antyku po współczesność.</p></div>
+  <div class="page-header">
+    <h2>🏛️ Epoki literackie</h2>
+    <p>Od antyku po współczesność. Kliknij epokę, aby rozwinąć szczegóły.</p>
+  </div>
   <div class="epoki-grid" id="epoki-list"></div>
 </div>
 
-<!-- PISARZE -->
+<!-- ════════════════════════════════════════════════ PISARZE -->
 <div class="tab" id="tab-pisarze">
-  <div class="page-header"><h2>✍️ Pisarze i ich dzieła</h2></div>
+  <div class="page-header">
+    <h2>✍️ Pisarze i ich dzieła</h2>
+    <p>Filtruj według epoki. Kliknij pisarza, aby rozwinąć biografię.</p>
+  </div>
   <div class="filter-bar" id="pisarze-filters"></div>
   <div class="pisarz-grid" id="pisarze-list"></div>
 </div>
 
-<!-- JAWNE -->
+<!-- ════════════════════════════════════════════════ LEKTURY -->
+<div class="tab" id="tab-lektury">
+
+  <!-- widok: lista kafelek -->
+  <div id="lektury-lista">
+    <div class="page-header">
+      <h2>📚 Lektury – szczegółowe omówienia</h2>
+      <p>Kliknij lekturę, aby zobaczyć pełne omówienie: streszczenie, bohaterowie, tematy, symbole, cytaty i wskazówki maturalne.</p>
+    </div>
+    <div class="filter-bar" id="lektury-filters"></div>
+    <div class="lektury-grid" id="lektury-grid"></div>
+  </div>
+
+  <!-- widok: omówienie konkretnej lektury -->
+  <div id="lektura-detail" class="lektura-panel"></div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ PYTANIA JAWNE -->
 <div class="tab" id="tab-jawne">
-  <div class="page-header"><h2>📜 Pytania jawne CKE</h2><p>Czerwone numery = tematy priorytetowe.</p></div>
-  <div class="info-box">🎯 Na maturze ustnej losujesz 1 pytanie. Masz 15 min na przygotowanie i 15 min na wypowiedź. Każda odpowiedź musi zawierać <strong>kontekst</strong>!</div>
-  <input type="text" class="search-box" placeholder="🔍 Szukaj pytania lub lektury..." oninput="filterJawne(this.value)">
+  <div class="page-header">
+    <h2>📜 Pytania jawne CKE 2026–2028</h2>
+    <p>Czerwone numery = tematy priorytetowe. Kliknij pytanie, aby rozwinąć pełną odpowiedź.</p>
+  </div>
+  <div class="info-box">
+    🎯 <strong>Na maturze ustnej</strong> losujesz 1 pytanie.
+    Masz <strong>15 minut</strong> na przygotowanie i <strong>15 minut</strong> na wypowiedź.
+    Każda odpowiedź MUSI zawierać <strong>kontekst</strong>!
+  </div>
+  <input type="text" class="search-box" id="jawne-search"
+    placeholder="🔍 Szukaj pytania, lektury lub słowa kluczowego..."
+    oninput="filterJawne(this.value)">
+  <div id="jawne-count" style="color:var(--muted);font-size:.8rem;margin-bottom:12px"></div>
   <div id="jawne-list"></div>
 </div>
 
-<!-- QUIZ -->
+<!-- ══════════════════════════════════════════════════ QUIZ -->
 <div class="tab" id="tab-quiz">
-  <div class="page-header"><h2>📝 Quiz – Język Polski</h2></div>
+  <div class="page-header">
+    <h2>📝 Quiz – Język Polski</h2>
+    <p>Pytania zamknięte i otwarte z lektur, teorii literatury i historii epok.</p>
+  </div>
   <div class="quiz-container" id="quiz-container"></div>
 </div>
 
-<!-- FISZKI -->
+<!-- ═════════════════════════════════════════════════ FISZKI -->
 <div class="tab" id="tab-fiszki">
-  <div class="page-header"><h2>🃏 Fiszki – pojęcia i motywy</h2><p>Kliknij kartę, aby odwrócić.</p></div>
+  <div class="page-header">
+    <h2>🃏 Fiszki – pojęcia i motywy</h2>
+    <p>Kliknij kartę, aby odwrócić.</p>
+  </div>
   <div class="flashcard-container">
     <div class="flashcard-wrap" onclick="fcFlip('pl')">
       <div class="flashcard" id="pl-card">
-        <div class="flashcard-front"><div class="label">POJĘCIE / MOTYW</div><div class="term" id="pl-fc-front">…</div></div>
-        <div class="flashcard-back"><div class="def" id="pl-fc-back">…</div></div>
+        <div class="flashcard-front">
+          <div class="label">POJĘCIE / MOTYW</div>
+          <div class="term" id="pl-fc-front">…</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="def" id="pl-fc-back">…</div>
+        </div>
       </div>
     </div>
     <div class="flashcard-nav">
@@ -90,9 +292,12 @@
   </div>
 </div>
 
-<!-- EGZAMIN -->
+<!-- ══════════════════════════════════════════════ EGZAMIN -->
 <div class="tab" id="tab-egzamin">
-  <div class="page-header"><h2>🎓 Egzamin próbny – Język Polski</h2><p>10 pytań mieszanych.</p></div>
+  <div class="page-header">
+    <h2>🎓 Egzamin próbny – Język Polski</h2>
+    <p>10 pytań mieszanych. Sprawdź swoją wiedzę!</p>
+  </div>
   <div class="quiz-container" id="egzamin-container"></div>
 </div>
 
@@ -101,136 +306,257 @@
 <script src="../shared/engine.js"></script>
 <script src="data.js"></script>
 <script>
-const epokaData = [
-  { name:'Antyk', dates:'VIII w. p.n.e. – V w. n.e.', color:'#f0c040',
-    cechy:'Harmonia (kalos kagathos), mimesis, katharsis, tragizm (hybris→nemezis), epopeja homerycka.',
-    autorzy:'Homer, Sofokles, Eurypides, Platon, Horacy, Arystoteles',
-    lektury:'Iliada, Antygona, Mitologia (Parandowski)' },
-  { name:'Średniowiecze', dates:'V – XV w.', color:'#aaa',
-    cechy:'Teocentryzm, universalizm, ascetyzm, alegoria, kronika, hagiografia, danse macabre, vanitas.',
-    autorzy:'Anonim (Gall), Jan Długosz',
-    lektury:'Lament świętokrzyski, Rozmowa Mistrza Polikarpa, Pieśń o Rolandzie' },
-  { name:'Renesans', dates:'XIV – XVI w.', color:'#5ae0a0',
-    cechy:'Humanizm, antropocentryzm, carpe diem, złoty wiek, harmonia, reformacja.',
-    autorzy:'Kochanowski, Szekspir, Molier, Krasicki (Oświec.)',
-    lektury:'Treny (Kochanowski), Makbet (Szekspir)' },
-  { name:'Barok', dates:'XVI – XVIII w.', color:'#e05a5a',
-    cechy:'Vanitas, kontrast, marność, przemijanie, marinizm, antyteza, concetto.',
-    autorzy:'Morsztyn, Potocki, Pascal',
-    lektury:'Sonet IV (Morsztyn)' },
-  { name:'Oświecenie', dates:'XVII – XVIII w.', color:'#5a9cf0',
-    cechy:'Racjonalizm, empiryzm, satyra, bajka, encyklopedyzm, umowa społeczna.',
-    autorzy:'Krasicki, Naruszewicz, Voltaire, Rousseau',
-    lektury:'Satyry (Krasicki)' },
-  { name:'Romantyzm', dates:'koniec XVIII – poł. XIX w.', color:'#b45af0',
-    cechy:'Irracjonalizm, bunt, mesjanizm, bohater prometejski, ludowość, fantastyka, historia.',
-    autorzy:'Mickiewicz, Słowacki, Krasiński, Norwid, Byron, Goethe',
-    lektury:'Dziady III, Romantyczność (Mickiewicz)' },
-  { name:'Pozytywizm', dates:'poł. XIX – koniec XIX w.', color:'#ff9f40',
-    cechy:'Scjentyzm, praca organiczna, utylitaryzm, realizm, emancypacja kobiet.',
-    autorzy:'Prus, Sienkiewicz, Orzeszkowa, Reymont, Zola',
-    lektury:'Lalka (Prus), Potop (Sienkiewicz)' },
-  { name:'Młoda Polska', dates:'1890 – 1918', color:'#e05a5a',
-    cechy:'Dekadentyzm, impresjonizm, symbolizm, secesja, sztuka dla sztuki.',
-    autorzy:'Wyspiański, Żeromski, Kasprowicz, Tetmajer',
-    lektury:'Wesele (Wyspiański), Przedwiośnie (Żeromski), Chłopi (Reymont)' },
-  { name:'Dwudziestolecie', dates:'1918 – 1939', color:'#5ae0a0',
-    cechy:'Awangarda, futuryzm, ekspresjonizm, Skamander, katastrofizm, groteska.',
-    autorzy:'Gombrowicz, Staff, Tuwim, Leśmian',
-    lektury:'Ferdydurke (Gombrowicz)' },
-  { name:'Literatura współczesna', dates:'1939 – dziś', color:'#5a9cf0',
-    cechy:'Egzystencjalizm, literatura obozowa, proza dokumentalna, reportaż.',
-    autorzy:'Borowski, Herling-Grudziński, Krall, Camus, Orwell, Mrożek, Kapuściński',
-    lektury:'Dżuma, Rok 1984, Proszę państwa do gazu, Inny świat, Tango' },
-];
 
-const pisarzeData = [
-  { name:'Adam Mickiewicz', dates:'1798–1855', epoka:'Romantyzm', info:'Największy polski romantyk. Mesjanizm, patriotyzm, ludowość.', dziela:'Dziady III, Pan Tadeusz, Ballady i romanse, Romantyczność' },
-  { name:'Bolesław Prus', dates:'1847–1912', epoka:'Pozytywizm', info:'Kronikarz Warszawy, mistrz powieści realistycznej.', dziela:'Lalka, Faraon, Anielka, Katarynka' },
-  { name:'Stanisław Wyspiański', dates:'1869–1907', epoka:'Młoda Polska', info:'Dramaturg, malarz, poeta. Symbolizm narodowy.', dziela:'Wesele, Wyzwolenie, Klątwa' },
-  { name:'Stefan Żeromski', dates:'1864–1925', epoka:'Młoda Polska', info:'Sumienie polskiej literatury – krytyka społeczna.', dziela:'Przedwiośnie, Ludzie bezdomni, Syzyfowe prace' },
-  { name:'Fiodor Dostojewski', dates:'1821–1881', epoka:'Realizm', info:'Mistrz psychologii grzechu, winy i odkupienia.', dziela:'Zbrodnia i kara, Idiota, Bracia Karamazow' },
-  { name:'William Szekspir', dates:'1564–1616', epoka:'Renesans', info:'Największy dramaturg wszech czasów. Tragizm władzy.', dziela:'Makbet, Hamlet, Romeo i Julia, Otello' },
-  { name:'Albert Camus', dates:'1913–1960', epoka:'Egzystencjalizm', info:'Absurdyzm, bunt jako odpowiedź na bezsens.', dziela:'Dżuma, Obcy, Mit Syzyfa' },
-  { name:'George Orwell', dates:'1903–1950', epoka:'XX wiek', info:'Krytyk totalitaryzmu. Wizjoner nowomowy.', dziela:'Rok 1984, Folwark zwierzęcy' },
-  { name:'Tadeusz Borowski', dates:'1922–1951', epoka:'Współczesność', info:'Świadek Auschwitz. Nihilistyczny realizm.', dziela:'Proszę państwa do gazu, Pożegnanie z Marią' },
-  { name:'Sławomir Mrożek', dates:'1930–2013', epoka:'Współczesność', info:'Mistrz groteski i absurdu. Krytyk totalitaryzmu.', dziela:'Tango, Policja, Słoń' },
-  { name:'Sofokles', dates:'496–406 p.n.e.', epoka:'Antyk', info:'Mistrz tragedii greckiej. Fatum, hybris.', dziela:'Antygona, Król Edyp, Elektra' },
-  { name:'Jan Parandowski', dates:'1895–1978', epoka:'Dwudziestolecie', info:'Popularyzator antyku, eseista.', dziela:'Mitologia, Dysk olimpijski' },
-];
-
+// ══════════════════════════════════════════════════ EPOKI
 function renderEpoki() {
-  document.getElementById('epoki-list').innerHTML = epokaData.map(e => `
-    <div class="epoka-card" style="--ec:${e.color}">
-      <h4>${e.name} <span style="color:var(--muted);font-weight:400;font-size:.75rem">${e.dates}</span></h4>
-      <p><strong style="color:#5ae0a0">Cechy:</strong> ${e.cechy}<br>
-         <strong style="color:#5ae0a0">Autorzy:</strong> ${e.autorzy}<br>
-         <strong style="color:#5ae0a0">Lektury CKE:</strong> ${e.lektury}</p>
+  document.getElementById('epoki-list').innerHTML = epokaData.map((e, i) => `
+    <div class="epoka-card" id="ep-${i}" style="--ec:${e.color}">
+      <div class="epoka-header" onclick="document.getElementById('ep-${i}').classList.toggle('open')">
+        <div class="epoka-dot" style="background:${e.color}"></div>
+        <div class="epoka-title">${e.name}</div>
+        <div class="epoka-dates">${e.dates}</div>
+        <span class="epoka-arrow">▼</span>
+      </div>
+      <div class="epoka-body">
+        <span class="elbl">📖 Cechy i filozofia:</span>${e.cechy}
+        <span class="elbl">✍️ Autorzy:</span>${e.autorzy}
+        <span class="elbl">📚 Lektury CKE:</span>${e.lektury}
+        ${e.pojecia ? `<span class="elbl">🔑 Pojęcia kluczowe:</span>${e.pojecia}` : ''}
+      </div>
     </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════ PISARZE
+function buildPisarzeFilters() {
+  const epoki = ['all', ...new Set(pisarzeData.map(p => p.epoka))];
+  document.getElementById('pisarze-filters').innerHTML = epoki.map(e =>
+    `<button class="filter-btn ${e==='all'?'active':''}" onclick="filterPisarze('${e}',this)">
+      ${e==='all'?'Wszyscy':e}
+    </button>`).join('');
 }
 
 function renderPisarze(filter) {
   const data = filter === 'all' ? pisarzeData : pisarzeData.filter(p => p.epoka === filter);
-  document.getElementById('pisarze-list').innerHTML = data.map(p => `
-    <div class="pisarz-card">
-      <h4>${p.name}</h4>
-      <div class="meta">${p.dates} · ${p.epoka}</div>
-      <p style="margin-bottom:6px">${p.info}</p>
-      <p style="color:var(--muted);font-size:.78rem"><strong style="color:#f0c040">Dzieła:</strong> ${p.dziela}</p>
-    </div>`).join('');
-}
-
-function buildFilters() {
-  const epoki = ['all', ...new Set(pisarzeData.map(p => p.epoka))];
-  document.getElementById('pisarze-filters').innerHTML = epoki.map(e => `
-    <button class="filter-btn ${e==='all'?'active':''}" onclick="filterPisarze('${e}',this)">${e==='all'?'Wszyscy':e}</button>`).join('');
+  document.getElementById('pisarze-list').innerHTML = data.length === 0
+    ? '<p style="color:var(--muted)">Brak pisarzy dla tej epoki.</p>'
+    : data.map((p, i) => `
+      <div class="pisarz-card" id="pis-${i}">
+        <div class="pisarz-header" onclick="document.getElementById('pis-${i}').classList.toggle('open')">
+          <div class="pisarz-num">${i+1}</div>
+          <div style="flex:1">
+            <div class="pisarz-name">${p.name}</div>
+            <div class="pisarz-meta">${p.dates} · ${p.epoka}</div>
+          </div>
+          <span class="pisarz-arrow">▼</span>
+        </div>
+        <div class="pisarz-body">
+          <span class="plbl">O autorze:</span>${p.info}
+          <span class="plbl">Główne dzieła:</span>${p.dziela}
+          ${p.motyw ? `<span class="plbl">Kluczowe motywy:</span>${p.motyw}` : ''}
+        </div>
+      </div>`).join('');
 }
 
 function filterPisarze(epoka, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#pisarze-filters .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderPisarze(epoka);
 }
 
+// ══════════════════════════════════════════════════ LEKTURY
+let aktywnaLektura = null;
+
+function buildLekturyFilters() {
+  const epoki = ['all', ...new Set(lekturyData.map(l => l.epoka))];
+  document.getElementById('lektury-filters').innerHTML = epoki.map(e =>
+    `<button class="filter-btn ${e==='all'?'active':''}" onclick="filterLektury('${e}',this)">
+      ${e==='all'?'Wszystkie':e}
+    </button>`).join('');
+}
+
+function renderLekturyGrid(filter) {
+  const data = filter === 'all' ? lekturyData : lekturyData.filter(l => l.epoka === filter);
+  document.getElementById('lektury-grid').innerHTML = data.map(l => `
+    <div class="lektura-tile ${aktywnaLektura===l.id?'active-tile':''}"
+         style="--lc:${l.kolor}"
+         onclick="pokazLekture('${l.id}')">
+      <div class="lt-emoji">${l.emoji}</div>
+      <div class="lt-title">${l.title}</div>
+      <div class="lt-autor">${l.autor}</div>
+      <div class="lt-epoka" style="background:${l.kolor}22;color:${l.kolor}">${l.epoka}</div>
+    </div>`).join('');
+}
+
+function filterLektury(epoka, btn) {
+  document.querySelectorAll('#lektury-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLekturyGrid(epoka);
+}
+
+function pokazLekture(id) {
+  const l = lekturyData.find(x => x.id === id);
+  if (!l) return;
+  aktywnaLektura = id;
+
+  // zaktualizuj kafelki
+  document.querySelectorAll('.lektura-tile').forEach(t => t.classList.remove('active-tile'));
+  document.querySelectorAll('.lektura-tile').forEach(t => {
+    if (t.querySelector('.lt-title')?.textContent === l.title) t.classList.add('active-tile');
+  });
+
+  const panel = document.getElementById('lektura-detail');
+  panel.innerHTML = `
+    <button class="back-btn" onclick="ukryjLekture()">← Powrót do listy lektur</button>
+
+    <div class="lektura-hero" style="--lhc:${l.kolor}">
+      <div class="lektura-hero-top">
+        <div class="lektura-big-emoji">${l.emoji}</div>
+        <div style="flex:1">
+          <h2>${l.title}</h2>
+          <div style="color:var(--muted);font-size:.9rem">${l.autor}</div>
+          <div class="meta-row">
+            <span class="meta-badge">📅 ${l.rok}</span>
+            <span class="meta-badge">🏛️ ${l.epoka}</span>
+            <span class="meta-badge">📖 ${l.gatunek}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">📄 Streszczenie</div>
+    <div class="streszczenie-box">${l.streszczenie.replace(/\n/g,'<br>')}</div>
+
+    <div class="section-title">👤 Bohaterowie</div>
+    <div class="bohater-grid">
+      ${l.bohaterowie.map(b => `
+        <div class="bohater-card">
+          <div class="bname">${b.name}</div>
+          <div class="bopis">${b.opis}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="section-title">💡 Główne tematy i problematyka</div>
+    <div class="tematy-list">
+      ${l.tematy.map(t => `
+        <div class="temat-item">
+          <div class="tname">▶ ${t.t}</div>
+          <div class="topis">${t.o}</div>
+        </div>`).join('')}
+    </div>
+
+    ${l.symbole && l.symbole.length ? `
+    <div class="section-title">🔣 Symbole i motywy</div>
+    <div class="symbole-list">
+      ${l.symbole.map(s => `
+        <div class="symbol-card">
+          <div class="sname">${s.s}</div>
+          <div class="sopis">${s.o}</div>
+        </div>`).join('')}
+    </div>` : ''}
+
+    ${l.cytaty && l.cytaty.length ? `
+    <div class="section-title">💬 Cytaty kluczowe</div>
+    <div class="cytaty-list">
+      ${l.cytaty.map(c => `<div class="cytat-item">${c}</div>`).join('')}
+    </div>` : ''}
+
+    <div class="section-title">🔗 Konteksty maturalne</div>
+    <div class="konteksty-box">
+      <strong>Powiąż z:</strong> ${l.konteksty}
+    </div>
+
+    <div class="section-title">🎓 Wskazówka maturalna</div>
+    <div class="matura-tip-box">
+      💡 ${l.matura_tip}
+    </div>
+
+    <div style="margin-top:24px">
+      <button class="back-btn" onclick="ukryjLekture()">← Powrót do listy lektur</button>
+    </div>
+  `;
+
+  panel.classList.add('visible');
+  document.getElementById('lektury-lista').style.display = 'none';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function ukryjLekture() {
+  aktywnaLektura = null;
+  document.getElementById('lektura-detail').classList.remove('visible');
+  document.getElementById('lektury-lista').style.display = 'block';
+  document.querySelectorAll('.lektura-tile').forEach(t => t.classList.remove('active-tile'));
+}
+
+// ══════════════════════════════════════════════ PYTANIA JAWNE
 function renderJawne(data) {
+  const count = document.getElementById('jawne-count');
+  if (count) count.textContent = `Wyświetlam ${data.length} z ${jawneData.length} pytań`;
+
+  if (data.length === 0) {
+    document.getElementById('jawne-list').innerHTML =
+      '<p style="color:var(--muted);padding:20px 0">Brak wyników dla tej frazy.</p>';
+    return;
+  }
+
   const grouped = {};
-  data.forEach(i => { if (!grouped[i.book]) grouped[i.book] = []; grouped[i.book].push(i); });
-  document.getElementById('jawne-list').innerHTML = Object.entries(grouped).map(([book, items]) => `
-    <div class="section-divider"><span>${book}</span></div>
-    ${items.map(item => `
-      <div class="accordion-item">
-        <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
-          <div class="accordion-num ${item.priority==='high'?'imp':''}">${item.num}</div>
-          <div class="accordion-q">
-            ${item.priority==='high'?'<span class="priority-badge priority-high">⭐ Priorytet</span>':''}
-            ${item.q}
+  data.forEach(item => {
+    if (!grouped[item.book]) grouped[item.book] = [];
+    grouped[item.book].push(item);
+  });
+
+  document.getElementById('jawne-list').innerHTML =
+    Object.entries(grouped).map(([book, items]) => `
+      <div class="section-divider"><span>${book}</span></div>
+      ${items.map(item => `
+        <div class="accordion-item" id="acc-${item.num}">
+          <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="accordion-num ${item.priority==='high'?'imp':''}">${item.num}</div>
+            <div class="accordion-q">
+              ${item.priority==='high'
+                ? '<span class="priority-badge priority-high">⭐ Priorytet</span>'
+                : item.priority==='med'
+                ? '<span class="priority-badge priority-med">● Ważne</span>'
+                : ''}
+              ${item.q}
+            </div>
+            <span class="accordion-arrow">▼</span>
           </div>
-          <span class="accordion-arrow">▼</span>
-        </div>
-        <div class="accordion-body">
-          <p style="color:#5ae0a0;font-size:.78rem;font-weight:700;margin-bottom:8px">📖 WZORCOWA ODPOWIEDŹ:</p>
-          ${item.ans}
-          <div style="margin-top:12px;padding:10px;background:var(--surface);border-radius:8px;font-size:.78rem;color:var(--muted)">
-            💡 Pamiętaj o <strong>kontekście</strong> – inna lektura lub zjawisko historyczne. Mów min. 2 minuty.
+          <div class="accordion-body">
+            <p style="color:var(--accent4);font-size:.78rem;font-weight:700;margin-bottom:10px">
+              📖 WZORCOWA ODPOWIEDŹ (ok. 2–3 min mówienia):
+            </p>
+            <div style="line-height:1.75">${item.ans}</div>
+            <div style="margin-top:14px;padding:12px 14px;background:var(--surface);border-radius:8px;font-size:.78rem;color:var(--muted);border-left:3px solid var(--accent)">
+              💡 <strong>Pamiętaj:</strong> Podaj kontekst z innej lektury / filozofii / historii.
+              Mów min. <strong>2 minuty bez przerwy</strong>.
+              Używaj terminologii: motyw, symbol, tragizm, narrator itp.
+            </div>
           </div>
-        </div>
-      </div>`).join('')}`).join('');
+        </div>`).join('')}`).join('');
 }
 
 function filterJawne(val) {
-  const v = val.toLowerCase();
-  renderJawne(jawneData.filter(i => i.q.toLowerCase().includes(v) || i.book.toLowerCase().includes(v) || i.ans.toLowerCase().includes(v)));
+  const v = val.toLowerCase().trim();
+  renderJawne(!v ? jawneData : jawneData.filter(i =>
+    i.q.toLowerCase().includes(v) ||
+    i.book.toLowerCase().includes(v) ||
+    i.ans.toLowerCase().includes(v)
+  ));
 }
 
+// ══════════════════════════════════════════════════════ INIT
 window.addEventListener('DOMContentLoaded', () => {
   renderEpoki();
-  buildFilters();
+  buildPisarzeFilters();
   renderPisarze('all');
+  buildLekturyFilters();
+  renderLekturyGrid('all');
   renderJawne(jawneData);
   QE.init('plq', plQuizData, 'quiz-container');
   QE.init('plex', plEgzaminData, 'egzamin-container');
   QE.fcInit('pl', plFiszki);
 });
+
 </script>
 </body>
 </html>

@@ -1215,3 +1215,501 @@ const plEgzaminData = [
     exp: "Groteska łączy komizm z tragizmem, absurd z logiką. W Ferdydurke: 30-latek w szkole, 'bójka na miny'. W Tangu: Artur-konserwatywista vs liberalni rodzice. Groteska demaskuje absurd rzeczywistości przez absurd literacki.",
   },
 ];
+
+// ================================================================
+//  LEKTURY – szczegółowe omówienia
+// ================================================================
+
+const lekturyData = [
+  {
+    id: 'antygona',
+    title: 'Antygona',
+    autor: 'Sofokles',
+    rok: 'ok. 442 p.n.e.',
+    epoka: 'Antyk',
+    gatunek: 'Tragedia grecka',
+    kolor: '#f0c040',
+    emoji: '🏛️',
+    streszczenie: `Po wojnie siedmiu przeciw Tebom obaj synowie Edypa giną z rąk siebie nawzajem.
+    Kreon, nowy władca Teb, wydaje edykt: Eteokles (obrońca) otrzyma honorowy pochówek,
+    Polinejkes (napastnik) zostanie porzucony bez pogrzebu – ku hańbie. Antygona, siostra obu,
+    postanawia pogrzebać Polinejkesa wbrew rozkazowi. Zostaje schwytana i skazana na śmierć
+    (zamurowana żywcem). Hajmon (syn Kreona, narzeczony Antygony) i Eurydike (żona Kreona)
+    giną z rozpaczy. Kreon zostaje sam ze swoją winą.`,
+    bohaterowie: [
+      { name: 'Antygona', opis: 'Córka Edypa. Bohaterka tragiczna – świadomie wybiera śmierć, by wypełnić obowiązek wobec bogów i brata. Reprezentuje prawo boskie (physis) i miłość rodzinną ponad polityczne nakazy.' },
+      { name: 'Kreon', opis: 'Król Teb. Reprezentuje prawo ludzkie (nomos) i rację stanu. Przekonany, że władca musi być bezwzględny. Jego nieustępliwość prowadzi do tragedii całej rodziny. Antybohater, nie czarny charakter – ma swoje racje.' },
+      { name: 'Hajmon', opis: 'Syn Kreona, narzeczony Antygony. Próbuje zmienić decyzję ojca przez rozsądne argumenty. Gdy mu się nie udaje, ginie przy Antygonie.' },
+      { name: 'Ismena', opis: 'Siostra Antygony. Odmawia pomocy – boi się kary. Reprezentuje postawę kompromisu i przetrwania.' },
+      { name: 'Chór', opis: 'Starcy tebańscy. Komentują akcję, wyrażają mądrość zbiorową, zadają pytania filozoficzne.' },
+    ],
+    tematy: [
+      { t: 'Prawo boskie vs. prawo ludzkie', o: 'Centralny konflikt dramatu. Antygona (physis – prawo wieczne, boskie, niepisane) contra Kreon (nomos – prawo stanowione przez człowieka). Sofokles nie rozstrzyga – obie strony mają rację i obie płacą cenę.' },
+      { t: 'Tragizm', o: 'Tragizm grecki = zderzenie dwóch równorzędnych racji, z których żadna nie jest całkowicie fałszywa. Każdy wybór prowadzi do klęski. Katharsis – oczyszczenie emocji przez litość i trwogę.' },
+      { t: 'Fatum i wolna wola', o: 'Antygona świadomie wybiera śmierć – to wolna wola. Ale los rodu Edypa jest przeklęty – fatum. Czy można uciec od przeznaczenia? Sofokles sugeruje, że nie, ale człowiek może decydować o sposobie przyjęcia losu.' },
+      { t: 'Jednostka vs. władza państwowa', o: 'Antygona to ponadczasowy dramat o granicach posłuszeństwa wobec władzy. Sumienie kontra prawo stanowione – aktualny dylemat w każdej epoce.' },
+    ],
+    symbole: [
+      { s: 'Pochówek', o: 'Symbol godności i prawa boskiego. Odmowa pochówku = pozbawienie człowieka godności po śmierci i prawa do zaświatów (grecki obowiązek rytualny).' },
+      { s: 'Jaskinia/grób', o: 'Miejsce śmierci Antygony – symbol granicy między życiem a śmiercią, wolnością a zniewoleniem.' },
+      { s: 'Chór', o: 'Symbol zbiorowej mądrości i głosu społeczeństwa. Często waha się między racjami stron.' },
+    ],
+    cytaty: [
+      '"Nie sądziłam wcale, by twoje nakazy miały większą moc niż niepisane, wieczne prawa bogów."',
+      '"Urodzono mnie do współmiłowania, nie do współnienawidzenia."',
+      '"Wiele jest potęg w świecie, lecz żadna nie dorówna człowiekowi."',
+    ],
+    konteksty: 'Rok 1984 Orwella (sumienie vs. prawo totalitarne) · Biblia (prawa Boże vs. cesarskie) · Dziady III (opresja systemu) · Współczesna bioetyka · Hanna Krall – godność w sytuacji ekstremalnej',
+    matura_tip: 'Najczęstsze pytania: prawo boskie vs. ludzkie, tragizm, fatum, jednostka vs. władza. Konteksty: Rok 1984, Makbet, Biblia.'
+  },
+
+  {
+    id: 'makbet',
+    title: 'Makbet',
+    autor: 'William Szekspir',
+    rok: '1606',
+    epoka: 'Renesans',
+    gatunek: 'Tragedia szekspirowska',
+    kolor: '#e05a5a',
+    emoji: '⚔️',
+    streszczenie: `Makbet, dzielny generał króla Szkocji Dunkana, spotyka trzy wiedźmy, które przepowiadają mu,
+    że zostanie królem. Podsycany przez ambitną Lady Makbet, morduje śpiącego Dunkana.
+    Przejmuje władzę, lecz w strachu przed kolejnymi przepowiedniami (Banka, syn Banka) zleca kolejne
+    morderstwa. Lady Makbet popada w obłęd i ginie. Makbet staje się tyranem, otoczonym wrogami.
+    Ginie z rąk Makdufa. Tron obejmuje Malcolm, syn Dunkana.`,
+    bohaterowie: [
+      { name: 'Makbet', opis: 'Bohater tragiczny – na początku dzielny i lojalny, stopniowo degraduje się moralnie pod wpływem ambicji. Sam dokonuje wyborów – wiedźmy i żona inspirują, nie decydują. Cierpi z powodu wyrzutów sumienia.' },
+      { name: 'Lady Makbet', opis: 'Ambitna, bezwzględna, popycha męża do zbrodni. Początkowo silniejsza psychicznie – "wymyta" ze skrupułów. Później popada w obłęd i lunatykuje ("plama, wciąż plama"). Symbol: ambicja niszcząca człowieka.' },
+      { name: 'Wiedźmy', opis: 'Trzy siostry fatum. Przepowiadają – nie nakazują. Katalizator zdarzeń, nie ich przyczyna. Symbol: irracjonalne siły pchające człowieka ku złu.' },
+      { name: 'Dunkan', opis: 'Sprawiedliwy, łagodny król. Jego niewinność potęguje grozę zbrodni.' },
+      { name: 'Banka', opis: 'Przyjaciel Makbeta, któremu też przepowiedziano przyszłość. W przeciwieństwie do Makbeta nie ulega pokusie. Jego duch nawiedza Makbeta – symbol wyrzutów sumienia.' },
+      { name: 'Makduf', opis: 'Szkocki szlachcic, mściciel. Urodzony przez cesarskie cięcie – co unieważnia przepowiednię, że "żaden zrodzony z kobiety" go nie pokona.' },
+    ],
+    tematy: [
+      { t: 'Ambicja i władza', o: '"Władza deprawuje, władza absolutna deprawuje absolutnie" (Lord Acton). Makbet to studium tego procesu: od bohatera do tyrana przez serię wyborów napędzanych ambicją i strachem.' },
+      { t: 'Wina i wyrzuty sumienia', o: 'Kara wyprzedza wyrok – Makbet cierpi od pierwszej chwili po zbrodni (wizja sztyletu, bezsenność). "Makbet zabił sen." Sumienie jest niezniszczalne.' },
+      { t: 'Wolna wola vs. fatum', o: 'Wiedźmy przepowiadają, nie determinują. Makbet sam podejmuje decyzje – to tragedia wolnej woli, nie fatum. Kontrast z tragedią grecką (Edyp), gdzie fatum dominuje.' },
+      { t: 'Moralna odpowiedzialność', o: 'Makbet ma wszelkie wymówki (przepowiednia, namowy żony) – ale to on dokonuje wyborów. Szekspir twierdzi: nie można zrzucić odpowiedzialności na okoliczności.' },
+    ],
+    symbole: [
+      { s: 'Krew', o: '"Will all great Neptunes ocean wash this blood clean from my hand?" Krew = nieprzebaczalna wina, niemożność oczyszczenia się z zbrodni.' },
+      { s: 'Wizja sztyletu i duch Banka', o: 'Projekcje wyrzutów sumienia. Makbet traci granicę między rzeczywistością a halucynacją.' },
+      { s: 'Ciemność i noc', o: 'Zbrodnie dzieją się w nocy. Lady Makbet woła ciemność. Symbol: ukrywanie zła, ale też nieuchronne wyjście na światło.' },
+      { s: 'Wiedźmy i czary', o: 'Irracjonalizm, siły ciemności. Pytanie: czy wiedźmy istnieją naprawdę czy są projekcją Makbeta?' },
+    ],
+    cytaty: [
+      '"Fair is foul, and foul is fair." (Piękne jest brzydkie, a brzydkie piękne.)',
+      '"Makbet zabił sen – niewinny sen."',
+      '"Jutro, jutro i jeszcze raz jutro, wlecze się z dnia na dzień..."',
+      '"Jesteśmy z tej samej materii co sny."',
+    ],
+    konteksty: 'Zbrodnia i kara Dostojewskiego (wyrzuty sumienia) · Mitologia – hybris/nemezis · Dziady III (władza) · Rok 1984 (mechanizmy tyranii) · Hannah Arendt (banalność zła)',
+    matura_tip: 'Pytania: moralna odpowiedzialność, wpływ władzy, wolna wola vs. fatum. Kluczowe: Makbet sam decyduje – wiedźmy i żona nie są winni.'
+  },
+
+  {
+    id: 'dziady3',
+    title: 'Dziady część III',
+    autor: 'Adam Mickiewicz',
+    rok: '1832 (Drezno)',
+    epoka: 'Romantyzm',
+    gatunek: 'Dramat romantyczny (niesceniczny)',
+    kolor: '#b45af0',
+    emoji: '🕯️',
+    streszczenie: `Dramat rozgrywa się w wileńskich więzieniach (1823). Polska młodzież jest prześladowana
+    przez carskie władze po wykryciu tajnych organizacji patriotycznych. Konrad, poeta-więzień,
+    przeżywa mistyczne doświadczenie: w Wielkiej Improwizacji buntuje się przeciw Bogu, żądając
+    władzy nad duszami narodu. Prawie ulega złu (szatan mówi przez niego), lecz egzorcyzmy ks. Piotra
+    go ratują. Ks. Piotr widzi w wizji Polskę jako Chrystusa narodów. Salon Warszawski ukazuje
+    podział polskiego społeczeństwa wobec zaborcy. Senator Nowosilcow jest wcieleniem carskiego terroru.`,
+    bohaterowie: [
+      { name: 'Konrad', opis: 'Romantyczny poeta-geniusz. Wielka Improwizacja: prometejski bunt wobec Boga – żąda rządu dusz dla narodu. Prawie upada (pycha), ratuje go egzorcyzm. Symbol: romantyczny indywidualizm i jego pułapki.' },
+      { name: 'Ksiądz Piotr', opis: 'Pokorny zakonnik. Widzenie: Polska = Chrystus narodów. Kontrast z Konradem – prawdziwa siła przez uniżenie. Symbol: chrześcijańska droga zbawienia narodu przez pokorę.' },
+      { name: 'Senator Nowosilcow', opis: 'Historyczna postać – carski namiestnik. Okrucieństwo, korupcja, obłuda. Widzenie złe sny (wyrzuty sumienia). Symbol: zło systemu.' },
+      { name: 'Rollison', opis: 'Więzień – ofiara carskich represji. Matka Rollisona błaga o jego ocalenie. Symbol: niezasłużone cierpienie.' },
+      { name: 'Chór gości Salonu', opis: 'Polskie towarzystwo bawiące się przy więzieniu pełnym patriotów. Konformiści i kolaboranci. Krytyka polskiej klasy wyższej.' },
+    ],
+    tematy: [
+      { t: 'Mesjanizm', o: 'Polska = Chrystus narodów. Cierpi niewinnie (rozbiory = ukrzyżowanie), zmartwychwstanie = niepodległość przyniesie wolność Europie. Wizja ks. Piotra. Ważna dla emigrantów po 1831.' },
+      { t: 'Prometejski bunt', o: 'Konrad w Wielkiej Improwizacji buntuje się jak Prometeusz – żąda władzy dla dobra narodu. Pycha (hybris) prowadzi do prawie-upadku. Kontrast: pokora ks. Piotra = prawdziwa siła.' },
+      { t: 'Wolność i zniewolenie', o: 'Więźniowie są fizycznie zniewoleni, ale zachowują wolność duchową. Konrad szuka absolutnej wolności twórczej. Paradoks: wolność bez miłości = pycha.' },
+      { t: 'Postawy społeczeństwa', o: 'Salon Warszawski: konformiści, kolaboranci, nieliczni z godnością. Krytyka klasy wyższej gotowej poświęcić wartości dla wygody. Aktualny portret społeczeństwa pod presją.' },
+    ],
+    symbole: [
+      { s: 'Wielka Improwizacja', o: 'Monolog Konrada – szczyt romantycznego indywidualizmu i jego granica. Poeta-geniusz konfrontuje się z Bogiem.' },
+      { s: 'Widzenie ks. Piotra', o: 'Alegoryczny obraz Polski jako Chrystusa. Profetyczna wizja przyszłości narodu.' },
+      { s: 'Więzienie', o: 'Symbol zniewolenia narodu. Kontrast: ciało w więzieniu, duch wolny.' },
+      { s: '"40 i 4"', o: 'Tajemnicza liczba z wizji ks. Piotra – przyszły wyzwoliciel Polski. Do dziś nierozwiązana zagadka interpretacyjna.' },
+    ],
+    cytaty: [
+      '"Ja i ojczyzna to jedno. Nazywam się Milijon – bo za milijony kocham i cierpię katusze."',
+      '"Tyś jest ze mną jak ciało i krew moja..."',
+      '"Bóg jest z Napoleonem, Napoleon z nami."',
+    ],
+    konteksty: 'Rok 1984 (wolność vs. totalitaryzm) · Inny świat Herlinga (zniewolenie) · Biblia (mesjanizm, Chrystus) · Antygona (opór wobec władzy) · Historia zaborów polskich',
+    matura_tip: '9 pytań jawnych CKE dotyczy Dziadów III – to lektura PRIORYTETOWA. Zawsze miej dwa konteksty: jeden historyczny (zabory) i jeden literacki (Rok 1984, Biblia).'
+  },
+
+  {
+    id: 'lalka',
+    title: 'Lalka',
+    autor: 'Bolesław Prus',
+    rok: '1890',
+    epoka: 'Pozytywizm',
+    gatunek: 'Powieść realistyczna',
+    kolor: '#ff9f40',
+    emoji: '🏪',
+    streszczenie: `Stanisław Wokulski – samotnik, były zesłaniec, kupiec – zakochuje się obsesyjnie w Izabeli Łęckiej,
+    arystokratce. Dla niej buduje fortunę (handel z Rosją podczas wojny rosyjsko-tureckiej), wchodzi
+    w towarzystwo arystokratyczne, poświęca karierę naukową. Izabela jednak gardzi "kupczykiem".
+    Rzecki, stary subiekt Wokulskiego, prowadzi pamiętnik – drugi głos narracyjny. Gdy iluzja Wokulskiego
+    o Izabeli pryska, bohater znika bez wieści – prawdopodobnie ginie lub wyjeżdża.`,
+    bohaterowie: [
+      { name: 'Stanisław Wokulski', opis: 'Bohater rozdwojony: romantyk z ducha (obsesyjna miłość, patriotyzm, idealizm), pozytywista z działania (praca, nauka, budowanie fortuny). Nie pasuje do żadnej klasy społecznej. Tragiczny samotnik.' },
+      { name: 'Ignacy Rzecki', opis: 'Stary subiekt, przyjaciel Wokulskiego. Napoleon jest jego idolem i wiarą. Prowadzi pamiętnik – narracja retrospektywna. Symbol: lojalność, wierność ideałom, odchodząca epoka.' },
+      { name: 'Izabela Łęcka', opis: 'Piękna arystokratka. Płytka, wyrachowana, wychowana w przekonaniu, że mężczyźni są narzędziami. Nie kocha – gra. Symbol: zdegenerowana arystokracja.' },
+      { name: 'Baronowa Krzeszowska', opis: 'Arystokratka – zubożała, zgorzkniała. Symbol próżności i uprzedzeń klasowych.' },
+      { name: 'Ochocki', opis: 'Młody naukowiec, idealista. Chce poświęcić się nauce dla postępu. Kontrast: czysta pasja naukowa vs obsesja Wokulskiego.' },
+    ],
+    tematy: [
+      { t: 'Miłość obsesyjna i destrukcyjna', o: 'Wokulski kocha nie prawdziwą Izabelę, lecz własny ideał. Ta miłość napędza go, ale ostatecznie niszczy. Prus ostrzega: idealizacja ukochanej to narcyzm, nie miłość.' },
+      { t: 'Klasy społeczne i uprzedzenia', o: 'Wokulski mimo fortuny odrzucony przez arystokrację (pochodzenie kupieckie). Izabela = zdegenerowana szlachta ceniąca pozory. Warszawa lat 80. XIX w. – obraz stratyfikacji społecznej.' },
+      { t: 'Marzenia vs. rzeczywistość', o: 'Wokulski marzy o idealnej miłości, nauce, lepszej Polsce. Rzecki marzy o Napoleonie. Zderzenie romantycznych ideałów z pozytywistyczną rzeczywistością.' },
+      { t: 'Miasto jako przestrzeń', o: 'Warszawa – centrum powieści. Kontrast: luksusowe salony arystokracji vs. nędza Powiśla. Prus opisuje urbanizację z pozytywistyczną precyzją.' },
+    ],
+    symbole: [
+      { s: 'Lalka', o: 'Tytuł wieloznaczny: 1) zabawka kupiona Helence (epizod), 2) Izabela jako "lalka" – piękna, pusta, 3) Wokulski jako "lalka" manipulowana przez własne uczucia.' },
+      { s: 'Pamiętnik Rzeckiego', o: 'Narracja retrospektywna = subiektywna perspektywa minionych ideałów. Rzecki widzi świat przez pryzmat napoleońskiej przeszłości – melancholijny kontrast ze współczesnością.' },
+      { s: 'Sklep Wokulskiego', o: 'Symbol awansu społecznego i pogoni za Izabelą. Wokulski zbudował fortunę dla niej, nie dla siebie.' },
+    ],
+    cytaty: [
+      '"Pan kocha panią Izabelę jak chory, nie jak zdrowy człowiek."',
+      '"W tym kraju wszystko jest na sprzedaż, tylko nie arystokratyczne nazwisko."',
+    ],
+    konteksty: 'Mitologia (Orfeusz – miłość destrukcyjna) · Makbet (Lady Makbet – ambicja niszczy) · Przedwiośnie (marzenia vs. rzeczywistość) · Tango Mrożka (klasy społeczne) · Współczesna psychologia miłości',
+    matura_tip: '6 pytań jawnych CKE. Kluczowe: miłość destrukcyjna, klasy społeczne, marzenia vs. rzeczywistość, miasto. Zawsze podkreślaj: Wokulski = synteza romantyzmu i pozytywizmu.'
+  },
+
+  {
+    id: 'wesele',
+    title: 'Wesele',
+    autor: 'Stanisław Wyspiański',
+    rok: '1901',
+    epoka: 'Młoda Polska',
+    gatunek: 'Dramat symboliczny',
+    kolor: '#5ae0a0',
+    emoji: '🎭',
+    streszczenie: `Dramat oparty na autentycznym weselu poety Lucjana Rydla z Jadwigą Mikołajczykówną
+    (Bronowice, 1900). Wesele inteligencji z chłopstwem – symbol próby zjednoczenia narodu.
+    W nocy goście mają wizje – duchy-widma z polskiej historii. Chochoł zbiera wszystkich
+    do tańca. Wernyhora daje Gospodarzowi Złoty Róg – sygnał do czynu. Zostaje utracony.
+    Dramat kończy się chocholim tańcem – zaśpienie narodu.`,
+    bohaterowie: [
+      { name: 'Gospodarz (Włodzimierz Tetmajer)', opis: 'Malarz, mąż chłopki. Organizator wesela. Fascynuje się ludem, ale nie rozumie go. Dostaje Złoty Róg od Wernyhory – i traci go.' },
+      { name: 'Panna Młoda (Jadwiga Mikołajczykówna)', opis: 'Prosta chłopka. Naturalna, bezpośrednia. Kontrast z inteligenckimi pozami.' },
+      { name: 'Poeta (Kazimierz Tetmajer)', opis: 'Inteligent-dekadent. Estetyzuje lud, nie działa. Symbol impotencji twórczej inteligencji.' },
+      { name: 'Dziennikarz', opis: 'Cyniczny obserwator. "Miałeś chamie złoty róg" – ironiczny komentarz do utraconej szansy.' },
+      { name: 'Czepiec', opis: 'Chłop – energiczny, gotowy do walki. Kontrast z bierną inteligencją.' },
+      { name: 'Chochoł', opis: 'Słomiany okrywacz krzewu róży. Prowadzi chocholi taniec. Symbol uśpionych sił narodu, marazmu.' },
+      { name: 'Stańczyk (widmo)', opis: 'Błazen królewski z czasów Zygmunta I. Symbol mądrego krytycyzmu wobec narodu.' },
+      { name: 'Wernyhora (widmo)', opis: 'Ukraiński wieszcz-prorok. Daje Złoty Róg = sygnał do powstania.' },
+      { name: 'Szela (widmo)', opis: 'Jakub Szela – przywódca rzezi galicyjskiej 1846. Przypomnienie chłopskiej krwi.' },
+    ],
+    tematy: [
+      { t: 'Marazm narodu', o: 'Polska nie może odzyskać niepodległości, bo naród jest "zaśpiony". Inteligencja – słaba i pusta. Chłopstwo – nieprzygotowane. Chochoł = symbol tego zaśpienia.' },
+      { t: 'Przepaść inteligencja–chłopstwo', o: 'Wesele jako próba zjednoczenia – i jej klęska. Obie klasy żyją w innych światach. Inteligencja idealizuje lud (chłopomania), nie rozumie go. Chłopi pamiętają rzeź galicyjską.' },
+      { t: 'Symbolizm widm', o: 'Duchy są projekcjami podświadomości postaci i symbolami historii. Stańczyk, Wernyhora, Szela – trzy różne lekcje historyczne. Wyspiański łączy psychologię z historią.' },
+      { t: 'Taniec jako symbol', o: 'Taniec weselny = jedność i radość. Chocholi taniec = marazm i kołowy ruch bez celu. Motyw danse macabre – taniec śmierci narodu.' },
+    ],
+    symbole: [
+      { s: 'Chochoł', o: 'Okrywa krzew różany na zimę. Metafora: naród przykryty słomą – żywy, ale uśpiony. Prowadzi chocholi taniec = niemożność czynu.' },
+      { s: 'Złoty Róg', o: 'Dar Wernyhory = sygnał do walki narodowej. Zgubiony przez Józka (Jasia). Symbol: zmarnowana szansa historyczna, niemoc.' },
+      { s: 'Wesele', o: 'Symbol próby zjednoczenia narodu = i jej klęski. Mikrokosmos polskiego społeczeństwa 1900.' },
+      { s: 'Pawia czapka', o: '"Miałeś chamie złoty róg, miałeś chamie czapkę z piór" – Jasiek traci Złoty Róg, bo schyla się po czapkę. Małostkowość zamiast czynu.' },
+    ],
+    cytaty: [
+      '"Miałeś chamie złoty róg, miałeś chamie czapkę z piór: czapkę wicher niesie, róg huka po lesie..."',
+      '"Polska to jest wielka rzecz... a wy, wy tutaj..."',
+    ],
+    konteksty: 'Dziady III (mesjanizm vs. krytyka) · Lalka (klasy społeczne) · Przedwiośnie (wizja vs. rzeczywistość) · Danse macabre (chocholi taniec) · Historia: rzeź galicyjska 1846',
+    matura_tip: '5 pytań jawnych CKE. Kluczowe pojęcia: chocholi taniec, Złoty Róg, przepaść inteligencja–chłopstwo. Konteksty: Dziady III, historia powstań.'
+  },
+
+  {
+    id: 'zbrodnia',
+    title: 'Zbrodnia i kara',
+    autor: 'Fiodor Dostojewski',
+    rok: '1866',
+    epoka: 'Realizm (Rosja)',
+    gatunek: 'Powieść psychologiczna',
+    kolor: '#e05a5a',
+    emoji: '⚖️',
+    streszczenie: `Raskolnikow, student w Petersburgu, opracowuje teorię: ludzie dzielą się na "zwykłych"
+    (podlegają prawu moralnemu) i "niezwykłych" (Napoleon, Mahomet – mają prawo przekraczać prawo
+    dla wyższego celu). Zabija starą lichwiarkę Alionę Iwanownę i jej siostrę (przypadkowo).
+    Kara zaczyna się natychmiast – wyrzuty sumienia, gorączka, paranoja. Sonia Marmieładowa,
+    prostytutka żyjąca z wiary, staje się jego przewodniczką. Po przyznaniu się idzie na Syberię.
+    Tam, dzięki miłości Soni, następuje wewnętrzne odrodzenie.`,
+    bohaterowie: [
+      { name: 'Rodion Raskolnikow', opis: 'Student, idealista, pyszałek. Teoria "niezwykłych ludzi" to racjonalizacja jego pychy. Zabójstwo jako test teorii – kończy się klęską. Przechodzi drogę od pychy przez zbrodnię do odkupienia.' },
+      { name: 'Sonia Marmieładowa', opis: 'Prostytutka z wyboru (dla rodziny), głęboko wierząca. Symbol chrześcijańskiej miłości (agape) i miłosierdzia. Idzie za Raskolnikowem na Syberię. Jej wiara jest siłą, nie słabością.' },
+      { name: 'Porfiry Pietrowicz', opis: 'Sędzia śledczy. Doskonały psycholog – wie, że Raskolnikow jest winny, ale czeka aż sam się przyzna. Ironia i manipulacja jako narzędzia śledztwa.' },
+      { name: 'Dania (siostra)', opis: 'Siostra Raskolnikowa. Kocha go, ale nie ślepo. Silna, moralna postać.' },
+      { name: 'Swidrygajłow', opis: 'Nihilista, deprawator. Alter ego Raskolnikowa – człowiek bez skrupułów, który konsekwentnie żyje "poza dobrem i złem". Kończy samobójstwem.' },
+    ],
+    tematy: [
+      { t: 'Wina i kara wewnętrzna', o: 'Kara psychiczna poprzedza wyrok sądu. Wyrzuty sumienia, gorączka, paranoja zaczynają się od razu po zbrodni. Dostojewski: sumienia nie można zabić, tylko uciszyć.' },
+      { t: 'Teoria "niezwykłych ludzi"', o: 'Raskolnikow tworzy ideologię uwalniającą go od odpowiedzialności. Dostojewski polemizuje z nihilizmem, racjonalizmem i utylitaryzmem – żadna teoria nie może usprawiedliwić zbrodni.' },
+      { t: 'Odkupienie przez miłość', o: 'Sonia prowadzi Raskolnikowa do nawrócenia przez miłość i wiarę. Dostojewski wierzy w możliwość zbawienia każdej duszy. Schemat: grzech → cierpienie → odkupienie.' },
+      { t: 'Petersburg jako przestrzeń', o: 'Miasto-potwór: ciasne ulice, smród, nędza, alkohol. Środowisko determinuje zachowanie (naturalizm). Petersburg = inkubator nihilizmu.' },
+    ],
+    symbole: [
+      { s: 'Siekiera', o: 'Narzędzie zbrodni. Symbol: Raskolnikow podnosi rękę na wartości moralne, nie tylko na starą kobietę.' },
+      { s: 'Krzyż Soni', o: 'Symbol wiary i miłości. Sonia daje Raskolnikowowi krzyż, gdy idzie się przyznać.' },
+      { s: 'Syberia', o: 'Kara zewnętrzna = jednocześnie wyzwolenie i nowy początek. Na Syberii następuje prawdziwe odkupienie.' },
+      { s: 'Ewangelia Łazarza', o: 'Sonia czyta Raskolnikowowi o wskrzeszeniu Łazarza. Symbol: zmartwychwstanie moralne możliwe dla każdego.' },
+    ],
+    cytaty: [
+      '"Czy jestem drżącym stworzeniem, czy też mam prawo?"',
+      '"Nie starą kobietę zabiłem – zabiłem siebie."',
+      '"Miłość wskrzesza umarłych."',
+    ],
+    konteksty: 'Makbet (wina i wyrzuty sumienia) · Mitologia (hybris → nemezis) · Dżuma Camusa (poświęcenie Soni vs. Rieux) · Biblia (odkupienie, Łazarz) · Psychologia: motywacje zbrodni',
+    matura_tip: '5 pytań jawnych CKE. Kluczowe: wina i kara (wewnętrzna!), teoria niezwykłych ludzi, przemiana bohatera, Sonia = miłość zbawcza. Kontekst zawsze: Makbet.'
+  },
+
+  {
+    id: 'rok1984',
+    title: 'Rok 1984',
+    autor: 'George Orwell',
+    rok: '1949',
+    epoka: 'Literatura współczesna',
+    gatunek: 'Powieść dystopiczna',
+    kolor: '#5a9cf0',
+    emoji: '👁️',
+    streszczenie: `Winston Smith żyje w Oceanii – totalitarnym superpaństwie rządzonym przez Partię i Wielkiego Brata.
+    Pracuje w Ministerstwie Prawdy, gdzie fałszuje historię. Potajemnie buntuje się – prowadzi pamiętnik,
+    zakochuje się w Julii. Wierzy w Braterstwo (podziemie). Zostaje schwytany przez O'Briena
+    (agenta Partii udającego konspiratoram). W Ministerstwie Miłości jest torturowany i łamany.
+    Pokój 101 – konfrontacja z największym strachem (szczury) – niszczy jego miłość do Julii.
+    Finał: "Kochał Wielkiego Brata."`,
+    bohaterowie: [
+      { name: 'Winston Smith', opis: '39-letni urzędnik Ministerstwa Prawdy. Zachował zdolność krytycznego myślenia. Buntuje się przez pamiętnik, miłość, marzenie o Braterstwi. Zostaje całkowicie złamany. Symbol: jednostka wobec totalitaryzmu.' },
+      { name: 'Julia', opis: 'Młoda techniczka. Buntuje się przez ciało – seks jako akt polityczny. Nie interesuje się teorią ani historią. Zostaje złamana podobnie jak Winston.' },
+      { name: 'O\'Brien', opis: 'Wysoki rangą członek Partii Wewnętrznej. Prze przez 7 lat udaje konspiratoram dla Winstona. Torturuje go. Credo: "Władza nie jest środkiem – jest celem." Symbol: totalitarna mentalność w czystej postaci.' },
+      { name: 'Wielki Brat', opis: 'Twarz Partii – może być fikcją. Symbol: anonimowa władza, której nie można pociągnąć do odpowiedzialności.' },
+      { name: 'Parsons', opis: 'Sąsiad Winstona. Entuzjastyczny wyznawca Partii. Zostaje zadenuncjowany przez własne dziecko. Symbol: skuteczność systemu w niszczeniu więzi rodzinnych.' },
+    ],
+    tematy: [
+      { t: 'Totalitaryzm i mechanizmy kontroli', o: 'Teleekrany (nadzór), Policja Myśli, Newspeak, fałszowanie historii, Dwie Minuty Nienawiści, dzieci-szpiedzy. Orwell opisuje kompletny system destrukcji wolności.' },
+      { t: 'Nowomowa (Newspeak)', o: 'Język zaprojektowany tak, by Thoughtcrime (zbrodnia myśli) stała się niemożliwa do wyrażenia – a więc niemożliwa do pomyślenia. Wittgenstein: granice języka = granice świata.' },
+      { t: 'Władza jako cel sam w sobie', o: 'Poprzednie totalitaryzmy miały ideologiczne uzasadnienie. Partia u Orwella chce władzy dla władzy. O\'Brien: "Jeśli chcesz wizji przyszłości – wyobraź sobie but tratujący twarz człowieka, na zawsze."' },
+      { t: 'Manipulacja pamięcią i historią', o: 'Kto kontroluje przeszłość, kontroluje przyszłość. Ministerstwo Prawdy przepisuje historię codziennie. Tożsamość jednostki i narodu = pamięć.' },
+    ],
+    symbole: [
+      { s: 'Teleekran', o: 'Dwustronny ekran: odbiór i nadawanie obrazu. Symbol: permanentny nadzór, niemożność prywatności.' },
+      { s: 'Pokój 101', o: 'Konfiguracja każdego człowieka z jego największym strachem. Symbol: destrukcja ostatniej wolności – wewnętrznej.' },
+      { s: 'Pamiętnik Winstona', o: 'Akt buntu przez prywatną myśl. Symbol: niemożność zachowania tożsamości w totalitaryzmie.' },
+      { s: 'Złoty kraj', o: 'Marzenie Winstona o wolnej, zielonej Anglii. Symbol: utracona wolność, tęsknota za naturą i autentycznością.' },
+    ],
+    cytaty: [
+      '"Wielki Brat patrzy na ciebie."',
+      '"Wolność to możliwość powiedzenia, że dwa plus dwa równa się cztery."',
+      '"Kto kontroluje przeszłość, kontroluje przyszłość; kto kontroluje teraźniejszość, kontroluje przeszłość."',
+      '"Władza nie jest środkiem – jest celem samym w sobie."',
+    ],
+    konteksty: 'Dziady III (zniewolenie/wolność) · Inny świat Herlinga (łagier) · Ferdydurke (presja systemu) · Antygona (prawo stanowione vs. sumienie) · Historia: stalinizm, nazizm',
+    matura_tip: '4 pytania jawne CKE – wszystkie PRIORYTETOWE. Kluczowe: nowomowa, mechanizmy kontroli, władza dla władzy, fałszowanie historii. Orwell pisał z doświadczenia stalinizmu.'
+  },
+
+  {
+    id: 'dzuma',
+    title: 'Dżuma',
+    autor: 'Albert Camus',
+    rok: '1947',
+    epoka: 'Egzystencjalizm',
+    gatunek: 'Powieść alegoryczna',
+    kolor: '#5ae0a0',
+    emoji: '🏥',
+    streszczenie: `W algierskim mieście Oran wybucha epidemia dżumy. Miasto zostaje zamknięte.
+    Doktor Rieux organizuje walkę z epidemią. Dołączają do niego Tarrou, Grand, Rambert, Paneloux.
+    Każdy ma inną motywację. Epidemia trwa rok. Ofiary: tysiące, w tym syn sędziego Othona
+    (scena kluczowa dla filozofii powieści). Na końcu epidemia ustępuje – miasto świętuje.
+    Rieux ujawnia się jako narrator. Ostrzega: dżuma może wrócić.`,
+    bohaterowie: [
+      { name: 'Doktor Bernard Rieux', opis: 'Narrator (ujawniony na końcu). Leczy z obowiązku i humanizmu – nie z heroizmu. Nie wierzy w Boga, ale walczy ze złem. Symbol: laicki humanizm i etyka odpowiedzialności.' },
+      { name: 'Jean Tarrou', opis: 'Obcokrajowiec. Walczy z dżumą z poczucia winy: jego ojciec był prokuratorem skazującym na śmierć. Chce być "świętym bez Boga". Przyjaźń z Rieux. Umiera tuż przed końcem epidemii.' },
+      { name: 'Grand', opis: 'Urzędnik. Walczy z dżumą nie z ideologii, lecz z potrzeby bycia pożytecznym. Pisze powieść, ciągle poprawiając pierwsze zdanie. Symbol: zwykły człowiek jako bohater.' },
+      { name: 'Rambert', opis: 'Dziennikarz. Chce uciec z Oranu do kochanki w Paryżu. Zostaje – bo nie może żyć w zgodzie z sobą, porzucając ludzi w potrzebie.' },
+      { name: 'Ojciec Paneloux', opis: 'Jezuita. Najpierw widzi dżumę jako karę Bożą. Po śmierci dziecka Othona – głęboki kryzys wiary. Umiera. Symbol: ewolucja stosunku do cierpienia i teodyceum.' },
+      { name: 'Cottard', opis: 'Gangster korzystający na epidemii. Kiedy dżuma ustępuje – załamuje się. Symbol: kolaboracja ze złem.' },
+    ],
+    tematy: [
+      { t: 'Absurd i bunt', o: 'Dżuma = alegoria absurdu (zło bez sensu, cierpienie niewinnych). Camus: jedyną odpowiedzią jest bunt (nie samobójstwo, nie religia) i solidarność. "Trzeba wyobrazić sobie Syzyfa szczęśliwym."' },
+      { t: 'Postawy wobec zła', o: 'Walka (Rieux, Tarrou), ucieczka (Rambert – początkowo), kolaboracja (Cottard), interpretacja teologiczna (Paneloux), bierność. Camus gloryfikuje solidarność i bunt.' },
+      { t: 'Przyjaźń w obliczu śmierci', o: 'Rieux i Tarrou: głęboka więź zrodzona przez wspólne zagrożenie. Tarrou umiera tuż przed końcem epidemii. Przyjaźń nie chroni przed stratą – ale nadaje jej sens.' },
+      { t: 'Teodyceum', o: 'Śmierć dziecka Othona = kluczowa scena. Rieux: "Nie będę kochał świata, w którym giną dzieci." Camus atakuje teodyceum (Bóg dopuszcza cierpienie niewinnych).' },
+    ],
+    symbole: [
+      { s: 'Dżuma', o: 'Alegoria wielopoziomowa: nazizm/faszyzm (kontekst 1947), każde zło zewnętrzne, absurd istnienia, choroba totalitaryzmu.' },
+      { s: 'Brama miasta', o: 'Izolacja Oranu = obraz każdego zniewolenia. Miasto jako laboratorium reakcji ludzkich.' },
+      { s: 'Szczury', o: 'Pierwsze sygnały epidemii. Symbol: zło na początku subtelne, potem przytłaczające.' },
+    ],
+    cytaty: [
+      '"Dżuma nie jest zrobiona na miarę człowieka, więc człowiek mówi sobie, że dżuma jest nierealna, zły sen, który minie."',
+      '"Jedynym sposobem walki z dżumą jest uczciwość."',
+      '"Należy wyobrazić sobie Syzyfa szczęśliwym."',
+    ],
+    konteksty: 'Hiob (cierpienie niezawinione) · Inny świat (totalitaryzm) · Zbrodnia i kara (Sonia = poświęcenie) · Mitologia (Prometeusz – bunt) · Historia: nazizm, Francja Vichy',
+    matura_tip: '4 pytania jawne CKE. Kluczowe: poświęcenie, postawy wobec zła, przyjaźń, teodyceum. Konteksty: Hiob, Mitologia (Prometeusz), Inny świat.'
+  },
+
+  {
+    id: 'inny_swiat',
+    title: 'Inny świat',
+    autor: 'Gustaw Herling-Grudziński',
+    rok: '1951',
+    epoka: 'Literatura powojenna',
+    gatunek: 'Reportaż literacki / świadectwo',
+    kolor: '#aaaaaa',
+    emoji: '❄️',
+    streszczenie: `Autor spędził 2 lata (1940–1942) w sowieckim łagrze w Jercewie.
+    Inny świat to literacki zapis tego doświadczenia: system łagru, dehumanizacja, różne strategie
+    przetrwania. Tytuł nawiązuje do "Domu umarłych" Dostojewskiego. Podtytuł: "Zapiski sowieckie".
+    Autor obserwuje, jak system niszczy ludzką godność – i jak nielicznym udaje się ją zachować
+    (Natalia Lwowna, Kostylew). Uwolniony z armią Andersa, walczył pod Monte Cassino.`,
+    bohaterowie: [
+      { name: 'Narrator (Herling-Grudziński)', opis: 'Obserwator, świadek, uczestnik. Zachowuje krytyczny dystans i zdolność oceny moralnej – co samo w sobie jest formą oporu.' },
+      { name: 'Kostylew', opis: 'Rosyjski więzień, który odmawia pracy kosztem własnego życia. Samookalecza się, by uniknąć pracy na rzecz systemu. Symbol: zachowanie godności przez opór absolutny.' },
+      { name: 'Natalia Lwowna', opis: 'Była leningradka. Prostytutka z przymusu systemu. Potem samobójstwo. Symbol: zniszczenie przez system kobiety i człowieka.' },
+      { name: 'Różni więźniowie', opis: 'Kolaboranci (by przeżyć), ofiary, kryminaliści, polityczni. Łagier jako przekrój społeczeństwa w warunkach ekstremalnych.' },
+    ],
+    tematy: [
+      { t: 'Zniewolenie totalitarne', o: 'Łagier jako laboratorium totalitaryzmu – w ekstremalnych warunkach widać, do czego zdolny jest system i człowiek. Dehumanizacja, rozbicie tożsamości, kontrola przez głód i strach.' },
+      { t: 'Godność ludzka', o: 'Kostylew odmawia pracy kosztem życia. Natalia zachowuje resztki godności. To możliwe – ale wymaga niezwykłej siły. Herling pyta: co to znaczy zachować człowieczeństwo w systemie zaprojektowanym by je zniszczyć?' },
+      { t: 'Świadectwo literackie', o: 'Inny świat poprzedza Archipelag Gułag Sołżenicyna. Herling pisze jak literat, nie kronikarz – to nadaje świadectwu trwałość. Odpowiedzialność pisarza wobec prawdy.' },
+    ],
+    symbole: [
+      { s: '"Inny świat"', o: 'Tytuł: łagier jako świat rządzący się antyludzkimi prawami – "inny" nie tylko geograficznie, ale moralnie. Nawiązanie do Dostojewskiego.' },
+      { s: 'Mróz', o: 'Wszechobecny. Symbol: nieludzkie warunki, ale też oczyszczenie, śmierć jako wyzwolenie.' },
+    ],
+    cytaty: [
+      '"W głębi każdego człowieka tkwi jakiś nienaruszalny punkt oporu."',
+      '"Łagier sowiecki jest instytucją, której celem jest unicestwianie człowieka."',
+    ],
+    konteksty: 'Proszę państwa do gazu Borowskiego (obozy nazistowskie) · Rok 1984 (totalitaryzm) · Dżuma Camusa (godność wobec zła) · Hannah Arendt (banalność zła) · Frankl (logoterapia, sens w cierpieniu)',
+    matura_tip: 'Pytania: zniewolenie, godność, świadectwo. Kontrast z Borowskim: Herling zachowuje ocenę moralną (Borowski celowo jej unika). Kontekst zawsze: Rok 1984 lub Proszę państwa.'
+  },
+
+  {
+    id: 'proszepaństwadogazu',
+    title: 'Proszę państwa do gazu',
+    autor: 'Tadeusz Borowski',
+    rok: '1948',
+    epoka: 'Literatura powojenna',
+    gatunek: 'Opowiadanie obozowe',
+    kolor: '#e05a5a',
+    emoji: '🚂',
+    streszczenie: `Narrator Tadek pracuje w komandzie "Kanada" – rozładowuje transporty Żydów
+    przywożonych do Auschwitz-Birkenau. Opisuje jeden dzień pracy: sortowanie dobytku, ładowanie
+    ludzi do ciężarówek, które jadą do gazu. Mówi o tym spokojnie, rzeczowo, bez oceny moralnej.
+    Jedyny moment emocji: gdy widzi Francuzkę udającą, że nie zna własnego dziecka (ratując
+    w ten sposób swoje życie). Tadek łka – jedyny raz w całym opowiadaniu.`,
+    bohaterowie: [
+      { name: 'Tadek (narrator)', opis: 'Alter ego Borowskiego. "Człowiek zlagrowany" – pracuje przy selekcji, mówi bez emocji. Jedyny moment humanizmu: łkanie na widok Francuzki. Symbol: dehumanizacja jako mechanizm przetrwania.' },
+      { name: 'Henri', opis: 'Doświadczony więzień-kapo. Cyniczny, sprawny w "pracy". Symbol: pełna adaptacja do systemu.' },
+    ],
+    tematy: [
+      { t: '"Człowiek zlagrowany"', o: 'System obozowy dehumanizuje wszystkich – więźniów uczestniczących w mechanizmie Zagłady. Borowski nie ocenia – bo ocena zakłada wolność wyboru, której prawie nie było.' },
+      { t: 'Nihilizm moralny jako forma świadectwa', o: 'Borowski celowo odmawia romantyzowania i heroizowania. Chce pokazać rzeczywistość bez makijażu. To radykalne stanowisko literackie, nie moralna obojętność.' },
+      { t: 'Wina kolektywna i system', o: 'Kto jest winny? System (nazizm) zmusza do uczestnictwa. Borowski obwinia system, nie jednostki. To kluczowa różnica od tradycyjnej oceny moralnej.' },
+    ],
+    symbole: [
+      { s: 'Rampa kolejowa', o: 'Miejsce selekcji. Symbol granicy między życiem a śmiercią – przekraczanej jak codzienność.' },
+      { s: 'Kanada', o: 'Nazwa magazynów pełnych zrabowanego dobytku. Ironia: kraj bogactwa i wolności = miejsce grabieży.' },
+      { s: 'Francuzka i dziecko', o: 'Jedyny moment emocji narratora. Symbol: to, czego systemu nie udało się do końca zniszczyć – instynkt rodzicielski i współczucie.' },
+    ],
+    cytaty: [
+      '"My, ludzie Obozu, jesteśmy już inni – poza zasięgiem prawa, dobra i zła."',
+    ],
+    konteksty: 'Inny świat Herlinga (porównanie postaw) · Hannah Arendt (banalność zła, Eichmann) · Rok 1984 (dehumanizacja) · Shoah – literatura świadectwa',
+    matura_tip: 'Kluczowe: "człowiek zlagrowany", brak oceny moralnej. Borowski vs. Herling: Borowski nie ocenia (nie ma prawa – był uczestnikiem), Herling ocenia (był obserwatorem z zewnątrz).'
+  },
+
+  {
+    id: 'przedwiosnie',
+    title: 'Przedwiośnie',
+    autor: 'Stefan Żeromski',
+    rok: '1924',
+    epoka: 'Młoda Polska / Dwudziestolecie',
+    gatunek: 'Powieść',
+    kolor: '#5ae0a0',
+    emoji: '🌱',
+    streszczenie: `Cezary Baryka dorasta w Baku (Rosja). Przeżywa rewolucję rosyjską 1917 (śmierć matki).
+    Przyjeżdża do Polski z marzeniem o "szklanych domach" (utopia ojca Serafina). Walczy w wojnie
+    polsko-bolszewickiej 1920. W Polsce konfrontuje się z rzeczywistością: nędza, korupcja,
+    niesprawiedliwość. Poznaje Gajowca (reformizm parlamentarny) i komunistów (rewolucja).
+    Tytuł: Polska odzyskała niepodległość, ale prawdziwa wiosna (sprawiedliwość) jeszcze nie nastała.
+    Finał: Cezary idzie na demonstrację – otwarty.`,
+    bohaterowie: [
+      { name: 'Cezary Baryka', opis: 'Bohater Bildungsroman – powieści dojrzewania. Poszukuje sensu i miejsca w Polsce. Namiętny, impulsywny, idealistyczny. Nie potrafi zaakceptować żadnej gotowej odpowiedzi.' },
+      { name: 'Serafin Baryka (ojciec)', opis: 'Marzyciel – snuje wizję szklanych domów. Symbol: romantyczna utopia techniczna. Umiera przed realizacją marzenia.' },
+      { name: 'Jadwiga Barykowa (matka)', opis: 'Ginie w rewolucji w Baku. Jej śmierć = doświadczenie formujące Cezarego.' },
+      { name: 'Szymon Gajowiec', opis: 'Polityk, pozytywista, reformista. Wierzy w ewolucję parlamentarną. Mentor Cezarego. Symbol: droga umiarkowana.' },
+      { name: 'Lulek', opis: 'Komunista. Wierzy w rewolucję jako jedyne wyjście. Symbol: radykalna alternatywa.' },
+    ],
+    tematy: [
+      { t: 'Utopia i rzeczywistość', o: 'Szklane domy ojca = utopia pozytywna. Polska po odzyskaniu niepodległości = brutalna rzeczywistość. Żeromski diagnozuje: wolność to dopiero początek – teraz czas na sprawiedliwość.' },
+      { t: 'Trzy wizje odbudowy Polski', o: 'Szklane domy (utopia technokratyczna), Gajowiec (reformizm parlamentarny), komuniści (rewolucja). Żeromski nie wyrokuje – Cezary szuka własnej odpowiedzi.' },
+      { t: 'Dojrzewanie i tożsamość', o: 'Cezary Baryka = klasyczny bohater powieści dojrzewania. Tożsamość polsko-rosyjska jako problem. Młodość = czas błędów i poszukiwań.' },
+    ],
+    symbole: [
+      { s: 'Szklane domy', o: 'Utopia ojca – Polska czysta, sprawiedliwa, nowoczesna. Zderzenie z brutalną rzeczywistością = centralna metafora powieści.' },
+      { s: 'Tytuł – Przedwiośnie', o: 'Między zimą (zaborami) a wiosną (prawdziwą niepodległością). Polska jeszcze w "przedwiośniu" – wolna, ale niesprawiedliwa.' },
+    ],
+    cytaty: [
+      '"Szklane domy będą... Będą, muszą być."',
+      '"Polska jest wielką metaforą."',
+    ],
+    konteksty: 'Lalka (marzenia vs. rzeczywistość) · Wesele (niemoc narodu) · Rok 1984 (utopia → dystopia) · Historia: odrodzona Polska 1918–1939',
+    matura_tip: 'Pytania: utopia vs. rzeczywistość, wizje odbudowy, dojrzewanie, tytuł. Kluczowe pojęcie: "szklane domy". Kontekst: Lalka, Wesele.'
+  },
+
+  {
+    id: 'tango',
+    title: 'Tango',
+    autor: 'Sławomir Mrożek',
+    rok: '1964',
+    epoka: 'Literatura współczesna',
+    gatunek: 'Dramat groteskowy',
+    kolor: '#ff9f40',
+    emoji: '💃',
+    streszczenie: `Rodzina Stomilów: rodzice (Stomil i Eleonora) i babcia żyją w totalnym chaosie i anarchii
+    – odrzucili wszystkie normy jako "burżuazyjne". Artur, młody syn, chce przywrócić porządek
+    i tradycję – paradoksalnie przez konserwatyzm. Próbuje ożenić się z Alą według tradycyjnych zasad.
+    Plany mu się nie udają. Edek – prostacki lokator – nabiera coraz więcej władzy. W finale Artur ginie
+    z ręki Edka. Edek narzuca "porządek" przez brutałość. Finał: Edek tańczy tango z babcią.`,
+    bohaterowie: [
+      { name: 'Artur', opis: 'Młody konserwatysta-idealista. Paradoks: buntuje się przeciw liberalizmowi rodziców przez chęć przywrócenia tradycji. Jego idealizm kończy się klęską wobec brutalnej siły.' },
+      { name: 'Stomil (ojciec)', opis: 'Liberał-anarchista, były awangardzista. Odrzucił wszystkie normy. Teraz jest bezsilny wobec chaosu, który sam stworzył.' },
+      { name: 'Eleonora (matka)', opis: 'Erotomanka, "wyzwolona". Flirtuje z Edkiem. Symbol: liberalizm seksualny bez granic.' },
+      { name: 'Edek', opis: 'Prostacki lokator. Siła fizyczna bez wartości. Wygrywa, gdy Artur (idealizm) upada. Symbol: triumf brutalności nad kulturą.' },
+      { name: 'Babcia Eugenia', opis: 'Tańczy tango na końcu z Edkiem. Symbol: ciągłość i przystosowanie. Dawne tango (elegancja, piękno) teraz tańczone z prymitywem.' },
+    ],
+    tematy: [
+      { t: 'Konflikt pokoleń', o: 'Mrożek odwraca stereotyp: to młody (Artur) chce tradycji, starzy – wolności i chaosu. Każde pokolenie buntuje się przeciw poprzedniemu. Żadne nie ma pełnej racji.' },
+      { t: 'Normy społeczne', o: 'Co się dzieje gdy normy znikają? Chaos → a w końcu brutalność. Mrożek pesymistycznie: bez norm rządzi siła. Ale nadmiar norm = tyrania. Nie ma złotego środka.' },
+      { t: 'Groteska jako diagnoza', o: 'Absurdalna, komiczna sytuacja jest narzędziem demaskowania poważnych problemów: upadek kultury, niemoc intelektualistów, triumf barbarzyństwa.' },
+    ],
+    symbole: [
+      { s: 'Tango', o: 'Taniec elegancki i erotyczny. Na początku: symbol piękna i tradycji. Na końcu: Edek tańczy tango z babcią = degradacja kultury, triumf barbarzyństwa w formie kultury.' },
+      { s: 'Bałagan w mieszkaniu', o: 'Symbol anarchii rodzinnej i społecznej. Rekwizyty z różnych epok – symbol bez-historyczności.' },
+    ],
+    cytaty: [
+      '"Jeśli nie ma Boga, to wolno wszystko."',
+      '"Pan jest silny, Edek. To pańska jedyna właściwość."',
+    ],
+    konteksty: 'Ferdydurke (upupienie, normy) · Wesele (niemoc inteligencji) · Rok 1984 (władza bez wartości) · Filozofia Nietzschego (przewartościowanie wartości) · Socjologia pokoleń',
+    matura_tip: 'Pytania: konflikt pokoleń, normy społeczne, groteska. Klucz: Edek wygrywa bo Artur nie umie zrezygnować z idealizmu na rzecz działania. Kontekst: Ferdydurke, Wesele.'
+  },
+];
